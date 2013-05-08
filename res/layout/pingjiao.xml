@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/black"
+    android:orientation="vertical" >
+    <com.markupartist.android.widget.ActionBar
+        android:id="@+id/pingjiao_actionbar"
+        style="@style/ActionBar"
+        />
+<LinearLayout 
+    android:id="@+id/pingjiao_head"
+    android:layout_width="fill_parent"
+    android:layout_height="25dp"
+    android:layout_below="@id/pingjiao_actionbar"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/pingjiao_textView1"
+        android:layout_width="50dp"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:text="一级指标"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="12dp" />
+        <TextView          
+			        android:layout_width="1px" 
+			        android:layout_height="fill_parent" 
+			        android:background="#DADADA" />
+
+                <TextView
+                    android:id="@+id/pingjiao_textView3"
+                    android:layout_width="190dp"
+                    android:layout_height="fill_parent"
+                    android:text="评价内容"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                     android:textSize="12dp"/>
+                           <TextView          
+      android:layout_width="1px" 
+      android:layout_height="fill_parent" 
+      android:background="#DADADA" />
+
+                <TextView
+                    android:id="@+id/pingjiao_teacherName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:text="教师姓名"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+     <ListView
+        android:id="@+id/pingjiao_listview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/pingjiao_head"
+        android:focusable="true"
+        android:dividerHeight="1px"
+        android:divider="#FFF" />
+</RelativeLayout>

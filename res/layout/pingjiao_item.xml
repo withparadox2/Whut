@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="155dp"
+    android:orientation="horizontal">
+        
+    <TextView
+        android:id="@+id/pingjiao_textView1"
+        android:layout_width="50dp"
+        android:layout_height="60dp"
+        android:text="一级指标"
+        android:gravity="center"
+        android:background="#FF5735"
+        android:textColor="@color/white"
+        android:textSize="12dp" />
+                <TextView          
+      android:layout_width="1px" 
+      android:layout_height="fill_parent" 
+      android:background="#DADADA" />
+
+                <TextView
+                    android:id="@+id/pingjiao_textView3"
+                    android:layout_width="190dp"
+                    android:layout_height="fill_parent"
+                    android:text="评价内容"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                     android:textSize="12dp"/>
+                           <TextView          
+      android:layout_width="1px" 
+      android:layout_height="fill_parent" 
+      android:background="#DADADA" />
+                           
+                <Spinner 
+                    android:id="@+id/pingjiao_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                   android:gravity="center"
+                   android:prompt="@string/app_name"/>
+
+            </LinearLayout>
+

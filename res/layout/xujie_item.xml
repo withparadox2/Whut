@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="80dp"
+    android:orientation="horizontal" >
+    <TextView
+        android:id="@+id/xujie_textView1"
+        android:layout_width="100dp"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:background="#FF5735"
+        android:textColor="@color/white"
+        android:textSize="12dp" />
+    <TextView          
+      	android:layout_width="1px" 
+      	android:layout_height="fill_parent" 
+      	android:background="#DADADA" />
+    
+    <TextView
+        android:id="@+id/xujie_textView2"
+        android:layout_width="80dp"
+        android:layout_height="fill_parent"
+        android:textColor="@color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:textSize="12dp"/>
+    <TextView          
+      	android:layout_width="1px" 
+      	android:layout_height="fill_parent" 
+      	android:background="#DADADA" />  
+    <TextView
+        android:id="@+id/xujie_textView3"
+        android:layout_width="70dp"
+        android:layout_height="fill_parent"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:textSize="12dp"/>  
+    <TextView          
+      	android:layout_width="1px" 
+      	android:layout_height="fill_parent" 
+      	android:background="#DADADA" />        	        
+    <Button 
+        android:layout_marginLeft="10dp"
+        style="@style/customButtonStyle"
+        android:id="@+id/xujie_button"
+        android:text="续借"
+        android:layout_width="50dp"
+        android:layout_height="30dp"/>
+</LinearLayout>

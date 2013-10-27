@@ -120,7 +120,7 @@ public class HttpOperateThread extends Thread{
 				httpOperation.getUrlHeader();
 				sendMyMessage(2);
 			}
-			statusCode = httpOperation.postMethod(httpOperation.getLoginParameters(WhutGlobal.USER_ID, WhutGlobal.USER_PASSWORD));
+			statusCode = httpOperation.loginJiao(WhutGlobal.USER_ID, WhutGlobal.USER_PASSWORD);
 			loginSuccessStatus = httpOperation.ifLoginSuccessStatus();
 			if((loginSuccessStatus==1)&&(statusCode==302)){
 				sendMyMessage(3);
@@ -157,13 +157,15 @@ public class HttpOperateThread extends Thread{
 			WhutGlobal.JUMP_OR_NOT = false;
 			sendMyMessage(6);	
 		}
+		keBiaoSubmit();
 	}
 	
 	
 	private void keBiaoSubmit(){
 		sendMyMessage(1);
 		try {
-			httpOperation.getHtml(httpOperation.getKeBiaoGetString());
+			httpOperation.getHtml("http://202.114.90.176:8080/DailyMgt/");
+			httpOperation.getHtml("http://202.114.90.176:8080/DailyMgt/kbcx.do");
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

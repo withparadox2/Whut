@@ -95,7 +95,7 @@ public class HttpOperation {
 	    try { 
 	        ConnectivityManager connectivity = (ConnectivityManager) context 
 	                .getSystemService(Context.CONNECTIVITY_SERVICE); 
-	        if (connectivity != null) { 
+	        if (connectivity != null) {
 	            NetworkInfo info = connectivity.getActiveNetworkInfo(); 
 	            if (info != null&& info.isConnected()) { 
 	                if (info.getState() == NetworkInfo.State.CONNECTED) { 
@@ -127,24 +127,24 @@ public class HttpOperation {
 	}
 	
 	public String getLoginParameters(String userIdText, String userPasswordText) throws UnsupportedEncodingException{
-			  return      "__VIEWSTATE=" + URLEncoder.encode("dDwtMTIwMTU3OTE3Nzs7PoO2novI+sOYb1lmb3QMa5KLuwhZ", "UTF-8") +
-			        "&lbLanguage=" + URLEncoder.encode("", "UTF-8")+
-			        "&RadioButtonList1=" + URLEncoder.encode("%D1%A7%C9%FA", "UTF-8")+
-			        "&TextBox1=" + URLEncoder.encode(userIdText, "UTF-8")+
-			        "&TextBox2=" + URLEncoder.encode(userPasswordText, "UTF-8")+
-			        "&Button1=" + URLEncoder.encode("", "UTF-8");
+			  return      "password=" + URLEncoder.encode(userPasswordText, "UTF-8") +
+			        "&systemId=" + URLEncoder.encode("", "UTF-8")+
+			        "&type=" + URLEncoder.encode("xs", "UTF-8")+
+			        "&xmlmsg=" + URLEncoder.encode("", "UTF-8")+
+			        "&userName=" + URLEncoder.encode(userIdText, "UTF-8");
 	}
 	
 	
 	public int postMethod(String urlParameters) throws MalformedURLException,ProtocolException, IOException, NullPointerException{
 		
-		 URL url = new URL(WhutGlobal.URL_HEADER_STR+"Default2.aspx");
+		 URL url = new URL("http://sso.jwc.whut.edu.cn/Certification/login.do");
 		 urlConnection = (HttpURLConnection) url.openConnection();
 		 urlConnection.setDoOutput(true);
 		 urlConnection.setDoInput(true);
 		 urlConnection.setRequestMethod("POST");
 		 urlConnection.setRequestProperty("Connection", "Keep-Alive");
-		 urlConnection.setRequestProperty("Accept-Encoding", "gzip");
+		 urlConnection.setRequestProperty("Accept-Encoding", "gzip, deflate");
+		 urlConnection.setRequestProperty("Referer", "http://sso.jwc.whut.edu.cn/Certification/toLogin.do");
 		 urlConnection.setInstanceFollowRedirects(false);
 		 DataOutputStream wr = new DataOutputStream (
 				   urlConnection.getOutputStream ());
@@ -158,12 +158,41 @@ public class HttpOperation {
 	      while((line1 = rd.readLine()) != null) {
 	        response4.append(line1);
 	        response4.append('\r');
+	        System.out.println("==" + line1.toString());
 	      }
 	      html = response4.toString();
-	      System.out.println(urlConnection.getResponseCode()+"sdfsdffsdf"+response4.toString()+"asdfasdf");
 	      rd.close();
 	     return urlConnection.getResponseCode();
 	}
+	
+    public int loginJiao(String userIdText, String userPasswordText) throws ClientProtocolException, IOException{
+        httpPost = new HttpPost("http://sso.jwc.whut.edu.cn/Certification/login.do");
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+        nameValuePairs.add(new BasicNameValuePair("password", userPasswordText));
+        nameValuePairs.add(new BasicNameValuePair("userName", userIdText));   
+        nameValuePairs.add(new BasicNameValuePair("type", "xs"));  
+        
+        httpPost.setHeader("Referer", "http://sso.jwc.whut.edu.cn/Certification/login.do");
+        httpPost.setHeader("Accept-Language", "zh-CN");
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
+        HttpResponse response = httpClient.execute(httpPost);
+        List<Cookie> cookies = ((AbstractHttpClient) httpClient).getCookieStore().getCookies();    
+        if (cookies.isEmpty()) {    
+            System.out.println("None");    
+        } else {    
+            for (int i = 0; i < cookies.size(); i++) {
+            	if(cookies.get(i).getName().toString().equals("JSESSIONID")){
+            		WhutGlobal.JSESSIONID = "JSESSIONID=" + cookies.get(i).getValue().toString();
+            	}
+                Log.i(TAG,"JessionId is" + WhutGlobal.JSESSIONID ); 
+            }    
+        } 
+        HttpEntity entity = response.getEntity();
+        html = EntityUtils.toString(entity, "GB2312");
+       // System.out.println("hh是大法师打发httttmmmmlol"+html);
+        return response.getStatusLine().getStatusCode();
+   }
+    
 	
 	public int ifLoginSuccessStatus(){
 		if(html.length()<5){
@@ -221,11 +250,33 @@ public class HttpOperation {
 	public void getHtml(String getString) throws ClientProtocolException, UnsupportedEncodingException, IOException{
 	     httpGet = new HttpGet(getString);
 	     Log.i("TAG1", "innerside httpGet==null"+(httpGet==null));
+	     httpGet.setHeader("Cookie", WhutGlobal.JSESSIONID);
+	     HttpResponse response;
+		 response = httpClient.execute(httpGet);
+		 List<Cookie> cookies = ((AbstractHttpClient) httpClient).getCookieStore().getCookies();    
+	        if (cookies.isEmpty()) {    
+	            System.out.println("None");    
+	        } else {    
+	            for (int i = 0; i < cookies.size(); i++) {
+	            	if(cookies.get(i).getName().toString().equals("JSESSIONID")){
+	            		WhutGlobal.JSESSIONID = "JSESSIONID=" + cookies.get(i).getValue().toString();
+	            	}
+	            }    
+                Log.i(TAG,"get html JessionId is" + WhutGlobal.JSESSIONID ); 
+	        } 
+         HttpEntity entity = response.getEntity();
+         html = EntityUtils.toString(entity, "GB2312");
+         System.out.println("kkkkkkkkbbbbbbbbbb==="+html);
+	}
+	
+	public void getKeBiaoHtml(String getString) throws ClientProtocolException, UnsupportedEncodingException, IOException{
+	     httpGet = new HttpGet(getString);
+	     Log.i("TAG1", "innerside httpGet==null"+(httpGet==null));
 	     httpGet.setHeader("Referer", WhutGlobal.URL_HEADER_STR +"xs_main.aspx?xh="+ WhutGlobal.USER_ID);
 	     HttpResponse response;
 		 response = httpClient.execute(httpGet);
-         HttpEntity entity = response.getEntity();
-         html = EntityUtils.toString(entity, "GB2312");
+        HttpEntity entity = response.getEntity();
+        html = EntityUtils.toString(entity, "GB2312");
 	}
 	
 	public void getChengJiHtml() throws ClientProtocolException, UnsupportedEncodingException, IOException{

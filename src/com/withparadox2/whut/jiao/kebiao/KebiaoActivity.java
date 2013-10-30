@@ -1,4 +1,4 @@
-package com.withparadox2.whut;
+package com.withparadox2.whut.jiao.kebiao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +26,18 @@ import android.widget.Toast;
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.AbstractAction;
 import com.markupartist.android.widget.ActionBar.IntentAction;
+import com.withparadox2.whut.MyHScrollView;
+import com.withparadox2.whut.R;
+import com.withparadox2.whut.WelcomeJiaoActivity;
 import com.withparadox2.whut.MyHScrollView.OnScrollChangedListener;
+import com.withparadox2.whut.R.drawable;
+import com.withparadox2.whut.R.id;
+import com.withparadox2.whut.R.layout;
 import com.withparadox2.whut.dao.SaveTwoDimArray;
 import com.withparadox2.whut.dao.WhutGlobal;
 
 
-public class ScrollTableActivity extends Activity {
+public class KebiaoActivity extends Activity {
     /** Called when the activity is first created. */
 	ListView mListView1;
 	MyAdapter myAdapter;
@@ -108,7 +114,7 @@ public class ScrollTableActivity extends Activity {
 				}
 			}
 			edit.commit();
-			Toast.makeText(ScrollTableActivity.this, "保存成功...", Toast.LENGTH_LONG).show();
+			Toast.makeText(KebiaoActivity.this, "保存成功...", Toast.LENGTH_LONG).show();
 		}
 		
 	}
@@ -172,7 +178,7 @@ public class ScrollTableActivity extends Activity {
 		public View getView(int position, View convertView, ViewGroup parentView) {
 			ViewHolder holder = null;
 			if (convertView == null) {
-				synchronized (ScrollTableActivity.this) {
+				synchronized (KebiaoActivity.this) {
 					convertView = mInflater.inflate(id_row_layout, null);
 					holder = new ViewHolder();
 

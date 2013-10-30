@@ -113,23 +113,12 @@ public class HttpOperateThread extends Thread{
 		int statusCode;
 		int loginSuccessStatus;
 		try {
-			if(urlHeaderExist(context)){
-				sendMyMessage(0);
-			}else{
-				sendMyMessage(1);
-				httpOperation.getUrlHeader();
-				sendMyMessage(2);
-			}
 			statusCode = httpOperation.loginJiao(WhutGlobal.USER_ID, WhutGlobal.USER_PASSWORD);
 			loginSuccessStatus = httpOperation.ifLoginSuccessStatus();
-			if((loginSuccessStatus==1)&&(statusCode==302)){
+			if(loginSuccessStatus==1){
 				sendMyMessage(3);
-				httpOperation.getMethod(WhutGlobal.USER_ID);
 				sendMyMessage(4);
-				String userInfo[] = httpOperation.getUserInfo().split(" ");
-				WhutGlobal.USER_ID = userInfo[0];
-				WhutGlobal.USER_NAME = userInfo[1].replaceAll("同学", "");
-				WhutGlobal.PINGJIAO_URLS = httpOperation.getPingJiaoUrls();
+				WhutGlobal.USER_NAME = httpOperation.getUserInfo();
 				sendMyMessage(5);	
 			}else if(loginSuccessStatus==0){
 				//网络有问题，wifi连上却没反应
@@ -139,6 +128,7 @@ public class HttpOperateThread extends Thread{
 				WhutGlobal.JUMP_OR_NOT = false;
 				sendMyMessage(5);	
 			}
+			httpOperation.getKebiaoHtml("http://202.114.90.176:8080/DailyMgt/");
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 			Log.i(TAG, "出现异常1。。。");
@@ -157,15 +147,13 @@ public class HttpOperateThread extends Thread{
 			WhutGlobal.JUMP_OR_NOT = false;
 			sendMyMessage(6);	
 		}
-		keBiaoSubmit();
 	}
 	
 	
 	private void keBiaoSubmit(){
 		sendMyMessage(1);
 		try {
-			httpOperation.getHtml("http://202.114.90.176:8080/DailyMgt/");
-			httpOperation.getHtml("http://202.114.90.176:8080/DailyMgt/kbcx.do");
+			httpOperation.getKebiaoHtml("http://202.114.90.176:8080/DailyMgt/kbcx.do");
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -194,7 +182,7 @@ public class HttpOperateThread extends Thread{
 	private void geRenKeBiaoSubmit(){
 		sendMyMessage(1);
 		try {
-			httpOperation.getHtml(httpOperation.getGeRenKeBiaoGetString());
+			httpOperation.getKebiaoHtml(httpOperation.getGeRenKeBiaoGetString());
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (ClientProtocolException e) {

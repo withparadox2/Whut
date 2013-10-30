@@ -40,6 +40,7 @@ import com.withparadox2.whut.dao.SaveTwoDimArray;
 import com.withparadox2.whut.dao.WhutGlobal;
 import com.withparadox2.whut.http.HttpOperateThread;
 import com.withparadox2.whut.http.HttpOperation;
+import com.withparadox2.whut.library.WelcomeTuActivity;
 
 public class XuJieActivity extends Activity{
 	

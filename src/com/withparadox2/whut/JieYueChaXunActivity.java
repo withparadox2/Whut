@@ -30,6 +30,7 @@ import com.markupartist.android.widget.ActionBar.IntentAction;
 import com.withparadox2.whut.MyHScrollView.OnScrollChangedListener;
 import com.withparadox2.whut.dao.SaveTwoDimArray;
 import com.withparadox2.whut.dao.WhutGlobal;
+import com.withparadox2.whut.library.WelcomeTuActivity;
 
 public class JieYueChaXunActivity extends Activity {
     /** Called when the activity is first created. */

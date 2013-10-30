@@ -16,7 +16,7 @@
             android:name=".WelcomeJiaoActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>
         <activity
-            android:name=".WelcomeTuActivity" 
+            android:name="com.withparadox2.whut.library.WelcomeTuActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>   
         <activity
             android:name=".JieYueChaXunActivity" 
@@ -28,7 +28,7 @@
             android:name=".XuJieActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>                                
          <activity
-            android:name=".ScrollTableActivity" 
+            android:name="com.withparadox2.whut.jiao.kebiao.KebiaoActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>
          <activity
             android:name=".LiXianKeBiaoActivity" 

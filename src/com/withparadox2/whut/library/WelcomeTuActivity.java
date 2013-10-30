@@ -1,4 +1,4 @@
-package com.withparadox2.whut;
+package com.withparadox2.whut.library;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -21,6 +21,13 @@ import android.widget.Toast;
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.AbstractAction;
 import com.markupartist.android.widget.ActionBar.IntentAction;
+import com.withparadox2.whut.JieYueChaXunActivity;
+import com.withparadox2.whut.LoginActivity;
+import com.withparadox2.whut.R;
+import com.withparadox2.whut.XuJieActivity;
+import com.withparadox2.whut.R.drawable;
+import com.withparadox2.whut.R.id;
+import com.withparadox2.whut.R.layout;
 import com.withparadox2.whut.dao.WhutGlobal;
 import com.withparadox2.whut.http.HttpOperateThread;
 import com.withparadox2.whut.http.HttpOperation;

@@ -27,6 +27,7 @@ import com.withparadox2.whut.dao.SaveTwoDimArray;
 import com.withparadox2.whut.dao.WhutGlobal;
 import com.withparadox2.whut.http.HttpOperateThread;
 import com.withparadox2.whut.http.HttpOperation;
+import com.withparadox2.whut.jiao.kebiao.KebiaoActivity;
 
 public class WelcomeJiaoActivity extends Activity{
 	
@@ -196,7 +197,7 @@ public class WelcomeJiaoActivity extends Activity{
 						Intent i = new Intent();
 						switch(WhutGlobal.WhichAction){
 						case 2:
-							i.setClass(WelcomeJiaoActivity.this, ScrollTableActivity.class);
+							i.setClass(WelcomeJiaoActivity.this, KebiaoActivity.class);
 							startActivity(i);
 							break;
 						case 3:

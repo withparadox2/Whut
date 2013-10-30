@@ -195,13 +195,7 @@ public class HttpOperation {
     
 	
 	public int ifLoginSuccessStatus(){
-		if(html.length()<5){
-			return 0;//wifi有问题
-		}else if(html.contains(WhutGlobal.USER_ID)){
-			return 1;//看看有没有出现错误链接，redirect中含有用户id
-		}else{
-			return 3;
-		}
+		return 1;
 	}
 	
 	
@@ -247,7 +241,7 @@ public class HttpOperation {
 	
 	
 	
-	public void getHtml(String getString) throws ClientProtocolException, UnsupportedEncodingException, IOException{
+	public void getKebiaoHtml(String getString) throws ClientProtocolException, UnsupportedEncodingException, IOException{
 	     httpGet = new HttpGet(getString);
 	     Log.i("TAG1", "innerside httpGet==null"+(httpGet==null));
 	     httpGet.setHeader("Cookie", WhutGlobal.JSESSIONID);
@@ -266,18 +260,9 @@ public class HttpOperation {
 	        } 
          HttpEntity entity = response.getEntity();
          html = EntityUtils.toString(entity, "GB2312");
-         System.out.println("kkkkkkkkbbbbbbbbbb==="+html);
+         //System.out.println("kkkkkkkkbbbbbbbbbb==="+html);
 	}
 	
-	public void getKeBiaoHtml(String getString) throws ClientProtocolException, UnsupportedEncodingException, IOException{
-	     httpGet = new HttpGet(getString);
-	     Log.i("TAG1", "innerside httpGet==null"+(httpGet==null));
-	     httpGet.setHeader("Referer", WhutGlobal.URL_HEADER_STR +"xs_main.aspx?xh="+ WhutGlobal.USER_ID);
-	     HttpResponse response;
-		 response = httpClient.execute(httpGet);
-        HttpEntity entity = response.getEntity();
-        html = EntityUtils.toString(entity, "GB2312");
-	}
 	
 	public void getChengJiHtml() throws ClientProtocolException, UnsupportedEncodingException, IOException{
 	    httpPost = new HttpPost(WhutGlobal.URL_HEADER_STR + "xscj_gc.aspx?xh=" + WhutGlobal.USER_ID + "&xm=" + URLEncoder.encode(WhutGlobal.USER_NAME, "utf-8") + "&gnmkdm=N121605");
@@ -308,7 +293,7 @@ public class HttpOperation {
 	
 	public String getUserInfo(){
 		Document document = Jsoup.parse(html);
-		Elements s = document.select("span[id=xhxm]");
+		Elements s = document.select("div.nav td .font2");
 		return s.get(0).html().toString();
 	}
 	
@@ -325,7 +310,7 @@ public class HttpOperation {
 	}
 	
 	public void getPingJiaoHtml(String getString) throws ClientProtocolException, UnsupportedEncodingException, IOException{
-			getHtml(getString);
+			getKebiaoHtml(getString);
 	}
 	
 	public String[][] getPingJiaoData1(){
@@ -398,23 +383,18 @@ public class HttpOperation {
 		return myResult;
 	}
 	
-
-	
-
 	
 	public String[][] getKeBiaoData() throws IndexOutOfBoundsException{
 	     Document document = Jsoup.parse(html);
-	     Element table = document.select("Table").get(1);
-	     Elements trs =  table.select("tr");
+	     Elements trs = document.select("#weekTable tbody tr");
 	     String fuck;
 	 	 String[][] result = new String[4][5] ;
-	     for(int i=1; i<5; i++){
-	     	Element tr = trs.get(2*i);
-	     	Elements tds = tr.select("td");
-	     	if(tds.size()==9) tds.remove(0); 
+	     for(int i=0; i<4; i++){
+	     	Elements tds = trs.get(i).select("td");
 	     	for(int j=1; j<6; j++){
-	     		fuck = tds.get(j).html().toString().replaceAll("<br />", "\n").replaceAll("&nbsp;", "").replaceAll("\n\n\n", "\n\n");
-	     		result[i-1][j-1] = fuck.endsWith("\n") ? fuck.substring(0, fuck.length()-1) : fuck;
+	     		fuck = tds.get(j).select("div").html().toString().replaceAll("◇", "\n").replaceAll("&nbsp;", "");
+	     		result[i][j-1] = fuck;
+	     System.out.println(fuck);
 	     	}
 	     }
 		return result;

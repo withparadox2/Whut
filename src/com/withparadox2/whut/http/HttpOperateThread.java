@@ -61,27 +61,7 @@ public class HttpOperateThread extends Thread{
 		case 1:
 			loginJiaoSubmit();
 			break;
-		case 2:
-			keBiaoSubmit();
-			break;
-		case 3:
-			geRenKeBiaoSubmit();
-			break;
-		case 4:
-			chengJiSubmit();
-			break;
-		case 5:
-			pingJiaoSubmit();
-			break;
-		case 6:
-			pingJiaoSave();
-			break;
-		case 7:
-			pingJiaoTiJiao();
-			break;
-		case 8:
-			geRenKeBiaoPost();
-			break;
+		
 		case 9:
 			loginTuSubmit();
 			break;
@@ -150,194 +130,22 @@ public class HttpOperateThread extends Thread{
 	}
 	
 	
-	private void keBiaoSubmit(){
-		sendMyMessage(1);
-		try {
-			httpOperation.getKebiaoHtml("http://202.114.90.176:8080/DailyMgt/kbcx.do");
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		sendMyMessage(2);
-		
-		try {
-			WhutGlobal.htmlData = httpOperation.getKeBiaoData();
-		} catch (IndexOutOfBoundsException e) {
-			e.printStackTrace();
-			Log.i(TAG, "html数据处理出现异常");
-			WhutGlobal.JUMP_OR_NOT = false;
-			sendMyMessage(100);
-		}
-		
-		sendMyMessage(3);
-	}
 	
-	private void geRenKeBiaoSubmit(){
-		sendMyMessage(1);
-		try {
-			httpOperation.getKebiaoHtml(httpOperation.getGeRenKeBiaoGetString());
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		sendMyMessage(2);
-		
-		try{
-			WhutGlobal.htmlData = httpOperation.getGeRenKeBiaoData();
-		} catch (IndexOutOfBoundsException e) {
-			e.printStackTrace();
-			Log.i(TAG, "html数据处理出现异常");
-			WhutGlobal.JUMP_OR_NOT = false;
-			sendMyMessage(100);
-		}
-		sendMyMessage(3);
-	}
+
 	
 	
 	
-	private void geRenKeBiaoPost(){
-		sendMyMessage(1);
-		try {
-			httpOperation.geRenKeBiaoPost(nameValuePairs);
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-			Log.i(TAG, "html数据处理出现异常1");
-		} catch (ParseException e) {
-			Log.i(TAG, "html数据处理出现异常2");
-			e.printStackTrace();
-		} catch (IOException e) {
-			Log.i(TAG, "html数据处理出现异常3");
-			e.printStackTrace();
-		}
-		sendMyMessage(2);
-		try{
-			WhutGlobal.htmlData = httpOperation.getGeRenKeBiaoData();
-		} catch (Exception e) {
-			e.printStackTrace();
-			Log.i(TAG, "html数据处理出现异常");
-			WhutGlobal.JUMP_OR_NOT = false;
-			sendMyMessage(100);
-		}
-		sendMyMessage(3);
-	}
 	
-	private void chengJiSubmit(){
-		sendMyMessage(1);
-		try {
-			httpOperation.getChengJiHtml();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		sendMyMessage(2);
-		try{
-			WhutGlobal.htmlData = httpOperation.getChengJiData();
-		} catch (IndexOutOfBoundsException e) {
-			e.printStackTrace();
-			Log.i(TAG, "html数据处理出现异常");
-			WhutGlobal.JUMP_OR_NOT = false;
-			sendMyMessage(100);
-		}
-		sendMyMessage(3);
-	}
 	
-	private void pingJiaoSubmit(){
-		sendMyMessage(1);
-		try {
-			httpOperation.getPingJiaoHtml(WhutGlobal.URL_HEADER_STR + WhutGlobal.PINGJIAO_URL);
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		sendMyMessage(2);
-		try{
-			WhutGlobal.htmlData = httpOperation.getPingJiaoData();
-		}catch (IndexOutOfBoundsException e) {
-			WhutGlobal.JUMP_OR_NOT = false;
-			sendMyMessage(100);
-		}
-		sendMyMessage(3);
-	}
 	
-	private void pingJiaoSave(){
-	    sendMyMessage(1);
-		try {
-			httpOperation.pingJiaoSave(nameValuePairs);
-		} catch (ClientProtocolException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		sendMyMessage(2);
-		try{
-			WhutGlobal.htmlData = httpOperation.getPingJiaoData();
-		}catch (IndexOutOfBoundsException e) {
-			WhutGlobal.JUMP_OR_NOT = false;
-			sendMyMessage(100);
-		}
-		sendMyMessage(3);
-	}
 	
-	private void pingJiaoTiJiao(){
-		sendMyMessage(1);
-		try {
-			httpOperation.pingJiaoSave(nameValuePairs);
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		sendMyMessage(2);
-		try{
-			WhutGlobal.htmlData = httpOperation.getPingJiaoData();
-		} catch (Exception e) {
-			WhutGlobal.JUMP_OR_NOT = false;
-			sendMyMessage(100);
-		}
-		sendMyMessage(4);
-		WhutGlobal.TIJIAO_SUCCESS = checkPingJiaoTiJiao();
-		sendMyMessage(5);
-	}
+	
 	
 	public void setPostParas(List<NameValuePair> nameValuePairs){
 		this.nameValuePairs = nameValuePairs;
 	}
 	
-	private boolean checkPingJiaoTiJiao(){
-		boolean result = false;
-		try {
-			httpOperation.getMethod(WhutGlobal.USER_ID);
-			WhutGlobal.PINGJIAO_URLS = httpOperation.getPingJiaoUrls();
-			result = (WhutGlobal.PINGJIAO_URLS.length==0);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return result;
-	}
+	
 	
 	private void sendMyMessage(int arg){
 		msg = myHandler.obtainMessage();

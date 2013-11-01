@@ -48,16 +48,23 @@
          <activity
             android:name=".InformationActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>                     
+         <activity
+            android:name="com.withparadox2.whut.library.search.SearchBookActivity" 
+            android:theme="@android:style/Theme.NoTitleBar"/>                     
+         <activity
+            android:name="com.withparadox2.whut.library.lixian.LiXianHomeActivity" 
+            android:theme="@android:style/Theme.NoTitleBar">                     
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+         </activity>
 
          <activity
             android:name=".LoginActivity"
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" 
             android:configChanges="orientation|keyboardHidden">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".SearchBookActivity" 

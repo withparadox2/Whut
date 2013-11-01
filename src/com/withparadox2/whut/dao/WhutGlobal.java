@@ -1,5 +1,7 @@
 package com.withparadox2.whut.dao;
 
+import java.util.ArrayList;
+
 public class WhutGlobal {
 	public static String URL_HEADER_STR = "";
 	public static String USER_ID = "";
@@ -44,5 +46,11 @@ public class WhutGlobal {
 	
 	public static final String ShARE_LIXIAN_KEBIAO_NAME = "liXianKeBiao";
 	public static final String SHARE_LIXIAN_JIEYUE_NAME = "liXianJieYue";
+	
+	public static ArrayList<String[]> BOOKLIST = new ArrayList<String[]>(); 
+	public static ArrayList<ArrayList<String[]>> CHILDLIST = new ArrayList<ArrayList<String[]>>();
+	public static int BOOK_CODE_INDEX;
+	public static ArrayList<Boolean> CLICK_GROUP_FLAG = new ArrayList<Boolean>();
+	public static int PAGE;
 	
 }

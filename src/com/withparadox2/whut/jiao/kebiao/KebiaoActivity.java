@@ -50,14 +50,6 @@ public class KebiaoActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.kebiao);
-		if(savedInstanceState!=null){
-			SaveTwoDimArray save = (SaveTwoDimArray) savedInstanceState.getSerializable(SaveTwoDimArray.NAME);
-			WhutGlobal.htmlData = save.getCustomArray();
-			WhutGlobal.PINGJIAO_URLS = save.getPingJiaoUrls();
-			WhutGlobal.URL_HEADER_STR = savedInstanceState.getString("URL_HEADER_STR");
-			WhutGlobal.USER_ID = savedInstanceState.getString("USER_ID");
-			WhutGlobal.USER_NAME = savedInstanceState.getString("USER_NAME");	
-		}
 		actionBar = (ActionBar) findViewById(R.id.kebiao_actionbar);
         actionBar.setHomeAction(new IntentAction(this, WelcomeJiaoActivity.createIntent(this), R.drawable.ic_actionbar_whut));
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -71,31 +63,11 @@ public class KebiaoActivity extends Activity {
 		
 		mListView1 = (ListView) findViewById(R.id.kebiao_listview);
 		mListView1.setOnTouchListener(new ListViewAndHeadViewTouchLinstener());
-//		mListView1.setOnItemClickListener(new ListViewOnClickListener());
 		myAdapter = new MyAdapter(this, R.layout.kebiao_item);
 		mListView1.setAdapter(myAdapter);
 	}
 	
 	
-	
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		// TODO Auto-generated method stub
-		super.onSaveInstanceState(outState);
-		SaveTwoDimArray mySave = SaveTwoDimArray.getSingletonObject();
-		mySave.setCustomArray(result);
-		mySave.setPingJiaoUrls(WhutGlobal.PINGJIAO_URLS);
-		outState.putSerializable(SaveTwoDimArray.NAME, mySave);
-
-		
-		outState.putString("URL_HEADER_STR", WhutGlobal.URL_HEADER_STR);
-		outState.putString("USER_ID", WhutGlobal.USER_ID);
-		outState.putString("USER_NAME", WhutGlobal.USER_NAME);
-		Log.i(TAG, "调用保存临时变量");
-	}
-
-
-
 	public class DownLoadKeBiaoAction extends AbstractAction{
 
 		public DownLoadKeBiaoAction() {
@@ -259,4 +231,8 @@ public class KebiaoActivity extends Activity {
 			HorizontalScrollView scrollView;
 		}
 	}// end class my
+	
+	private void updateKebiaoData(){
+		
+	}
 }

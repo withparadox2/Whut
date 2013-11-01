@@ -27,6 +27,7 @@ import com.withparadox2.whut.dao.SaveTwoDimArray;
 import com.withparadox2.whut.dao.WhutGlobal;
 import com.withparadox2.whut.http.HttpOperateThread;
 import com.withparadox2.whut.http.HttpOperation;
+import com.withparadox2.whut.jiao.kebiao.HttpKebiaoThread;
 import com.withparadox2.whut.jiao.kebiao.KebiaoActivity;
 
 public class WelcomeJiaoActivity extends Activity{
@@ -49,15 +50,7 @@ public class WelcomeJiaoActivity extends Activity{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.welcome);
-		if(savedInstanceState != null){
-			SaveTwoDimArray mySave = (SaveTwoDimArray) savedInstanceState.getSerializable(SaveTwoDimArray.NAME);
-			WhutGlobal.PINGJIAO_URLS = mySave.getPingJiaoUrls();
-			WhutGlobal.URL_HEADER_STR = savedInstanceState.getString("URL_HEADER_STR");
-			WhutGlobal.USER_ID = savedInstanceState.getString("USER_ID");
-			WhutGlobal.USER_NAME = savedInstanceState.getString("USER_NAME");	
-			Log.i(TAG, WhutGlobal.USER_NAME);
-		}
-		saveUrlHeaderOnFirstLogin();
+	
 		timeTableButton = (Button) findViewById(R.id.time_table_button);
 		geRenKeBiaoButton = (Button) findViewById(R.id.gerenkebiao_button);
 		chengJiButton = (Button) findViewById(R.id.chengji_button);
@@ -75,28 +68,6 @@ public class WelcomeJiaoActivity extends Activity{
 		httpOperation = new HttpOperation(this);
 	}
 	
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		// TODO Auto-generated method stub
-		super.onSaveInstanceState(outState);
-		SaveTwoDimArray mySave = SaveTwoDimArray.getSingletonObject();
-		mySave.setPingJiaoUrls(WhutGlobal.PINGJIAO_URLS);
-		outState.putSerializable(SaveTwoDimArray.NAME, mySave);
-		outState.putString("URL_HEADER_STR", WhutGlobal.URL_HEADER_STR);
-		outState.putString("USER_ID", WhutGlobal.USER_ID);
-		outState.putString("USER_NAME", WhutGlobal.USER_NAME);
-		Log.i(TAG, "调用保存临时变量");
-	}
-	
-	private void saveUrlHeaderOnFirstLogin(){
-		SharedPreferences share = getSharedPreferences("AppInfo", Activity.MODE_PRIVATE);
-		String url = share.getString("URL_HEADER_STR", "empty");
-		if(url.equals("empty")){
-			SharedPreferences.Editor edit = share.edit();
-			edit.putString("URL_HEADER_STR", WhutGlobal.URL_HEADER_STR);
-			edit.commit();
-		}
-	}
 	
 	public class ExitAppAction extends AbstractAction{
 
@@ -128,8 +99,7 @@ public class WelcomeJiaoActivity extends Activity{
 			cancelDialogByHand = false;
 			progressDialog = new ProgressDialog(WelcomeJiaoActivity.this);
 			progressDialog.setOnCancelListener(new DialogCancelListener());
-			myThread = new HttpOperateThread(WelcomeJiaoActivity.this, myHandler, httpOperation);
-			myThread.start();
+			new HttpKebiaoThread(myHandler).start();
 		}
 		
 	}

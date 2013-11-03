@@ -161,7 +161,6 @@ public class LoginActivity extends Activity{
 		if(jiaoTuFlag){
 	        actionBar.setTitle("教务处");
 	        userIdTextView.setText("学号  ");
-	        liXianButton.setText("离线课表");
 	        userIdEdit.setHint("请输入学号");
 			getListFromDb(UserInfoAdapter.DATABASE_JIAO_TABLE_NAME);
 			ToTuButton.setBackgroundResource(R.drawable.tujieo_focused_bg);
@@ -169,7 +168,6 @@ public class LoginActivity extends Activity{
 		}else{
 			actionBar.setTitle("图书馆");
 	        userIdTextView.setText("卡号  ");
-	        liXianButton.setText("离线查询");
 	        userIdEdit.setHint("请输入卡号(前加4个0)");
 			getListFromDb(UserInfoAdapter.DATABASE_TU_TABLE_NAME);
 			ToTuButton.setBackgroundResource(R.drawable.tujiao_normal_bg);
@@ -218,35 +216,14 @@ public class LoginActivity extends Activity{
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			if(jiaoTuFlag){
-				getLiXianKeBiaoData();
-			}else{
-				getLiXianJieYueData();
-			}
+				Intent i = new Intent();
+				i.setClass(LoginActivity.this, LiXianHomeActivity.class);
+				startActivity(i);
 		}
 		
 	}
 	
-	private void getLiXianKeBiaoData(){
-		boolean exist = true;
-		String[][] kebiao = new String[4][5];
-		SharedPreferences share = getSharedPreferences(WhutGlobal.ShARE_LIXIAN_KEBIAO_NAME, Activity.MODE_PRIVATE);
-		for(int i=0; i<4; i++){
-			for(int j=0; j<5; j++){
-				kebiao[i][j] = share.getString(""+(j+5*i), "不存在");
-				if(kebiao[i][j].equals("不存在")) exist = false;
-			}
-		}
-		
-		if(exist){
-			WhutGlobal.htmlData = kebiao;
-			Intent i = new Intent();
-			i.setClass(LoginActivity.this, LiXianKeBiaoActivity.class);
-			startActivity(i);
-		}else{
-			Toast.makeText(LoginActivity.this, "未下载离线课表！", Toast.LENGTH_LONG).show();
-		}
-	}
+	
 	
 	private void getLiXianJieYueData(){
 		boolean exist = false;

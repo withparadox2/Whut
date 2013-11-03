@@ -179,8 +179,8 @@ public class HttpOperation {
     public void loginTu() throws ClientProtocolException, IOException{
         httpPost = new HttpPost("http://202.114.89.11/opac/reader/doLogin");
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-        nameValuePairs.add(new BasicNameValuePair("rdid", "0000139397"));
-        nameValuePairs.add(new BasicNameValuePair("rdPasswd", "164515"));   
+        nameValuePairs.add(new BasicNameValuePair("rdid", WhutGlobal.USER_ID));
+        nameValuePairs.add(new BasicNameValuePair("rdPasswd", WhutGlobal.USER_PASSWORD));   
         nameValuePairs.add(new BasicNameValuePair("returnUrl", ""));  
         BasicHttpParams basicHttpParams = new BasicHttpParams();
         basicHttpParams.setParameter("rdid", "vikaspatidar");
@@ -322,16 +322,6 @@ public class HttpOperation {
 		WhutGlobal.XUJIE_SUCCESS_FLAG = s.contains("图书续借成功");
     }
 	
-	//search books in the library system
-    public void getSearchBookResultHtml() throws ClientProtocolException, IOException{
-    	httpGet = new HttpGet("http://202.114.89.11/opac/search?searchWay=title&q=matlab&searchSource=reader&booktype=&scWay=prefixMatch&marcformat=&sortWay=score&sortOrder=desc&startPubdate=&endPubdate=&rows=10&hasholding=1");
-	    HttpResponse response;
-		response = httpClient.execute(httpGet);
-        HttpEntity entity = response.getEntity();
-        html = EntityUtils.toString(entity, "GB2312");    	
-        System.out.println( "-----------"+html);
-    }
-    
     public static void getCookie(HttpClient httpClient){
 		 List<Cookie> cookies = ((AbstractHttpClient) httpClient).getCookieStore().getCookies();    
 	        if (cookies.isEmpty()) {    

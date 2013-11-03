@@ -49,7 +49,9 @@ public class WhutGlobal {
 	
 	public static ArrayList<String[]> BOOKLIST = new ArrayList<String[]>(); 
 	public static ArrayList<ArrayList<String[]>> CHILDLIST = new ArrayList<ArrayList<String[]>>();
-	public static int BOOK_CODE_INDEX;
+	public static String BOOK_CODE;
+	public static String SEARCH_TITLE;
+	public static int BOOK_CODE_POS;
 	public static ArrayList<Boolean> CLICK_GROUP_FLAG = new ArrayList<Boolean>();
 	public static int PAGE;
 	

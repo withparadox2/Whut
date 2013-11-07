@@ -109,6 +109,7 @@ public class SearchBookActivity extends Activity implements OnScrollListener{
 				WhutGlobal.CHILDLIST.clear();
 				WhutGlobal.CLICK_GROUP_FLAG.clear();
 				WhutGlobal.SEARCH_TITLE = searchBookEdittext.getText().toString();
+				page = 1;
 				expandableListView.scrollTo(0, 0);
 				myExpandableAdapter.notifyDataSetChanged();
 				myThread = new HttpSearchThread(myHandler, page);

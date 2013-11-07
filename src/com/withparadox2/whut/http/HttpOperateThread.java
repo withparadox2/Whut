@@ -77,6 +77,45 @@ public class HttpOperateThread extends Thread{
 		}
 	}
 	
+	 private void loginJiaoSubmit(){
+         int statusCode;
+         int loginSuccessStatus;
+         try {
+                 statusCode = httpOperation.loginJiao(WhutGlobal.USER_ID, WhutGlobal.USER_PASSWORD);
+                 loginSuccessStatus = httpOperation.ifLoginSuccessStatus();
+                 if(loginSuccessStatus==1){
+                         sendMyMessage(3);
+                         sendMyMessage(4);
+                         WhutGlobal.USER_NAME = httpOperation.getUserInfo();
+                         sendMyMessage(5);        
+                 }else if(loginSuccessStatus==0){
+                         //网络有问题，wifi连上却没反应
+                         WhutGlobal.JUMP_OR_NOT = false;
+                         sendMyMessage(7);        
+                 }else{
+                         WhutGlobal.JUMP_OR_NOT = false;
+                         sendMyMessage(5);        
+                 }
+                 httpOperation.getKebiaoHtml("http://202.114.90.176:8080/DailyMgt/");
+         } catch (ClientProtocolException e) {
+                 e.printStackTrace();
+                 Log.i(TAG, "出现异常1。。。");
+         } catch (IOException e) {
+                 WhutGlobal.JUMP_OR_NOT = false;
+                 sendMyMessage(6);        
+                 Log.i(TAG, "出现异常2。。。");
+         } catch (IllegalStateException e) {
+                 e.printStackTrace();
+         } catch (NullPointerException e) {
+                 e.printStackTrace();
+                 //excute this after cancelling the httpUrlConnection
+                 Log.i(TAG, "停止网络");
+         } catch (IndexOutOfBoundsException e) {
+                 //get the wrong info of user, often web is wrong
+                 WhutGlobal.JUMP_OR_NOT = false;
+                 sendMyMessage(6);        
+         }
+	 }
 	private boolean urlHeaderExist(Context ctx){
 		//如果存在就不获取了
 		SharedPreferences share = ctx.getSharedPreferences("AppInfo", Activity.MODE_PRIVATE);
@@ -88,58 +127,6 @@ public class HttpOperateThread extends Thread{
 			return true;
 		}
 	}
-	
-	private void loginJiaoSubmit(){
-		int statusCode;
-		int loginSuccessStatus;
-		try {
-			statusCode = httpOperation.loginJiao(WhutGlobal.USER_ID, WhutGlobal.USER_PASSWORD);
-			loginSuccessStatus = httpOperation.ifLoginSuccessStatus();
-			if(loginSuccessStatus==1){
-				sendMyMessage(3);
-				sendMyMessage(4);
-				WhutGlobal.USER_NAME = httpOperation.getUserInfo();
-				sendMyMessage(5);	
-			}else if(loginSuccessStatus==0){
-				//网络有问题，wifi连上却没反应
-				WhutGlobal.JUMP_OR_NOT = false;
-				sendMyMessage(7);	
-			}else{
-				WhutGlobal.JUMP_OR_NOT = false;
-				sendMyMessage(5);	
-			}
-			httpOperation.getKebiaoHtml("http://202.114.90.176:8080/DailyMgt/");
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-			Log.i(TAG, "出现异常1。。。");
-		} catch (IOException e) {
-			WhutGlobal.JUMP_OR_NOT = false;
-			sendMyMessage(6);	
-			Log.i(TAG, "出现异常2。。。");
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-			//excute this after cancelling the httpUrlConnection
-			Log.i(TAG, "停止网络");
-		} catch (IndexOutOfBoundsException e) {
-			//get the wrong info of user, often web is wrong
-			WhutGlobal.JUMP_OR_NOT = false;
-			sendMyMessage(6);	
-		}
-	}
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	public void setPostParas(List<NameValuePair> nameValuePairs){
 		this.nameValuePairs = nameValuePairs;

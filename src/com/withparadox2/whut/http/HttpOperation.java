@@ -129,7 +129,6 @@ public class HttpOperation {
         } 
         HttpEntity entity = response.getEntity();
         html = EntityUtils.toString(entity, "GB2312");
-       // System.out.println("hh是大法师打发httttmmmmlol"+html);
         return response.getStatusLine().getStatusCode();
    }
     
@@ -137,31 +136,6 @@ public class HttpOperation {
 	public int ifLoginSuccessStatus(){
 		return 1;
 	}
-
-	
-	public void getKebiaoHtml(String getString) throws ClientProtocolException, UnsupportedEncodingException, IOException{
-	     httpGet = new HttpGet(getString);
-	     Log.i("TAG1", "innerside httpGet==null"+(httpGet==null));
-	     httpGet.setHeader("Cookie", WhutGlobal.JSESSIONID);
-	     HttpResponse response;
-		 response = httpClient.execute(httpGet);
-		 List<Cookie> cookies = ((AbstractHttpClient) httpClient).getCookieStore().getCookies();    
-	        if (cookies.isEmpty()) {    
-	            System.out.println("None");    
-	        } else {    
-	            for (int i = 0; i < cookies.size(); i++) {
-	            	if(cookies.get(i).getName().toString().equals("JSESSIONID")){
-	            		WhutGlobal.JSESSIONID = "JSESSIONID=" + cookies.get(i).getValue().toString();
-	            	}
-	            }    
-                Log.i(TAG,"get html JessionId is" + WhutGlobal.JSESSIONID ); 
-	        } 
-         HttpEntity entity = response.getEntity();
-         html = EntityUtils.toString(entity, "GB2312");
-         //System.out.println("kkkkkkkkbbbbbbbbbb==="+html);
-	}
-	
-	
 
 	
 	public boolean isNameAndPassRight(String html){
@@ -175,6 +149,27 @@ public class HttpOperation {
 		return s.get(0).html().toString();
 	}
 	
+	 public void getKebiaoHtml(String getString) throws ClientProtocolException, UnsupportedEncodingException, IOException{
+         httpGet = new HttpGet(getString);
+         Log.i("TAG1", "innerside httpGet==null"+(httpGet==null));
+         httpGet.setHeader("Cookie", WhutGlobal.JSESSIONID);
+         HttpResponse response;
+             response = httpClient.execute(httpGet);
+             List<Cookie> cookies = ((AbstractHttpClient) httpClient).getCookieStore().getCookies();    
+            if (cookies.isEmpty()) {    
+                System.out.println("None");    
+            } else {    
+                for (int i = 0; i < cookies.size(); i++) {
+                        if(cookies.get(i).getName().toString().equals("JSESSIONID")){
+                                WhutGlobal.JSESSIONID = "JSESSIONID=" + cookies.get(i).getValue().toString();
+                        }
+                }    
+            Log.i(TAG,"get html JessionId is" + WhutGlobal.JSESSIONID ); 
+            } 
+     HttpEntity entity = response.getEntity();
+     html = EntityUtils.toString(entity, "GB2312");
+     //System.out.println("kkkkkkkkbbbbbbbbbb==="+html);
+    }
 	
     public void loginTu() throws ClientProtocolException, IOException{
         httpPost = new HttpPost("http://202.114.89.11/opac/reader/doLogin");
@@ -193,8 +188,6 @@ public class HttpOperation {
         HttpResponse response = httpClient.execute(httpPost);
         getCookie(httpClient);
         HttpEntity entity = response.getEntity();
-        //html = EntityUtils.toString(entity, "GB2312");
-        //System.out.println("hh是大法师打发httttmmmmlol"+html);
         getLoginTuHtml();
    }
     
@@ -206,7 +199,6 @@ public class HttpOperation {
          HttpResponse response;
  	    try {
 			response = httpClient.execute(httpGet);
-			Log.i(TAG,"iiiiiiiiiiii"+ response.getStatusLine().getStatusCode());
             HttpEntity entity = response.getEntity();
             html = EntityUtils.toString(entity, "GB2312");
             System.out.println(html);
@@ -259,10 +251,6 @@ public class HttpOperation {
 				myResult[i][j] = td.text() ; 
 			}
 		}
-//		myResult[3][7]="2012-12-17";
-//		myResult[4][7]="2012-12-18";
-//		myResult[8][7]="2011-12-17";
-//		myResult[9][7]="2012-12-19";
 		return myResult;
 	}
 	
@@ -296,10 +284,6 @@ public class HttpOperation {
 				myResult[i][j-1] = td.text() ; 
 			}
 		}
-//		myResult[3][7]="2012-12-17";
-//		myResult[4][7]="2012-12-18";
-//		myResult[8][7]="2011-12-17";
-//		myResult[9][7]="2012-12-19";
 		return myResult;
 	}
 	
@@ -313,7 +297,6 @@ public class HttpOperation {
         HttpResponse response = httpClient.execute(httpPost);
         HttpEntity entity = response.getEntity();
         html = EntityUtils.toString(entity, "GB2312");
-//      System.out.println("hhhttttmmmmlol"+html);
     }
     
     public void xuJieSuccessFlag(){

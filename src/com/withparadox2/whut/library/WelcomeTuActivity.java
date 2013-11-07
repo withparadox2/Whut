@@ -90,7 +90,7 @@ public class WelcomeTuActivity extends Activity{
 		@Override
 		public void performAction(View view) {
 			// TODO Auto-generated method stub
-			exitDialog();
+			exitActivity();
 		}
 		
 	}
@@ -190,37 +190,18 @@ public class WelcomeTuActivity extends Activity{
 	        }
 	}	
    	
-	public void exitDialog(){
-		Dialog dialog = new AlertDialog.Builder(WelcomeTuActivity.this)
-				.setIcon(R.drawable.ic_actionbar_whut)
-				.setTitle("Hello!")
-				.setMessage("你要去何处？")
-				.setPositiveButton("注销", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						// TODO Auto-generated method stub
-						Intent i = new Intent();
-						i.setClass(WelcomeTuActivity.this, LoginActivity.class);
-						startActivity(i);
-						WelcomeTuActivity.this.finish();
-					}
-				}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-						dialog.cancel();
-					}
-				}).create();
-		dialog.show();
-		
+	public void exitActivity(){
+		Intent i = new Intent();
+		i.setClass(WelcomeTuActivity.this, LoginActivity.class);
+		startActivity(i);
+		WelcomeTuActivity.this.finish();
 	}
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
 		if(keyCode==KeyEvent.KEYCODE_BACK){
-			exitDialog();
+			exitActivity();
 		}
 		return true;
 	}

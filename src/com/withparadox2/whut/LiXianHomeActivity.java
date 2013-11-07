@@ -23,6 +23,7 @@ public class LiXianHomeActivity extends Activity{
 	private Button searchBookButton;
 	private Button lixianJieyueButton;
 	private Button lixianKebiaoButton;
+	private Button booksTempButton;
 	private ActionBar actionBar;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public class LiXianHomeActivity extends Activity{
 		lixianJieyueButton = (Button)findViewById(R.id.lixian_jieyue_button);
 		lixianKebiaoButton = (Button)findViewById(R.id.lixian_kebiao_button);
 		searchBookButton = (Button)findViewById(R.id.search_book_button);
+		booksTempButton = (Button)findViewById(R.id.books_temp_button);
 		actionBar = (ActionBar) findViewById(R.id.lixian_actionbar);
         actionBar.setHomeAction(new IntentAction(this, LoginActivity.createIntent(this), R.drawable.ic_actionbar_whut));
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -63,6 +65,19 @@ public class LiXianHomeActivity extends Activity{
 				WhutGlobal.CLICK_GROUP_FLAG.clear();
 				Intent i = new Intent();
 				i.setClass(LiXianHomeActivity.this, SearchBookActivity.class);
+				startActivity(i);
+			}
+		});
+		booksTempButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				WhutGlobal.BOOKLIST.clear();
+				WhutGlobal.CHILDLIST.clear();
+				WhutGlobal.CLICK_GROUP_FLAG.clear();
+				Intent i = new Intent();
+				i.setClass(LiXianHomeActivity.this, BookListTempActivity.class);
 				startActivity(i);
 			}
 		});

@@ -68,11 +68,13 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".BookListTempActivity" 
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity>         
+        <activity
             android:name=".SearchBookActivity" 
             android:theme="@android:style/Theme.NoTitleBar">
-         
-        	
-        </activity>         
+        </activity>
     </application>
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>

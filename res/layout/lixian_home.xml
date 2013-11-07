@@ -14,6 +14,7 @@
 	      android:padding="10dp">
 	   <TableRow 
 	       android:layout_weight="1"
+	       android:layout_height="0dp"
 	       android:layout_width="fill_parent">
 	       <LinearLayout 
 	           android:layout_width="fill_parent"
@@ -70,10 +71,45 @@
      
 	   </TableRow>
 	   <TableRow 
-	        android:layout_weight="2">
+	        android:layout_weight="1"
+	        android:layout_height="0dp"
+	        android:layout_width="fill_parent">
+	       <LinearLayout 
+	           android:layout_width="fill_parent"
+	           android:layout_height="fill_parent"
+	           android:layout_weight="1"
+	           android:orientation="vertical"
+	           android:gravity="center">
+				<Button 
+				    android:layout_width="48dp"
+				    android:layout_height="48dp"
+				    android:background="@drawable/ic_menu_xujie"
+				    android:id="@+id/books_temp_button"/>
+				<TextView 
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:text="要借图书"/>	           
+	       </LinearLayout>
+	       <LinearLayout 
+	           android:layout_width="fill_parent"
+	           android:layout_height="fill_parent"
+	           android:layout_weight="1"
+	           android:orientation="vertical"
+	           android:gravity="center">        
+	       </LinearLayout>
+	       <LinearLayout 
+	           android:layout_width="fill_parent"
+	           android:layout_height="fill_parent"
+	           android:layout_weight="1"
+	           android:orientation="vertical"
+	           android:gravity="center">
+				        
+	       </LinearLayout>
 	   </TableRow>  	
 	   <TableRow 
-	        android:layout_weight="2">
+	        android:layout_weight="2"
+	        android:layout_height="0dp"
+	        android:layout_width="fill_parent">
 	   </TableRow>  	
 	</TableLayout>   
 

@@ -45,6 +45,10 @@ public class BookListDatabase {
 		mDbHelper.deleteGroupChildItem(getGroupIdByPos(pos), getChildIdsByPos(pos));
 	}
 	
+	public void deleteGroupAndChildByIds(int groupId, List<Integer> childIds){
+		mDbHelper.deleteGroupChildItem(groupId, childIds);
+	}
+	
 	private int getGroupIdByPos(int pos){
 		int id = -1;
 		String bookNum = WhutGlobal.BOOKLIST.get(pos)[4];
@@ -64,6 +68,39 @@ public class BookListDatabase {
 			list.add(c.getInt(c.getColumnIndex(BookListTempAdapter.KEY_ID)));
 		}
 		return list;
+	}
+	
+	public void fetchBookList(){
+		ArrayList<String[]> groupList = new ArrayList<String[]>();
+		ArrayList<ArrayList<String[]>> childList = new ArrayList<ArrayList<String[]>>();
+		Cursor c = mDbHelper.fetchAllGroupItems();
+		String[] s; 
+		while(c.moveToNext()){
+			s = new String[6];
+			s[0] = c.getString(c.getColumnIndex(BookListTempAdapter.KEY_BOOK_NAME));
+			s[1] = c.getString(c.getColumnIndex(BookListTempAdapter.KEY_BOOK_AUTHOR));
+			s[2] = c.getString(c.getColumnIndex(BookListTempAdapter.KEY_BOOK_PUBLISHER));
+			s[3] = c.getString(c.getColumnIndex(BookListTempAdapter.KEY_BOOK_RECNO));
+			s[4] = c.getString(c.getColumnIndex(BookListTempAdapter.KEY_BOOK_NUM));
+			s[5] = c.getString(c.getColumnIndex(BookListTempAdapter.KEY_ID));
+			groupList.add(s);
+		}
+		ArrayList<String[]> myList;
+		String[] childS;
+		for(int i=0, size=groupList.size(); i<size; i++){
+			c = mDbHelper.fetchChildItemsMatchGroup(groupList.get(i)[4]);
+			myList = new ArrayList<String[]>();
+			while(c.moveToNext()){
+				childS = new String[3];
+				childS[0] = c.getString(c.getColumnIndex(BookListTempAdapter.KEY_BOOK_RECNO));
+				childS[1] = c.getString(c.getColumnIndex(BookListTempAdapter.KEY_BOOK_LOCATION));
+				childS[2] = c.getString(c.getColumnIndex(BookListTempAdapter.KEY_ID));
+				myList.add(childS);
+			}
+			childList.add(myList);
+		}
+		WhutGlobal.BOOKLIST = groupList;
+		WhutGlobal.CHILDLIST = childList;
 	}
 	
 

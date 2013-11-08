@@ -15,6 +15,7 @@ import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.IntentAction;
 import com.withparadox2.whut.R;
 import com.withparadox2.whut.dao.WhutGlobal;
+import com.withparadox2.whut.library.search.BookListTempActivity;
 import com.withparadox2.whut.library.search.SearchBookActivity;
 
 public class LiXianHomeActivity extends Activity{

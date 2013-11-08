@@ -84,7 +84,7 @@ public class HttpSearchThread extends Thread{
 	}
 	
     private void getSearchBookResultHtml() throws ClientProtocolException, IOException{
-     	httpGet = new HttpGet("http://202.114.89.11/opac/search?rows=10&searchWay=title&q="+URLEncoder.encode(WhutGlobal.SEARCH_TITLE)+"&page="+page);
+     	httpGet = new HttpGet("http://202.114.89.11/opac/search?rows=30&searchWay=title&q="+URLEncoder.encode(WhutGlobal.SEARCH_TITLE)+"&page="+page);
 	    HttpResponse response;
 		response = httpClient.execute(httpGet);
         HttpEntity entity = response.getEntity();

@@ -1,4 +1,4 @@
-package com.withparadox2.whut;
+package com.withparadox2.whut.library.search;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +19,13 @@ import android.widget.TextView;
 
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.IntentAction;
+import com.withparadox2.whut.LiXianHomeActivity;
+import com.withparadox2.whut.R;
+import com.withparadox2.whut.R.drawable;
+import com.withparadox2.whut.R.id;
+import com.withparadox2.whut.R.layout;
 import com.withparadox2.whut.dao.BookListTempAdapter;
 import com.withparadox2.whut.dao.WhutGlobal;
-import com.withparadox2.whut.library.search.BookListDatabase;
 
 
 

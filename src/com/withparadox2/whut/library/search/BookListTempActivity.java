@@ -174,10 +174,7 @@ public class BookListTempActivity extends Activity{
 			}else{
 				viewHolder = (GroupViewHolder) convertView.getTag();
 			}
-			viewHolder.author.setText("作    者:  "+WhutGlobal.BOOKLIST.get(groupPosition)[1]);
-			viewHolder.bookTitle.setText("标    题:  "+WhutGlobal.BOOKLIST.get(groupPosition)[0]);
-			viewHolder.publisher.setText("出版社:  "+WhutGlobal.BOOKLIST.get(groupPosition)[2]);
-			viewHolder.bookCode.setText("索书号:  "+WhutGlobal.BOOKLIST.get(groupPosition)[3]);
+			viewHolder.author.setText("作    者:  "+WhutGlobal.BOOKLIST.get(groupPosition));
 			viewHolder.deleteButton.setOnClickListener(new DeleteClickListener(groupPosition));
 			return convertView;
 		}
@@ -216,7 +213,7 @@ public class BookListTempActivity extends Activity{
 			}
 			
 			private int getGroupId(){
-				return Integer.parseInt(WhutGlobal.BOOKLIST.get(groupPosition)[5]);
+				return Integer.parseInt(WhutGlobal.BOOKLIST.get(groupPosition));
 			}
 			
 			private List<Integer> getChildIds(){

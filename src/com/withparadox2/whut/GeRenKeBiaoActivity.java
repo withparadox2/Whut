@@ -408,7 +408,7 @@ public class GeRenKeBiaoActivity extends Activity {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			Intent i = new Intent();
-			i.setClass(GeRenKeBiaoActivity.this, PrePingJiaoActivity.class);
+//			i.setClass(GeRenKeBiaoActivity.this, PrePingJiaoActivity.class);
 			startActivity(i);
 		}
 	}

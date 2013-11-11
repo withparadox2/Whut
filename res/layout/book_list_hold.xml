@@ -28,13 +28,13 @@
 	        style="@style/customButtonStyle"
 	        android:layout_weight="1"/>
     </LinearLayout>
-    <ExpandableListView 
+    <ListView 
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:divider="@color/black"
-        android:id="@+id/expandable_listview">
+        android:id="@+id/listview">
         
-    </ExpandableListView>
+    </ListView>
     
 
 </LinearLayout>

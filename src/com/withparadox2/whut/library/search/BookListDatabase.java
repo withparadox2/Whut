@@ -25,20 +25,21 @@ public class BookListDatabase {
 	}
 	
 	public void addGroupAndChildByPosition(int pos){
-		String[] s = WhutGlobal.BOOKLIST.get(pos);
-		String bookNum = s[4];
-		mDbHelper.addGroupItem(s[0], s[1], s[2], s[3], s[4]);
-		List<String[]> list = WhutGlobal.CHILDLIST.get(pos);
-		for(int i=0; i<list.size(); i++){
-			s = list.get(i);
-			mDbHelper.addChildItem(s[1], s[0], bookNum);
-		}
+//		String[] s = WhutGlobal.BOOKLIST.get(pos);
+//		String bookNum = s[4];
+//		mDbHelper.addGroupItem(s[0], s[1], s[2], s[3], s[4]);
+//		List<String[]> list = WhutGlobal.CHILDLIST.get(pos);
+//		for(int i=0; i<list.size(); i++){
+//			s = list.get(i);
+//			mDbHelper.addChildItem(s[1], s[0], bookNum);
+//		}
 	}
 	
 	public boolean checkWhetherAddBefore(int pos){
-		String bookNum = WhutGlobal.BOOKLIST.get(pos)[4];
-		Cursor c = mDbHelper.fetchGroupItem(bookNum);
-		return c.getCount() == 0;
+		return false;
+//		String bookNum = WhutGlobal.BOOKLIST.get(pos)[4];
+//		Cursor c = mDbHelper.fetchGroupItem(bookNum);
+//		return c.getCount() == 0;
 	}
 	
 	public void deleteGroupAndChildByPosition(int pos){
@@ -51,22 +52,22 @@ public class BookListDatabase {
 	
 	private int getGroupIdByPos(int pos){
 		int id = -1;
-		String bookNum = WhutGlobal.BOOKLIST.get(pos)[4];
-		Cursor c = mDbHelper.fetchGroupItem(bookNum);
-		c.moveToNext();
-		if(c.getCount() != 0){
-			id = c.getInt(c.getColumnIndex(BookListTempAdapter.KEY_ID));
-		}
+//		String bookNum = WhutGlobal.BOOKLIST.get(pos)[4];
+//		Cursor c = mDbHelper.fetchGroupItem(bookNum);
+//		c.moveToNext();
+//		if(c.getCount() != 0){
+//			id = c.getInt(c.getColumnIndex(BookListTempAdapter.KEY_ID));
+//		}
 		return id;
 	}
 	
 	private List<Integer> getChildIdsByPos(int pos){
 		List<Integer> list = new ArrayList<Integer>();
-		String bookNum = WhutGlobal.BOOKLIST.get(pos)[4];
-		Cursor c = mDbHelper.fetchChildItemsMatchGroup(bookNum);
-		while(c.moveToNext()){
-			list.add(c.getInt(c.getColumnIndex(BookListTempAdapter.KEY_ID)));
-		}
+//		String bookNum = WhutGlobal.BOOKLIST.get(pos)[4];
+//		Cursor c = mDbHelper.fetchChildItemsMatchGroup(bookNum);
+//		while(c.moveToNext()){
+//			list.add(c.getInt(c.getColumnIndex(BookListTempAdapter.KEY_ID)));
+//		}
 		return list;
 	}
 	
@@ -99,7 +100,7 @@ public class BookListDatabase {
 			}
 			childList.add(myList);
 		}
-		WhutGlobal.BOOKLIST = groupList;
+//		WhutGlobal.BOOKLIST = groupList;
 		WhutGlobal.CHILDLIST = childList;
 	}
 	

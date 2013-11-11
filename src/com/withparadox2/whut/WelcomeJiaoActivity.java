@@ -140,7 +140,7 @@ public class WelcomeJiaoActivity extends Activity{
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			Intent i = new Intent();
-			i.setClass(WelcomeJiaoActivity.this, PrePingJiaoActivity.class);
+//			i.setClass(WelcomeJiaoActivity.this, PrePingJiaoActivity.class);
 			startActivity(i);
 		}
 		
@@ -179,7 +179,7 @@ public class WelcomeJiaoActivity extends Activity{
 							startActivity(i);
 							break;
 						case 5:
-							i.setClass(WelcomeJiaoActivity.this, PrePingJiaoActivity.class);
+//							i.setClass(WelcomeJiaoActivity.this, PrePingJiaoActivity.class);
 							startActivity(i);
 							break;
 						}

@@ -25,8 +25,7 @@ public class BookListTempAdapter {
 	public static final String KEY_BOOK_NAME = "book_name";
 	public static final String KEY_BOOK_RECNO = "book_recno";
 	public static final String KEY_BOOK_NUM = "book_num";
-	public static final String KEY_BOOK_AUTHOR = "book_author";
-	public static final String KEY_BOOK_PUBLISHER = "book_publisher";
+	public static final String KEY_BOOK_DETAIL = "book_detail";
 	public static final String KEY_BOOK_LOCATION = "book_location";
 
 	public final String CREAT_CHILD_TABLE = "create table "
@@ -38,10 +37,7 @@ public class BookListTempAdapter {
 	public final String CREAT_GROUP_TABLE = "create table "
 			+ GROUP_TABLE_NAME + " ("
 			+ KEY_ID +" integer primary key autoincrement, "
-			+ KEY_BOOK_NAME + " text not null,"
-			+ KEY_BOOK_AUTHOR + " text not null,"
-			+ KEY_BOOK_PUBLISHER + " text not null,"
-			+ KEY_BOOK_RECNO + " text not null,"
+			+ KEY_BOOK_DETAIL + " text not null,"
 	        + KEY_BOOK_NUM + " text not null);";
 	
 	public BookListTempAdapter(Context ctx){
@@ -79,12 +75,9 @@ public class BookListTempAdapter {
 		mDb.close();
 	}
 	
-	public long addGroupItem(String title, String author, String publisher, String recno, String num){
+	public long addGroupItem(String detail, String num){
 		ContentValues con = new ContentValues();
-		con.put(KEY_BOOK_NAME, title);
-		con.put(KEY_BOOK_AUTHOR, author);
-		con.put(KEY_BOOK_PUBLISHER, publisher);
-		con.put(KEY_BOOK_RECNO, recno);
+		con.put(KEY_BOOK_DETAIL, detail);
 		con.put(KEY_BOOK_NUM, num);
 		return mDb.insert(GROUP_TABLE_NAME, null, con);
 	}

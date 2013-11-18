@@ -48,7 +48,11 @@ public class WhutGlobal {
 	public static final String ShARE_LIXIAN_KEBIAO_NAME = "liXianKeBiao";
 	public static final String SHARE_LIXIAN_JIEYUE_NAME = "liXianJieYue";
 	
-	public static ArrayList<String> BOOKLIST = new ArrayList<String>(); 
+	/**
+	 * BOOKLIST contains a one-dimensional-array, of which the length is 2
+	 * one for book-detail, another for bookNumber
+	 */
+	public static ArrayList<String[]> BOOKLIST = new ArrayList<String[]>(); 
 	public static ArrayList<ArrayList<String[]>> CHILDLIST = new ArrayList<ArrayList<String[]>>();
 	public static String BOOK_CODE;
 	public static String SEARCH_TITLE;

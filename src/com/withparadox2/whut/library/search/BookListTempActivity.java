@@ -164,17 +164,14 @@ public class BookListTempActivity extends Activity{
 			if(convertView == null){
 				convertView = LayoutInflater.from(BookListTempActivity.this).inflate(R.layout.book_expandable_group, null);
 	            viewHolder = new GroupViewHolder();
-	            viewHolder.bookTitle = (TextView)convertView.findViewById(R.id.book_title);
-				viewHolder.author = (TextView)convertView.findViewById(R.id.author);
-				viewHolder.publisher = (TextView)convertView.findViewById(R.id.publisher);
-				viewHolder.bookCode = (TextView)convertView.findViewById(R.id.book_code);
+	            viewHolder.detail = (TextView)convertView.findViewById(R.id.book_detail);
 				viewHolder.childFlag = (TextView)convertView.findViewById(R.id.get_child_flag);
 				viewHolder.deleteButton = (Button)convertView.findViewById(R.id.add_book_button);
 				convertView.setTag(viewHolder);
 			}else{
 				viewHolder = (GroupViewHolder) convertView.getTag();
 			}
-			viewHolder.author.setText("зї    еп:  "+WhutGlobal.BOOKLIST.get(groupPosition));
+			viewHolder.detail.setText("" + WhutGlobal.BOOKLIST.get(groupPosition)[0]);
 			viewHolder.deleteButton.setOnClickListener(new DeleteClickListener(groupPosition));
 			return convertView;
 		}
@@ -192,10 +189,7 @@ public class BookListTempActivity extends Activity{
 		}
 		
 		public class GroupViewHolder{
-			TextView bookTitle;
-			TextView author;
-			TextView publisher;
-			TextView bookCode;
+			TextView detail;
 			TextView childFlag;
 			Button deleteButton;
 		}
@@ -213,7 +207,7 @@ public class BookListTempActivity extends Activity{
 			}
 			
 			private int getGroupId(){
-				return Integer.parseInt(WhutGlobal.BOOKLIST.get(groupPosition));
+				return Integer.parseInt(WhutGlobal.BOOKLIST.get(groupPosition)[2]);
 			}
 			
 			private List<Integer> getChildIds(){

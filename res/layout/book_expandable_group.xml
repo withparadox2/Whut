@@ -18,26 +18,11 @@
         android:id="@+id/book_text_layout"
         android:background="@color/white">
 		<TextView 
-		    android:id="@+id/book_title"
-		    android:textColor="@color/black"
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"/>   
-		<TextView 
-		    android:id="@+id/author"
+		    android:id="@+id/book_detail"
 		    android:textColor="@color/black"
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"/>    
-		<TextView 
-		    android:id="@+id/publisher"
-		    android:textColor="@color/black"
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"/>    
-		   
-		<TextView 
-		    android:id="@+id/book_code"
-		    android:textColor="@color/black"
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"/>            
+		           
 	</LinearLayout>
 	<TextView 
         android:id="@+id/get_child_flag"

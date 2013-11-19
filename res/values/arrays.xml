@@ -8,4 +8,9 @@
         <item>D</item> 
         <item>E</item>        
     </string-array>    
+    <string-array name="search_method">
+        <item>题名</item>
+        <item>作者</item>
+        <item>主题词</item>
+    </string-array>
 </resources>

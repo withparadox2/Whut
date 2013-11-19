@@ -35,8 +35,6 @@ public class HttpSearchThread extends Thread{
 	private String html;
 	private int page;
 	
-	private static List<String> bookRecnoNumList = new ArrayList<String>();
-	private static Map<String, String> bookRecnoNumValueMap = new HashMap<String, String>();//from bookRecnoNumList get value
 	private Message msg;
 	
 	private Handler myHandler;
@@ -67,11 +65,12 @@ public class HttpSearchThread extends Thread{
 	
 	private void getGroupData(){
 		try {
-			sendMyMessage(SearchBookActivity.GET_HTML);
 			getSearchBookResultHtml();
-//			getBookListData();
-			getBookListDataNew();
-			sendMyMessage(SearchBookActivity.UPDATE_GROUP);
+			if(getBookListData()==0){
+				sendMyMessage(SearchBookActivity.NO_BOOKS);
+			}else{
+				sendMyMessage(SearchBookActivity.UPDATE_GROUP);
+			}
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -88,15 +87,18 @@ public class HttpSearchThread extends Thread{
 	
 	
     private void getSearchBookResultHtml() throws ClientProtocolException, IOException{
-//     	httpGet = new HttpGet("http://202.114.89.11/opac/search?rows=30&searchWay=title&q="+URLEncoder.encode(WhutGlobal.SEARCH_TITLE)+"&page="+page);
-     	httpGet = new HttpGet("http://ms.lib.whut.edu.cn:8080/search?kw="+URLEncoder.encode(WhutGlobal.SEARCH_TITLE)+"&page="+page);
+     	httpGet = new HttpGet("http://ms.lib.whut.edu.cn:8080/search?kw="+URLEncoder.encode(WhutGlobal.SEARCH_TITLE)+"&page="+page+"&searchtype="+WhutGlobal.SEARCH_METHOD);
 	    HttpResponse response;
 		response = httpClient.execute(httpGet);
         HttpEntity entity = response.getEntity();
         html = EntityUtils.toString(entity, "UTF-8");    	
     }
     
-    private void getBookListDataNew(){
+    /**
+     * 加载时添加图书到全局列表中，并返回此次图书的数量
+     * @return
+     */
+    private int getBookListData(){
     	 Document document = Jsoup.parse(html);
 	     Elements books = document.select("ul li");
 	     StringBuilder row;
@@ -121,6 +123,7 @@ public class HttpSearchThread extends Thread{
 		     childArrayList = new ArrayList<String[]>();
              WhutGlobal.CHILDLIST.add(childArrayList);
 	     }
+	    return books.size();
     }
     
     private String getBookNumber(String sourceUrl){
@@ -134,41 +137,16 @@ public class HttpSearchThread extends Thread{
         }
     }
     
-    private void getChildHtml(String bookNum) throws ClientProtocolException, IOException{
-    	httpGet = new HttpGet("http://ms.lib.whut.edu.cn:8080/search?d=http%3a%2f%2f202.114.89.11%2fopac%2fbook%2f"+bookNum);
-	    HttpResponse response;
-		response = httpClient.execute(httpGet);
-        HttpEntity entity = response.getEntity();
-        html = EntityUtils.toString(entity, "UTF-8");    	
-        System.out.println(html);
-    }
-    
-    private void getChildData1(){
-    	Document document = Jsoup.parse(html);
-    	Elements elements = document.select("tbody");
-    	Elements tds;
-    	String[] childItem;
-    	for(Element e:elements){
-    		childItem = new String[3];
-    		tds = e.select("td");
-    		childItem[0] = tds.get(0).text();
-    		childItem[1] = tds.get(2).text();
-    		childItem[2] = tds.get(4).text();
-    		WhutGlobal.CHILDLIST.get(WhutGlobal.BOOK_CODE_POS).add(childItem);
-    	}
-    	sendMyMessage(SearchBookActivity.UPDATE_CHILD);
-    }
-    
     private String getChildXml() throws ClientProtocolException, IOException{
         String url = "http://202.114.89.11/opac/book/holdingpreview/" + WhutGlobal.BOOK_CODE;
         httpGet = new HttpGet(url);
         HttpResponse response;
         response = httpClient.execute(httpGet);
 	    HttpEntity entity = response.getEntity();
-    return EntityUtils.toString(entity, "UTF-8");   
-}
+	    return EntityUtils.toString(entity, "UTF-8");   
+	}
 
-private void getChildData(){
+	private void getChildData(){
         Document xmlParse = null;
         String s[];
             try {
@@ -188,6 +166,11 @@ private void getChildData(){
                 s[1] = locations.get(i).text();
                 WhutGlobal.CHILDLIST.get(WhutGlobal.BOOK_CODE_POS).add(s);
         }
-        sendMyMessage(SearchBookActivity.UPDATE_CHILD);
-}
+        
+        if(callnos.size()==0){
+	        sendMyMessage(SearchBookActivity.NO_BOOKS);
+        }else{
+	        sendMyMessage(SearchBookActivity.UPDATE_CHILD);
+        }
+	}
 }

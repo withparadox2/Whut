@@ -5,19 +5,26 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.view.GestureDetector;
+import android.support.v4.view.ViewPager.LayoutParams;
+import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +32,9 @@ import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,15 +70,16 @@ public class SearchBookActivity extends Activity implements OnScrollListener{
 	public final static int UPDATE_GROUP_THREAD = 1;
 	public static final int UPDATE_CHILD_THREAD = 2;
 	
-	private int clickPointX;
-	private int clickPointY;
-	
-	private GestureDetector myGestureDetector;
-	private View onTouchView;
-	
 	private BookListDatabase mDbHelper;
 	
 	private Map<Integer, Boolean> addToDatabaseFlag = new HashMap<Integer, Boolean>();
+	
+	private Button popupButton;
+	private PopupWindow popupWindow;
+	private LinearLayout layout;
+	private ListView popupListView;
+	private String searchMethod[] = { "题名", "作者", "主题词" };
+	private float popupWidth;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +89,7 @@ public class SearchBookActivity extends Activity implements OnScrollListener{
 		moreView = getLayoutInflater().inflate(R.layout.footer, null);
 		expandableListView = (ExpandableListView)findViewById(R.id.expandable_listview);
 		searchBookButton = (Button)findViewById(R.id.search_book_button);
+		popupButton = (Button)findViewById(R.id.popup_button);
 		actionbar = (ActionBar)findViewById(R.id.search_book_actionbar);
 		actionbar.setHomeAction(new IntentAction(this, LiXianHomeActivity.createIntent(this), R.drawable.ic_actionbar_whut));
 		actionbar.setDisplayHomeAsUpEnabled(true);
@@ -99,26 +111,71 @@ public class SearchBookActivity extends Activity implements OnScrollListener{
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				InputMethodManager inputManager = (InputMethodManager)
-                        getSystemService(Context.INPUT_METHOD_SERVICE); 
+				searchBooks();
+			}
+		});
+		popupButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				int y = popupButton.getBottom() * 3 / 2;
+				int x = popupButton.getWidth()/2;
 
-				inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                           InputMethodManager.HIDE_NOT_ALWAYS);
+				showPopupWindow(x, y);	
+			}
+		});
+		searchBookEdittext.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+		    @Override
+		    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+		        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+		        	searchBooks();
+		            return true;
+		        }
+		        return false;
+		    }
+		});
+		Resources r = getResources();
+		popupWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, r.getDisplayMetrics());
+	}
+	
+	private String getSearchMethod(){
+		if(popupButton.getText().equals(searchMethod[0])){
+			return "title";
+		}else if(popupButton.getText().equals(searchMethod[1])){
+			return "author";
+		}else{
+			return "subject";
+		}
+	}
+	private void showPopupWindow(int x, int y){
+		layout = (LinearLayout) LayoutInflater.from(SearchBookActivity.this).inflate(
+				R.layout.search_method_pop, null);
+		popupListView = (ListView) layout.findViewById(R.id.popup_listview);
+		popupListView.setAdapter(new ArrayAdapter<String>(SearchBookActivity.this,
+				R.layout.search_method_pop_item,R.id.search_popup_text,getResources().getStringArray(R.array.search_method)));
 
-				WhutGlobal.BOOKLIST.clear();
-				WhutGlobal.CHILDLIST.clear();
-				WhutGlobal.CLICK_GROUP_FLAG.clear();
-				WhutGlobal.SEARCH_TITLE = searchBookEdittext.getText().toString();
-				page = 1;
-				expandableListView.scrollTo(0, 0);
-				myExpandableAdapter.notifyDataSetChanged();
-				myThread = new HttpSearchThread(myHandler, page);
-				WhutGlobal.WhichAction = UPDATE_GROUP_THREAD;
-				myThread.start();
+		popupWindow = new PopupWindow(SearchBookActivity.this);
+		popupWindow.setWidth((int) popupWidth);
+		popupWindow.setHeight(LayoutParams.WRAP_CONTENT);
+		popupWindow.setOutsideTouchable(true);
+		popupWindow.setFocusable(true);
+		popupWindow.setContentView(layout);
+		popupWindow.showAsDropDown(popupButton, -((int)popupWidth/2-x), 5);
+
+		popupListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				popupButton.setText(searchMethod[arg2]);
+				popupWindow.dismiss();
+				popupWindow = null;
 			}
 		});
 	}
-	
+
+		
 	
 	private void updateData(){
 		myExpandableAdapter.notifyDataSetChanged();
@@ -136,18 +193,17 @@ public class SearchBookActivity extends Activity implements OnScrollListener{
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
 			switch(msg.arg1){
-			case GET_HTML:
-				Toast.makeText(SearchBookActivity.this, "下载数据", Toast.LENGTH_SHORT).show();
-				break;
 			case NO_BOOKS:
-				Toast.makeText(SearchBookActivity.this, "未找到书籍！", Toast.LENGTH_SHORT).show();
+				Toast.makeText(SearchBookActivity.this, "没有数据！", Toast.LENGTH_SHORT).show();
 				moreView.setVisibility(View.GONE);
 				loadingBooksFlag = false;
+				actionbar.setTitle("图书搜索");
 				break;
 			case UPDATE_GROUP:	
 				updateData();
+				actionbar.setTitle("图书搜索");
 				break;
-			case UPDATE_CHILD://update child
+			case UPDATE_CHILD:
 				myExpandableAdapter.notifyDataSetChanged();
 				break;
 				
@@ -163,6 +219,7 @@ public class SearchBookActivity extends Activity implements OnScrollListener{
 		public boolean onGroupClick(ExpandableListView parent, View v,
 				int groupPosition, long id) {
 			// TODO Auto-generated method stub
+	
 			if(!WhutGlobal.CLICK_GROUP_FLAG.get(groupPosition)){
 				WhutGlobal.BOOK_CODE = WhutGlobal.BOOKLIST.get(groupPosition)[1];
 				WhutGlobal.BOOK_CODE_POS = groupPosition;
@@ -171,7 +228,7 @@ public class SearchBookActivity extends Activity implements OnScrollListener{
 				myThread.start();
 				WhutGlobal.CLICK_GROUP_FLAG.set(groupPosition, true);
 			}
-//			System.out.println("点击了");
+		
 			return false;
 			
 		}
@@ -203,6 +260,8 @@ public class SearchBookActivity extends Activity implements OnScrollListener{
 				System.out.println("Expand fired");
 			}
 			lastChildExpandedPosition = groupPosition;
+			childExpandedFlag = true;
+			expandableListView.setSelection(groupPosition);
 		}
 		
 	}
@@ -285,6 +344,8 @@ public class SearchBookActivity extends Activity implements OnScrollListener{
 			viewHolder.detail.setText(WhutGlobal.BOOKLIST.get(groupPosition)[0]);
 			viewHolder.childFlag.setBackgroundColor(addToDatabaseFlag.get(groupPosition)==null ? Color.WHITE : 
 				(addToDatabaseFlag.get(groupPosition) ? Color.RED : Color.WHITE));
+			viewHolder.addToDbButton.setText(addToDatabaseFlag.get(groupPosition)==null ? "添加" : 
+				(addToDatabaseFlag.get(groupPosition) ? "删除" : "添加"));
 			viewHolder.addToDbButton.setOnClickListener(new AddClickListener(groupPosition));
 			return convertView;
 		}
@@ -322,12 +383,10 @@ public class SearchBookActivity extends Activity implements OnScrollListener{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				System.out.println("click"+groupPosition);
 				if(mDbHelper.checkWhetherAddBefore(groupPosition)){
 					mDbHelper.addGroupAndChildByPosition(groupPosition);
 					addToDatabaseFlag.put(groupPosition, true);
 				}else{
-					Toast.makeText(SearchBookActivity.this, "已经添加过了", Toast.LENGTH_SHORT).show();
 					mDbHelper.deleteGroupAndChildByPosition(groupPosition);
 					addToDatabaseFlag.put(groupPosition, false);
 				}
@@ -343,7 +402,7 @@ public class SearchBookActivity extends Activity implements OnScrollListener{
 			int visibleItemCount, int totalItemCount) {
 		// TODO Auto-generated method stub
 		   lastItem = firstVisibleItem + visibleItemCount - 1; 
-//		System.out.println(childExpandedFlag+"===="+firstVisibleItem+"===="+visibleItemCount+"===="+lastItem);
+		System.out.println(childExpandedFlag+"===="+firstVisibleItem+"===="+visibleItemCount+"===="+lastItem);
 	}
 
 
@@ -362,7 +421,6 @@ public class SearchBookActivity extends Activity implements OnScrollListener{
 	            loadMoreBooks();
         }
     }
-		
 	}
 	
 	private void loadMoreBooks(){
@@ -371,6 +429,33 @@ public class SearchBookActivity extends Activity implements OnScrollListener{
 		page = page + 1;
 		myThread = new HttpSearchThread(myHandler, page);
 		myThread.start();
+	}
+
+	private void searchBooks() {
+		InputMethodManager inputManager = (InputMethodManager)
+		        getSystemService(Context.INPUT_METHOD_SERVICE); 
+
+		inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+		           InputMethodManager.HIDE_NOT_ALWAYS);
+
+		WhutGlobal.BOOKLIST.clear();
+		WhutGlobal.CHILDLIST.clear();
+		WhutGlobal.CLICK_GROUP_FLAG.clear();
+		addToDatabaseFlag.clear();
+		WhutGlobal.SEARCH_TITLE = searchBookEdittext.getText().toString();
+		WhutGlobal.SEARCH_METHOD = getSearchMethod();
+		page = 1;
+		expandableListView.scrollTo(0, 0);
+		myExpandableAdapter.notifyDataSetChanged();
+		childExpandedFlag = false;
+		if(!WhutGlobal.SEARCH_TITLE.equals("")){
+			actionbar.setTitle("搜索中...");
+			myThread = new HttpSearchThread(myHandler, page);
+			WhutGlobal.WhichAction = UPDATE_GROUP_THREAD;
+			myThread.start();
+		}else{
+			Toast.makeText(SearchBookActivity.this, "空空如也！", Toast.LENGTH_SHORT).show();
+		}
 	}
 
 }

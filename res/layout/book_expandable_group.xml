@@ -34,9 +34,11 @@
    <Button 
        android:id="@+id/add_book_button"
        android:layout_width="40dp"
-       android:layout_height="fill_parent"
+       android:layout_height="40dp"
+       android:text="删除"
        android:layout_alignRight="@id/book_text_layout"
        android:background="@color/holo_blue_lighter"
+       android:textColor="@color/white"
        android:layout_centerVertical="true"
        android:focusable="false"
        />  

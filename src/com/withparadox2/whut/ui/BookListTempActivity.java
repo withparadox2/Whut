@@ -20,11 +20,9 @@ import android.widget.TextView;
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.IntentAction;
 import com.withparadox2.whut.R;
-import com.withparadox2.whut.R.drawable;
-import com.withparadox2.whut.R.id;
-import com.withparadox2.whut.R.layout;
+
 import com.withparadox2.whut.dao.BookListDatabase;
-import com.withparadox2.whut.dao.BookListTempAdapter;
+
 import com.withparadox2.whut.dao.WhutGlobal;
 
 public class BookListTempActivity extends Activity {
@@ -41,7 +39,7 @@ public class BookListTempActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.book_temp_hold);
+		setContentView(R.layout.book_expandable_hold_offline);
 		mDbHelper = new BookListDatabase(this);
 		mDbHelper.fetchBookList();
 		actionbar = (ActionBar) findViewById(R.id.search_book_actionbar);

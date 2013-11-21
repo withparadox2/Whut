@@ -3,9 +3,7 @@ package com.withparadox2.whut.ui;
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.IntentAction;
 import com.withparadox2.whut.R;
-import com.withparadox2.whut.R.drawable;
-import com.withparadox2.whut.R.id;
-import com.withparadox2.whut.R.layout;
+
 
 import android.app.Activity;
 import android.os.Bundle;

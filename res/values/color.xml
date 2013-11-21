@@ -5,6 +5,7 @@
     <color name="green">#00ff00</color>
     <color name="holo_blue_lighter">#4a9ebd</color>
     <color name="holo_green_lighter">#73ae6b</color>
-    <color name="holo_blue_darker">#397da5</color>    
+    <color name="holo_blue_darker">#397da5</color>   
+    <color name="searchbooks_item_background">#e4dcc0</color> 
 
 </resources>

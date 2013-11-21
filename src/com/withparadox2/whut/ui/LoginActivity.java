@@ -221,32 +221,7 @@ public class LoginActivity extends Activity {
 
 	}
 
-	private void getLiXianJieYueData() {
-		boolean exist = false;
-		String[][] jieYue = null;
-		SharedPreferences share = getSharedPreferences(
-		        WhutGlobal.SHARE_LIXIAN_JIEYUE_NAME, Activity.MODE_PRIVATE);
-		int length = Integer.parseInt(share.getString("length", "100"));
-		if (length < 100) {
-			exist = true;
-			jieYue = new String[length][3];
-			for (int i = 0; i < length; i++) {
-				jieYue[i][0] = share.getString("title" + i, "");
-				jieYue[i][1] = share.getString("start_time" + i, "");
-				jieYue[i][2] = share.getString("end_time" + i, "");
-			}
-		}
-
-		if (exist) {
-			WhutGlobal.htmlData = jieYue;
-			Intent i = new Intent();
-			i.setClass(LoginActivity.this, LiXianJieYueActivity.class);
-			startActivity(i);
-		} else {
-			Toast.makeText(LoginActivity.this, "未下载离线数据！", Toast.LENGTH_LONG)
-			        .show();
-		}
-	}
+	
 
 	public static Intent createIntent(Context context) {
 		Intent i = new Intent(context, LoginActivity.class);

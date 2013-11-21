@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.app.Activity;
+import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -11,13 +12,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.v4.view.ViewPager.LayoutParams;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
@@ -38,6 +39,9 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.IntentAction;
 import com.withparadox2.whut.R;
@@ -45,11 +49,11 @@ import com.withparadox2.whut.dao.BookListDatabase;
 import com.withparadox2.whut.dao.WhutGlobal;
 import com.withparadox2.whut.http.HttpSearchThread;
 
-public class SearchBookActivity extends Activity implements OnScrollListener {
+public class SearchBookActivity extends ExpandableListActivity implements OnScrollListener {
 
 	private HttpSearchThread myThread;
 	private UpdaetUIHandler myHandler;
-	private ExpandableListView expandableListView;
+	private PullToRefreshExpandableListView expandableListView;
 	private MyExpandableListAdapter myExpandableAdapter;
 	private ActionBar actionbar;
 	private Button searchBookButton;
@@ -89,7 +93,7 @@ public class SearchBookActivity extends Activity implements OnScrollListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.book_expandable_hold);
 		moreView = getLayoutInflater().inflate(R.layout.footer, null);
-		expandableListView = (ExpandableListView) findViewById(R.id.expandable_listview);
+		expandableListView = (PullToRefreshExpandableListView) findViewById(R.id.expandable_listview);
 		searchBookButton = (Button) findViewById(R.id.search_book_button);
 		popupButton = (Button) findViewById(R.id.popup_button);
 		actionbar = (ActionBar) findViewById(R.id.search_book_actionbar);
@@ -98,19 +102,31 @@ public class SearchBookActivity extends Activity implements OnScrollListener {
 		actionbar.setDisplayHomeAsUpEnabled(true);
 		actionbar.setTitle("Í¼ÊéËÑË÷");
 		searchBookEdittext = (EditText) findViewById(R.id.search_book_edittext);
-		expandableListView.setGroupIndicator(null);
 		myExpandableAdapter = new MyExpandableListAdapter();
-		expandableListView.addFooterView(moreView);
-		expandableListView.setAdapter(myExpandableAdapter);
-		expandableListView
+        
+		setListAdapter(myExpandableAdapter);
+		this.getExpandableListView()
 		        .setOnGroupClickListener(new MyOnGroupClickListener());
-		expandableListView
+		this.getExpandableListView()
 		        .setOnGroupCollapseListener(new MyOnGroupCollapseListener());
-		expandableListView
+		this.getExpandableListView()
 		        .setOnGroupExpandListener(new MyOnGroupExpandListener());
+		this.getExpandableListView().setGroupIndicator(null);
 		expandableListView.setOnScrollListener(this);
 		myHandler = new UpdaetUIHandler(Looper.myLooper());
 		mDbHelper = new BookListDatabase(this);
+		
+		expandableListView.setOnRefreshListener(new OnRefreshListener<ExpandableListView>() {
+			@Override
+			public void onRefresh(PullToRefreshBase<ExpandableListView> refreshView) {
+				// Do work to refresh the list here.
+				if(WhutGlobal.BOOKLIST.size()!=0){
+                    loadMoreBooks();
+				}else{
+					expandableListView.onRefreshComplete();
+				}
+			}
+		});
 
 		searchBookButton.setOnClickListener(new OnClickListener() {
 
@@ -190,6 +206,7 @@ public class SearchBookActivity extends Activity implements OnScrollListener {
 	private void updateData() {
 		myExpandableAdapter.notifyDataSetChanged();
 		moreView.setVisibility(View.GONE);
+        expandableListView.onRefreshComplete();
 		loadingBooksFlag = false;
 	}
 
@@ -266,12 +283,12 @@ public class SearchBookActivity extends Activity implements OnScrollListener {
 
 			if (lastChildExpandedPosition != -1
 			        && groupPosition != lastChildExpandedPosition) {
-				expandableListView.collapseGroup(lastChildExpandedPosition);
+				SearchBookActivity.this.getExpandableListView().collapseGroup(lastChildExpandedPosition);
 				System.out.println("Expand fired");
 			}
 			lastChildExpandedPosition = groupPosition;
 			childExpandedFlag = true;
-			expandableListView.setSelection(groupPosition);
+			SearchBookActivity.this.getExpandableListView().setSelection(groupPosition);
 		}
 
 	}

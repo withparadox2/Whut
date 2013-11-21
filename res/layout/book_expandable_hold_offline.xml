@@ -60,18 +60,13 @@
 
 
     
-    <com.handmark.pulltorefresh.library.PullToRefreshExpandableListView
-        xmlns:ptr="http://schemas.android.com/apk/res-auto"
+    <ExpandableListView
         android:id="@+id/expandable_listview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:transcriptMode="disabled"
-        android:divider="@color/black"
-        android:groupIndicator="@null"
-        ptr:ptrHeaderBackground="@android:color/black"
-        ptr:ptrHeaderTextColor="@android:color/white"
-        ptr:ptrShowIndicator = "false"
-        ptr:ptrDrawable="@drawable/pull_to_reffresh_indicator"
-        ptr:ptrMode="pullUpFromBottom" />
+        android:divider="@color/black" >
+        
+    </ExpandableListView>
 
 </LinearLayout>

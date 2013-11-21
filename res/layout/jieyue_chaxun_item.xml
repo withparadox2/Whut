@@ -16,7 +16,7 @@
         android:textSize="12dp" />
     
 
-    <com.withparadox2.whut.InterceptScrollContainer
+    <com.withparadox2.whut.view.InterceptScrollContainer
         android:id="@+id/jieyue_scroollContainter"
         android:layout_width="fill_parent"
         android:layout_height="80dp"
@@ -24,7 +24,7 @@
         android:layout_toRightOf="@id/jieyue_chaxun_textView1"
         android:focusable="false" >
 
-        <com.withparadox2.whut.MyHScrollView
+        <com.withparadox2.whut.view.MyHScrollView
             android:id="@+id/jieyue_horizontalScrollView1"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -120,7 +120,7 @@
       			    android:layout_height="fill_parent" 
                     android:background="#DADADA" />                         
             </LinearLayout>
-        </com.withparadox2.whut.MyHScrollView>
-    </com.withparadox2.whut.InterceptScrollContainer>
+        </com.withparadox2.whut.view.MyHScrollView>
+    </com.withparadox2.whut.view.InterceptScrollContainer>
 
 </RelativeLayout>

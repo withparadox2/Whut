@@ -13,56 +13,53 @@
             android:name=".WhutActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".WelcomeJiaoActivity" 
+            android:name="com.withparadox2.whut.ui.WelcomeJiaoActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>
         <activity
             android:name="com.withparadox2.whut.library.WelcomeTuActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>   
         <activity
-            android:name=".JieYueChaXunActivity" 
+            android:name="com.withparadox2.whut.ui.JieYueChaXunActivitye" 
             android:theme="@android:style/Theme.NoTitleBar"/>  
         <activity
-            android:name=".LiXianJieYueActivity" 
+            android:name="com.withparadox2.whut.ui.LiXianJieYueActivitye" 
             android:theme="@android:style/Theme.NoTitleBar"/>              
         <activity
-            android:name=".XuJieActivity" 
+            android:name="com.withparadox2.whut.ui.XuJieActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>                                
          <activity
             android:name="com.withparadox2.whut.jiao.kebiao.KebiaoActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>
          <activity
-            android:name=".LiXianKeBiaoActivity" 
+            android:name="com.withparadox2.whut.ui.LiXianKeBiaoActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>
          <activity
             android:name=".GeRenKeBiaoActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>
          <activity
-            android:name=".ChengJiActivity" 
+            android:name="com.withparadox2.whut.ui.ChengJiActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>
          <activity
             android:name=".PingJiaoActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>
          <activity
-            android:name=".PrePingJiaoActivity" 
-            android:theme="@android:style/Theme.NoTitleBar"/> 
-         <activity
             android:name=".InformationActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>                     
          <activity
-            android:name="com.withparadox2.whut.library.search.SearchBookActivity" 
+            android:name="com.withparadox2.whut.ui.SearchBookActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>                     
          <activity
             android:name="com.withparadox2.whut.jiaoshi.KongJiaoShiActivity" 
             android:theme="@android:style/Theme.NoTitleBar">                     
          </activity>
          <activity
-            android:name="com.withparadox2.whut.LiXianHomeActivity" 
-            android:theme="@android:style/Theme.NoTitleBar">                     
+             android:name="com.withparadox2.whut.ui.LiXianHomeActivity"
+             android:theme="@android:style/Theme.NoTitleBar">                     
            
          </activity>
 
          <activity
-            android:name=".LoginActivity"
+            android:name="com.withparadox2.whut.ui.LoginActivity"
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" 
             android:configChanges="orientation|keyboardHidden">
@@ -73,7 +70,7 @@
              
         </activity>
         <activity
-            android:name="com.withparadox2.whut.library.search.BookListTempActivity" 
+            android:name="com.withparacom.withparadox2.whut.ui.BookListTempActivity"
             android:theme="@android:style/Theme.NoTitleBar">
         </activity>         
         <activity

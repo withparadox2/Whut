@@ -10,72 +10,50 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" android:killAfterRestore="true">
         <activity
-            android:name=".WhutActivity"
-            android:label="@string/app_name" />
-        <activity
-            android:name="com.withparadox2.whut.ui.WelcomeJiaoActivity" 
+            android:name=".ui.WelcomeJiaoActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>
         <activity
-            android:name="com.withparadox2.whut.library.WelcomeTuActivity" 
+            android:name=".ui.WelcomeTuActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>   
         <activity
-            android:name="com.withparadox2.whut.ui.JieYueChaXunActivitye" 
+            android:name=".ui.JieYueChaXunActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>  
         <activity
-            android:name="com.withparadox2.whut.ui.LiXianJieYueActivitye" 
+            android:name=".ui.LiXianJieYueActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>              
         <activity
-            android:name="com.withparadox2.whut.ui.XuJieActivity" 
+            android:name=".ui.XuJieActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>                                
          <activity
-            android:name="com.withparadox2.whut.jiao.kebiao.KebiaoActivity" 
+            android:name=".ui.LiXianKeBiaoActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>
          <activity
-            android:name="com.withparadox2.whut.ui.LiXianKeBiaoActivity" 
-            android:theme="@android:style/Theme.NoTitleBar"/>
-         <activity
-            android:name=".GeRenKeBiaoActivity" 
-            android:theme="@android:style/Theme.NoTitleBar"/>
-         <activity
-            android:name="com.withparadox2.whut.ui.ChengJiActivity" 
-            android:theme="@android:style/Theme.NoTitleBar"/>
-         <activity
-            android:name=".PingJiaoActivity" 
-            android:theme="@android:style/Theme.NoTitleBar"/>
-         <activity
-            android:name=".InformationActivity" 
+            android:name=".ui.InformationActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>                     
          <activity
-            android:name="com.withparadox2.whut.ui.SearchBookActivity" 
-            android:theme="@android:style/Theme.NoTitleBar"/>                     
+            android:name=".ui.SearchBookActivity" 
+            android:theme="@android:style/Theme.NoTitleBar">
+         </activity>                     
          <activity
-            android:name="com.withparadox2.whut.jiaoshi.KongJiaoShiActivity" 
+            android:name=".ui.BookListTempActivity" 
             android:theme="@android:style/Theme.NoTitleBar">                     
          </activity>
          <activity
-             android:name="com.withparadox2.whut.ui.LiXianHomeActivity"
+             android:name=".ui.LiXianHomeActivity"
              android:theme="@android:style/Theme.NoTitleBar">                     
            
          </activity>
 
          <activity
-            android:name="com.withparadox2.whut.ui.LoginActivity"
+            android:name=".ui.LoginActivity"
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" 
             android:configChanges="orientation|keyboardHidden">
-            <intent-filter>
+             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
              
-        </activity>
-        <activity
-            android:name="com.withparacom.withparadox2.whut.ui.BookListTempActivity"
-            android:theme="@android:style/Theme.NoTitleBar">
-        </activity>         
-        <activity
-            android:name=".SearchBookActivity" 
-            android:theme="@android:style/Theme.NoTitleBar">
         </activity>
     </application>
 	<uses-permission android:name="android.permission.INTERNET"/>

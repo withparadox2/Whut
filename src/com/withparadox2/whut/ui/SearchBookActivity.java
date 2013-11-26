@@ -3,11 +3,9 @@ package com.withparadox2.whut.ui;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.app.Activity;
 import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -17,16 +15,12 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -40,16 +34,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
+import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.IntentAction;
 import com.withparadox2.whut.R;
+import com.withparadox2.whut.adapter.MyExpandableListAdapter;
 import com.withparadox2.whut.dao.BookListDatabase;
 import com.withparadox2.whut.dao.WhutGlobal;
 import com.withparadox2.whut.http.HttpSearchThread;
+import com.withparadox2.whut.util.Helper;
 
-public class SearchBookActivity extends ExpandableListActivity implements OnScrollListener {
+public class SearchBookActivity extends ExpandableListActivity {
 
 	private HttpSearchThread myThread;
 	private UpdaetUIHandler myHandler;
@@ -76,33 +72,39 @@ public class SearchBookActivity extends ExpandableListActivity implements OnScro
 	public final static int UPDATE_GROUP_THREAD = 1;
 	public static final int UPDATE_CHILD_THREAD = 2;
 
-	private BookListDatabase mDbHelper;
-
 	private Map<Integer, Boolean> addToDatabaseFlag = new HashMap<Integer, Boolean>();
 
 	private Button popupButton;
 	private PopupWindow popupWindow;
 	private LinearLayout layout;
 	private ListView popupListView;
-	private String searchMethod[] = { "题名", "作者", "主题词" };
+	private String searchMethod[];
 	private float popupWidth;
+	private InputMethodManager inputManager;
+	
+	private Context context;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.book_expandable_hold);
+		context = SearchBookActivity.this;
 		moreView = getLayoutInflater().inflate(R.layout.footer, null);
+        
 		expandableListView = (PullToRefreshExpandableListView) findViewById(R.id.expandable_listview);
 		searchBookButton = (Button) findViewById(R.id.search_book_button);
 		popupButton = (Button) findViewById(R.id.popup_button);
+		searchBookEdittext = (EditText) findViewById(R.id.search_book_edittext);
 		actionbar = (ActionBar) findViewById(R.id.search_book_actionbar);
-		actionbar.setHomeAction(new IntentAction(this, LiXianHomeActivity
-		        .createIntent(this), R.drawable.ic_actionbar_whut));
+        
+		actionbar.setHomeAction(new IntentAction(this, LiXianHomeActivity.createIntent(this), R.drawable.ic_actionbar_whut));
 		actionbar.setDisplayHomeAsUpEnabled(true);
 		actionbar.setTitle("图书搜索");
-		searchBookEdittext = (EditText) findViewById(R.id.search_book_edittext);
-		myExpandableAdapter = new MyExpandableListAdapter();
+        
+        searchMethod = getResources().getStringArray(R.array.search_method);
+        inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		myExpandableAdapter = new MyExpandableListAdapter(this, addToDatabaseFlag);
         
 		setListAdapter(myExpandableAdapter);
 		this.getExpandableListView()
@@ -112,9 +114,7 @@ public class SearchBookActivity extends ExpandableListActivity implements OnScro
 		this.getExpandableListView()
 		        .setOnGroupExpandListener(new MyOnGroupExpandListener());
 		this.getExpandableListView().setGroupIndicator(null);
-		expandableListView.setOnScrollListener(this);
 		myHandler = new UpdaetUIHandler(Looper.myLooper());
-		mDbHelper = new BookListDatabase(this);
 		
 		expandableListView.setOnRefreshListener(new OnRefreshListener<ExpandableListView>() {
 			@Override
@@ -133,7 +133,11 @@ public class SearchBookActivity extends ExpandableListActivity implements OnScro
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				searchBooks();
+                if(Helper.isNetworkConnected(context)){
+    				searchBooks();
+                }else{
+                	Helper.showShortToast(context, "无法连接网络...");
+                }
 			}
 		});
 		popupButton.setOnClickListener(new OnClickListener() {
@@ -180,8 +184,7 @@ public class SearchBookActivity extends ExpandableListActivity implements OnScro
 		popupListView = (ListView) layout.findViewById(R.id.popup_listview);
 		popupListView.setAdapter(new ArrayAdapter<String>(
 		        SearchBookActivity.this, R.layout.search_method_pop_item,
-		        R.id.search_popup_text, getResources().getStringArray(
-		                R.array.search_method)));
+		        R.id.search_popup_text, searchMethod));
 
 		popupWindow = new PopupWindow(SearchBookActivity.this);
 		popupWindow.setWidth((int) popupWidth);
@@ -254,9 +257,7 @@ public class SearchBookActivity extends ExpandableListActivity implements OnScro
 				myThread.start();
 				WhutGlobal.CLICK_GROUP_FLAG.set(groupPosition, true);
 			}
-
 			return false;
-
 		}
 
 	}
@@ -293,177 +294,6 @@ public class SearchBookActivity extends ExpandableListActivity implements OnScro
 
 	}
 
-	class MyExpandableListAdapter extends BaseExpandableListAdapter {
-
-		@Override
-		public Object getChild(int arg0, int arg1) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public long getChildId(int arg0, int arg1) {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
-		@Override
-		public View getChildView(int groupPosition, int childPosition,
-		        boolean isLastChild, View convertView, ViewGroup parent) {
-			// TODO Auto-generated method stub
-			ChildViewHolder viewHolder = null;
-			if (convertView == null) {
-				convertView = LayoutInflater.from(SearchBookActivity.this)
-				        .inflate(R.layout.book_expandable_child, null);
-				viewHolder = new ChildViewHolder();
-				viewHolder.bookLocation = (TextView) convertView
-				        .findViewById(R.id.book_location);
-				viewHolder.bookCode = (TextView) convertView
-				        .findViewById(R.id.book_code);
-				convertView.setTag(viewHolder);
-			} else {
-				viewHolder = (ChildViewHolder) convertView.getTag();
-			}
-			viewHolder.bookLocation.setText(WhutGlobal.CHILDLIST.get(
-			        groupPosition).get(childPosition)[1]);
-			viewHolder.bookCode.setText(WhutGlobal.CHILDLIST.get(groupPosition)
-			        .get(childPosition)[0]);
-
-			return convertView;
-		}
-
-		@Override
-		public int getChildrenCount(int arg0) {
-			// TODO Auto-generated method stub
-			return WhutGlobal.CHILDLIST.get(arg0).size();
-		}
-
-		@Override
-		public Object getGroup(int arg0) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public int getGroupCount() {
-			// TODO Auto-generated method stub
-			return WhutGlobal.BOOKLIST.size();
-		}
-
-		@Override
-		public long getGroupId(int arg0) {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
-		@Override
-		public View getGroupView(int groupPosition, boolean isExpanded,
-		        View convertView, ViewGroup parent) {
-			// TODO Auto-generated method stub
-			GroupViewHolder viewHolder = null;
-			if (convertView == null) {
-				convertView = LayoutInflater.from(SearchBookActivity.this)
-				        .inflate(R.layout.book_expandable_group, null);
-				viewHolder = new GroupViewHolder();
-				viewHolder.detail = (TextView) convertView
-				        .findViewById(R.id.book_detail);
-				viewHolder.childFlag = (TextView) convertView
-				        .findViewById(R.id.get_child_flag);
-				viewHolder.addToDbButton = (Button) convertView
-				        .findViewById(R.id.add_book_button);
-				convertView.setTag(viewHolder);
-			} else {
-				viewHolder = (GroupViewHolder) convertView.getTag();
-			}
-			viewHolder.detail
-			        .setText(WhutGlobal.BOOKLIST.get(groupPosition)[0]);
-			viewHolder.childFlag.setBackgroundColor(addToDatabaseFlag
-			        .get(groupPosition) == null ? Color.WHITE
-			        : (addToDatabaseFlag.get(groupPosition) ? Color.RED
-			                : Color.WHITE));
-			viewHolder.addToDbButton.setText(addToDatabaseFlag
-			        .get(groupPosition) == null ? "添加" : (addToDatabaseFlag
-			        .get(groupPosition) ? "删除" : "添加"));
-			viewHolder.addToDbButton.setOnClickListener(new AddClickListener(
-			        groupPosition));
-			return convertView;
-		}
-
-		@Override
-		public boolean hasStableIds() {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public boolean isChildSelectable(int arg0, int arg1) {
-			// TODO Auto-generated method stub
-			return true;
-		}
-
-		public class GroupViewHolder {
-			TextView detail;
-			TextView childFlag;
-			Button addToDbButton;
-		}
-
-		public class ChildViewHolder {
-			TextView bookCode;
-			TextView bookLocation;
-		}
-
-		public class AddClickListener implements OnClickListener {
-
-			int groupPosition;
-
-			public AddClickListener(int groupPosition) {
-				this.groupPosition = groupPosition;
-			}
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if (mDbHelper.checkWhetherAddBefore(groupPosition)) {
-					mDbHelper.addGroupAndChildByPosition(groupPosition);
-					addToDatabaseFlag.put(groupPosition, true);
-				} else {
-					mDbHelper.deleteGroupAndChildByPosition(groupPosition);
-					addToDatabaseFlag.put(groupPosition, false);
-				}
-				myExpandableAdapter.notifyDataSetChanged();
-
-			}
-
-		}
-	}
-
-	@Override
-	public void onScroll(AbsListView view, int firstVisibleItem,
-	        int visibleItemCount, int totalItemCount) {
-		// TODO Auto-generated method stub
-		lastItem = firstVisibleItem + visibleItemCount - 1;
-		System.out.println(childExpandedFlag + "====" + firstVisibleItem
-		        + "====" + visibleItemCount + "====" + lastItem);
-	}
-
-	@Override
-	public void onScrollStateChanged(AbsListView view, int scrollState) {
-		// TODO Auto-generated method stub
-		int size;
-		if (childExpandedFlag) {
-			size = WhutGlobal.BOOKLIST.size()
-			        + WhutGlobal.CHILDLIST.get(lastChildExpandedPosition)
-			                .size();
-		} else {
-			size = WhutGlobal.BOOKLIST.size();
-		}
-		if (lastItem == size && scrollState == this.SCROLL_STATE_IDLE) {
-			moreView.setVisibility(view.VISIBLE);
-			if (!loadingBooksFlag) {
-				loadMoreBooks();
-			}
-		}
-	}
 
 	private void loadMoreBooks() {
 		WhutGlobal.WhichAction = UPDATE_GROUP_THREAD;
@@ -474,16 +304,15 @@ public class SearchBookActivity extends ExpandableListActivity implements OnScro
 	}
 
 	private void searchBooks() {
-		InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
 		inputManager.hideSoftInputFromWindow(
 		        getCurrentFocus().getWindowToken(),
 		        InputMethodManager.HIDE_NOT_ALWAYS);
 
+		addToDatabaseFlag.clear();
 		WhutGlobal.BOOKLIST.clear();
 		WhutGlobal.CHILDLIST.clear();
 		WhutGlobal.CLICK_GROUP_FLAG.clear();
-		addToDatabaseFlag.clear();
 		WhutGlobal.SEARCH_TITLE = searchBookEdittext.getText().toString();
 		WhutGlobal.SEARCH_METHOD = getSearchMethod();
 		page = 1;

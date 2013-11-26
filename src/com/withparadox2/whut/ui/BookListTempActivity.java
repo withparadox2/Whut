@@ -8,6 +8,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.LayoutAnimationController;
+import android.view.animation.TranslateAnimation;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
@@ -57,6 +62,22 @@ public class BookListTempActivity extends Activity {
 		        .setOnGroupCollapseListener(new MyOnGroupCollapseListener());
 		expandableListView
 		        .setOnGroupExpandListener(new MyOnGroupExpandListener());
+		AnimationSet set = new AnimationSet(true);
+
+        Animation animation = new AlphaAnimation(0.0f, 1.0f);
+        animation.setDuration(400);
+        set.addAnimation(animation);
+
+        animation = new TranslateAnimation(
+            Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+            Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF, 0.0f
+        );
+        animation.setDuration(400);
+        set.addAnimation(animation);
+
+        LayoutAnimationController controller =
+            new LayoutAnimationController(set, 0.25f);
+        expandableListView.setLayoutAnimation(controller);
 	}
 
 	class MyOnGroupClickListener implements OnGroupClickListener {

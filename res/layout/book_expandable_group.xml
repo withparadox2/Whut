@@ -8,12 +8,9 @@
         android:layout_height="fill_parent"
         android:layout_width="fill_parent"
         android:orientation="vertical"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginTop="2dp"
         android:paddingLeft="8dp"
-        android:paddingRight="43dp"
+        android:paddingRight="55dp"
         android:id="@+id/book_text_layout"
         android:background="@color/searchbooks_group_background">
 		<TextView 
@@ -33,9 +30,10 @@
    <Button 
        android:id="@+id/add_book_button"
        android:layout_width="40dp"
-       android:layout_height="40dp"
+       android:layout_height="45dp"
        android:text="删除"
-       android:layout_alignRight="@id/book_text_layout"
+       android:layout_alignParentRight="true"
+       android:layout_marginRight="5dp"
        android:background="@color/holo_blue_lighter"
        android:textColor="@color/white"
        android:layout_centerVertical="true"

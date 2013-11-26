@@ -176,8 +176,9 @@ containing a value of this type.
         public static final int holo_blue_darker=0x7f08000b;
         public static final int holo_blue_lighter=0x7f080009;
         public static final int holo_green_lighter=0x7f08000a;
-        public static final int searchbooks_child_background=0x7f08000d;
-        public static final int searchbooks_group_background=0x7f08000c;
+        public static final int searchbooks_child_background=0x7f08000e;
+        public static final int searchbooks_group_background=0x7f08000d;
+        public static final int typical_red=0x7f08000c;
         public static final int white=0x7f080006;
     }
     public static final class dimen {

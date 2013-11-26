@@ -111,9 +111,9 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter{
 		viewHolder.detail
 		        .setText(WhutGlobal.BOOKLIST.get(groupPosition)[0]);
 		viewHolder.childFlag.setBackgroundColor(addToDatabaseFlag
-		        .get(groupPosition) == null ? Color.WHITE
+		        .get(groupPosition) == null ? context.getResources().getColor(R.color.searchbooks_group_background)
 		        : (addToDatabaseFlag.get(groupPosition) ? Color.RED
-		                : Color.WHITE));
+		                : context.getResources().getColor(R.color.searchbooks_group_background)));
 		viewHolder.addToDbButton.setText(addToDatabaseFlag
 		        .get(groupPosition) == null ? "Ìí¼Ó" : (addToDatabaseFlag
 		        .get(groupPosition) ? "É¾³ý" : "Ìí¼Ó"));

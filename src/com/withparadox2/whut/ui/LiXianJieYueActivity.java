@@ -129,8 +129,6 @@ public class LiXianJieYueActivity extends Activity {
 			holder.txt1.setText(result[position][0]);
 			if (guoQiFlag[position]) {
 				holder.txt1.setBackgroundResource(R.color.holo_blue_darker);
-			} else {
-				holder.txt1.setBackgroundColor(Color.parseColor("#FF5735"));
 			}
 
 			holder.txt2.setText(result[position][1]);

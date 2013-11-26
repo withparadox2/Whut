@@ -68,6 +68,8 @@
         android:transcriptMode="disabled"
         android:divider="@color/black"
         android:groupIndicator="@null"
+        android:layoutAnimation="@anim/list_anim_layout" 
+        android:animateLayoutChanges="true"
         ptr:ptrHeaderBackground="@android:color/black"
         ptr:ptrHeaderTextColor="@android:color/white"
         ptr:ptrShowIndicator = "false"

@@ -9,10 +9,12 @@ package com.withparadox2.whut;
 
 public final class R {
     public static final class anim {
-        public static final int slide_in_from_bottom=0x7f040000;
-        public static final int slide_in_from_top=0x7f040001;
-        public static final int slide_out_to_bottom=0x7f040002;
-        public static final int slide_out_to_top=0x7f040003;
+        public static final int list_anim=0x7f040000;
+        public static final int list_anim_layout=0x7f040001;
+        public static final int slide_in_from_bottom=0x7f040002;
+        public static final int slide_in_from_top=0x7f040003;
+        public static final int slide_out_to_bottom=0x7f040004;
+        public static final int slide_out_to_top=0x7f040005;
     }
     public static final class array {
         public static final int pingjiao_spinner=0x7f0a0000;
@@ -174,7 +176,8 @@ containing a value of this type.
         public static final int holo_blue_darker=0x7f08000b;
         public static final int holo_blue_lighter=0x7f080009;
         public static final int holo_green_lighter=0x7f08000a;
-        public static final int searchbooks_item_background=0x7f08000c;
+        public static final int searchbooks_child_background=0x7f08000d;
+        public static final int searchbooks_group_background=0x7f08000c;
         public static final int white=0x7f080006;
     }
     public static final class dimen {

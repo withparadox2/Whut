@@ -8,57 +8,6 @@
         style="@style/ActionBar">
         
     </com.markupartist.android.widget.ActionBar>
-    <RelativeLayout 
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:layout_margin="5dp"
-        android:orientation="horizontal">
-	    <Button 
-	        android:id="@+id/search_book_button"
-	        android:layout_width="60dp"
-	        android:layout_height="32dp"
-	        android:layout_gravity="center_vertical"
-	        android:text="@string/search_book_button"
-	        style="@style/customButtonStyle"
-            android:textSize="12sp"	
-            android:layout_alignParentRight="true"
-	       />     
-	    <EditText 
-	        android:id="@+id/search_book_edittext"
-	        android:layout_width="fill_parent"
-	        android:layout_height="40dp"
-	        android:layout_gravity="center_vertical"
-	        android:layout_marginRight="8dp"
-		    android:background="@drawable/edit_text_bg"
-		    android:textSize="17sp"		    
-		    android:textColor="@color/white"
-			android:imeOptions="actionSearch" 
-		    android:inputType="text"
-		    android:layout_toLeftOf="@id/search_book_button"/>
-		<LinearLayout 
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_alignRight="@id/search_book_edittext"
-		    android:layout_alignBottom="@id/search_book_edittext"
-		    android:layout_alignTop="@id/search_book_edittext"	
-		    android:layout_marginRight="5dp"
-		    android:gravity="center"		    		    
-		    android:orientation="horizontal">
-			   <Button 
-				    android:contentDescription="@string/imagebutton_content_description"
-				    android:layout_width="wrap_content"
-				    android:layout_height="20dp"
-				    android:paddingLeft="3dp"
-				    android:paddingRight="3dp"
-				    android:background="@drawable/search_popup_method"
-				    android:text="题名"
-				    android:textSize="11sp"
-				    android:id="@+id/popup_button"/> 
-		</LinearLayout>
-
-    </RelativeLayout>
-
-
     
     <ExpandableListView
         android:id="@+id/expandable_listview"

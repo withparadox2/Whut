@@ -10,7 +10,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:padding="5dp"
-        android:background="@color/holo_green_lighter">
+        android:background="@color/searchbooks_child_background">
         
 		<TextView 
 		    android:id="@+id/book_code"

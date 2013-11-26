@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
 	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:background="@color/black">
+	    android:layout_height="wrap_content">
 
   
     <LinearLayout 
@@ -16,7 +15,7 @@
         android:paddingLeft="8dp"
         android:paddingRight="43dp"
         android:id="@+id/book_text_layout"
-        android:background="@color/white">
+        android:background="@color/searchbooks_group_background">
 		<TextView 
 		    android:id="@+id/book_detail"
 		    android:textColor="@color/black"

@@ -100,7 +100,7 @@ public class SearchBookActivity extends ExpandableListActivity {
                 searchBookEdittext = (EditText) findViewById(R.id.search_book_edittext);
                 actionbar = (ActionBar) findViewById(R.id.search_book_actionbar);
         
-                actionbar.setHomeAction(new IntentAction(this, LiXianHomeActivity.createIntent(this), R.drawable.ic_actionbar_whut));
+                actionbar.setHomeAction(new IntentAction(this, MainActivity.createIntent(this), R.drawable.ic_actionbar_whut));
                 actionbar.setDisplayHomeAsUpEnabled(true);
                 actionbar.setTitle("Í¼ÊéËÑË÷");
         

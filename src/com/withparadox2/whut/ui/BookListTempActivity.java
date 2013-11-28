@@ -48,7 +48,7 @@ public class BookListTempActivity extends Activity {
 		mDbHelper = new BookListDatabase(this);
 		mDbHelper.fetchBookList();
 		actionbar = (ActionBar) findViewById(R.id.search_book_actionbar);
-		actionbar.setHomeAction(new IntentAction(this, LiXianHomeActivity
+		actionbar.setHomeAction(new IntentAction(this, MainActivity
 		        .createIntent(this), R.drawable.ic_actionbar_whut));
 		actionbar.setDisplayHomeAsUpEnabled(true);
 		actionbar.setTitle("Òª½èÍ¼Êé");

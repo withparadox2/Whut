@@ -46,7 +46,7 @@ public class LiXianKeBiaoActivity extends Activity {
 			WhutGlobal.htmlData = save.getCustomArray();
 		}
 		actionBar = (ActionBar) findViewById(R.id.kebiao_actionbar);
-		actionBar.setHomeAction(new IntentAction(this, LiXianHomeActivity
+		actionBar.setHomeAction(new IntentAction(this, MainActivity
 		        .createIntent(this), R.drawable.ic_actionbar_whut));
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle("ÀëÏß¿Î±í");

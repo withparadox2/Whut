@@ -120,34 +120,28 @@
 		    android:layout_marginTop="20dp"
 		    android:layout_centerHorizontal="true"
 		    android:layout_below="@id/loginUserPassword">
+            <CheckBox
+                android:layout_marginTop="10dp" 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+			    android:layout_centerVertical="true"
+                android:id="@+id/remember_password"
+                android:checked="false"
+                android:button ="@drawable/btn_check_holo_dark"
+                android:text="@string/remember_password_checkbox"/>			   
 			<Button
 			    style="@style/customButtonStyle"
 			    android:id="@+id/loginButton"
 			    android:layout_width="100dp"
 			    android:layout_height="30dp"
-			    android:layout_alignParentLeft="true"
-			    android:layout_centerVertical="true"
-			    android:text="@string/login_button"/> 
-			<Button
-			    style="@style/customButtonStyle"			    
-			    android:id="@+id/lixian_kebiao_button"
-			    android:layout_width="100dp"
-			    android:layout_height="30dp"
 			    android:layout_alignParentRight="true"
 			    android:layout_centerVertical="true"
-			    android:text="@string/offline_kebiao_button"/>   
+			    android:text="@string/login_button"/> 
+			
 		</RelativeLayout>
 		
-	    <CheckBox
-	        android:layout_marginTop="10dp" 
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:id="@+id/remember_password"
-	        android:layout_alignLeft="@id/two_login_buttons"
-	        android:layout_below="@id/two_login_buttons"
-	        android:checked="false"
-	        android:button ="@drawable/btn_check_holo_dark"
-	        android:text="@string/remember_password_checkbox"/>
+	   
 	</RelativeLayout>
 	</ScrollView>
 </RelativeLayout>

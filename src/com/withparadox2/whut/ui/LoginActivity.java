@@ -249,8 +249,7 @@ public class LoginActivity extends Activity {
 					myThread = new HttpOperateThread(LoginActivity.this,
 					        myHandler, httpOperation);
 					progressDialog = new ProgressDialog(LoginActivity.this);
-					progressDialog
-					        .setOnCancelListener(new DialogCancelListener());
+					progressDialog.setOnCancelListener(new DialogCancelListener());
 					// isJumping = true;
 					myThread.start();
 				} else {

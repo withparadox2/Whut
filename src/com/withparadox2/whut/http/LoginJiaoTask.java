@@ -21,6 +21,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import com.withparadox2.whut.util.Helper;
+import com.withparadox2.whut.util.GlobalConstant;
 
 import android.os.AsyncTask;
 
@@ -40,23 +41,23 @@ public class LoginJiaoTask  extends AsyncTask<String, Void, String>{
 	@Override
     protected String doInBackground(String... params) {
 	    // TODO Auto-generated method stub
-        HttpPost httpPost = new HttpPost(HttpInformation.LoginJiaoUrl);
+        HttpPost httpPost = new HttpPost(GlobalConstant.LoginJiaoUrl);
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
 		nameValuePairs.add(new BasicNameValuePair("password", params[1]));
 		nameValuePairs.add(new BasicNameValuePair("userName", params[0]));
 		nameValuePairs.add(new BasicNameValuePair("type", "xs"));
-		httpPost.setHeader("Referer", HttpInformation.LoginJiaoUrl);
+		httpPost.setHeader("Referer", GlobalConstant.LoginJiaoUrl);
 		httpPost.setHeader("Accept-Language", "zh-CN");
 		try {
 	        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
 	        DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
 	        HttpParams httpParams = defaultHttpClient.getParams();
-	        HttpConnectionParams.setConnectionTimeout(httpParams, HttpInformation.TIMEOUT_SECONDS * 1000);
-	        HttpConnectionParams.setSoTimeout(httpParams, HttpInformation.TIMEOUT_SECONDS * 1000);
+	        HttpConnectionParams.setConnectionTimeout(httpParams, GlobalConstant.TIMEOUT_SECONDS * 1000);
+	        HttpConnectionParams.setSoTimeout(httpParams, GlobalConstant.TIMEOUT_SECONDS * 1000);
 			HttpResponse httpResponse = defaultHttpClient.execute(httpPost);
             Helper.getCookie(defaultHttpClient);
 			int statusCode = httpResponse.getStatusLine().getStatusCode();
-			if (statusCode == HttpInformation.HTTP_STATUS_OK) {
+			if (statusCode == GlobalConstant.HTTP_STATUS_OK) {
                return getUserInfo(EntityUtils.toString(httpResponse.getEntity()));
             } else {
                 throw new IOException(httpResponse.getStatusLine().getReasonPhrase());

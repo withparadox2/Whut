@@ -59,10 +59,8 @@ public class WelcomeJiaoActivity extends Activity {
 		chengJiButton = (Button) findViewById(R.id.chengji_button);
 		pingjiaoButton = (Button) findViewById(R.id.pingjiao_button);
 		actionBar = (ActionBar) findViewById(R.id.welcomen_actionbar);
-		actionBar.setHomeActionPic(new IntentAction(this, createIntent(this),
-		        R.drawable.ic_actionbar_whut));
+        actionBar.setHomeAction(new IntentAction(this, MainActivity.createIntent(this), R.drawable.ic_actionbar_whut));
 		actionBar.setTitle("欢迎您：" + getIntent().getExtras().get("UserName") + "同学");
-		actionBar.addAction(new ExitAppAction());
 		myHandler = new UpdateUIHandler(Looper.myLooper());
 
 		timeTableButton.setOnClickListener(new TimeTableOnClickListener());
@@ -72,20 +70,6 @@ public class WelcomeJiaoActivity extends Activity {
 		httpOperation = new HttpOperation(this);
 	}
 
-	public class ExitAppAction extends AbstractAction {
-
-		public ExitAppAction() {
-			super(R.drawable.ic_actionbar_exit);
-			// TODO Auto-generated constructor stub
-		}
-
-		@Override
-		public void performAction(View view) {
-			// TODO Auto-generated method stub
-			exitDialog();
-		}
-
-	}
 
 	public static Intent createIntent(Context context) {
 		Intent i = new Intent(context, WelcomeJiaoActivity.class);
@@ -221,41 +205,5 @@ public class WelcomeJiaoActivity extends Activity {
 		}
 	}
 
-	public void exitDialog() {
-		Dialog dialog = new AlertDialog.Builder(WelcomeJiaoActivity.this)
-		        .setIcon(R.drawable.ic_actionbar_whut)
-		        .setTitle("Hello!")
-		        .setMessage("你要去何处？")
-		        .setPositiveButton("注销", new DialogInterface.OnClickListener() {
-			        @Override
-			        public void onClick(DialogInterface arg0, int arg1) {
-				        // TODO Auto-generated method stub
-				        Intent i = new Intent();
-				        i.setClass(WelcomeJiaoActivity.this,
-				                LoginActivity.class);
-				        startActivity(i);
-				        WelcomeJiaoActivity.this.finish();
-			        }
-		        })
-		        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-
-			        @Override
-			        public void onClick(DialogInterface dialog, int which) {
-				        // TODO Auto-generated method stub
-				        dialog.cancel();
-			        }
-		        }).create();
-		dialog.show();
-
-	}
-
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// TODO Auto-generated method stub
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			exitDialog();
-		}
-		return true;
-	}
 
 }

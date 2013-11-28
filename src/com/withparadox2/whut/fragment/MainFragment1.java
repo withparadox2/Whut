@@ -1,37 +1,43 @@
 package com.withparadox2.whut.fragment;
 
-import java.util.List;
-
-import com.markupartist.android.widget.ActionBar;
-import com.withparadox2.whut.R;
-import com.withparadox2.whut.dao.UserInfoAdapter;
-import com.withparadox2.whut.dao.WhutGlobal;
-import com.withparadox2.whut.http.HttpOperateThread;
-import com.withparadox2.whut.http.HttpOperation;
-import com.withparadox2.whut.http.LoginJiaoTask;
-import com.withparadox2.whut.ui.LoginActivity;
-import com.withparadox2.whut.ui.LoginActivity.UpdateUIHandler;
-import com.withparadox2.whut.ui.MainActivity;
-import com.withparadox2.whut.ui.WelcomeJiaoActivity;
-import com.withparadox2.whut.util.Helper;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+
+import com.markupartist.android.widget.ActionBar;
+import com.withparadox2.whut.R;
+import com.withparadox2.whut.adapter.LoginPopupListAdapter;
+import com.withparadox2.whut.dao.LoginDbHelper;
+import com.withparadox2.whut.dao.UserInfoAdapter;
+import com.withparadox2.whut.http.HttpOperateThread;
+import com.withparadox2.whut.http.HttpOperation;
+import com.withparadox2.whut.http.LoginJiaoTask;
+import com.withparadox2.whut.ui.WelcomeJiaoActivity;
+import com.withparadox2.whut.util.GlobalConstant;
+import com.withparadox2.whut.util.Helper;
 
 public class MainFragment1 extends Fragment {
 	private Activity activity;
@@ -49,13 +55,12 @@ public class MainFragment1 extends Fragment {
 	private PopupWindow popupWindow;
 	private boolean isPopupOrNot = false;
 	private ListView popupListView;
-	private List<String> userIdList;
-	private List<String> userPasswordList;
+	private ArrayList<String> userIdList;
+	private ArrayList<String> userPasswordList;
 	private UserInfoAdapter dbHelper;
 	private boolean isRememberOrNot = false;
 	private ProgressDialog progressDialog;
 	private HttpOperateThread myThread;
-	private UpdateUIHandler myHandler;
 	private HttpOperation httpOperation;
 	private ActionBar actionBar;
 	private boolean cancelDialogByHand = false;
@@ -66,6 +71,10 @@ public class MainFragment1 extends Fragment {
 	private Callback callback;
 	private boolean isLoading;
 	private LoginJiaoTask loginJiaoTask;
+    
+    private LoginPopupListAdapter myListAdapter;
+    private LoginDbHelper loginDbHelper;
+
     
     /*
      * 登陆时候调用此方法，MainActivity实现此接口
@@ -80,6 +89,9 @@ public class MainFragment1 extends Fragment {
 	    // TODO Auto-generated method stub
 	    super.onCreate(savedInstanceState);
 	    activity = getActivity();
+	    userIdList = new ArrayList<String>();
+		userPasswordList = new ArrayList<String>();
+        loginDbHelper = new LoginDbHelper(activity, userIdList, userPasswordList);
 	  
     }
 
@@ -103,6 +115,7 @@ public class MainFragment1 extends Fragment {
 	    // TODO Auto-generated method stub
         View v = inflater.inflate(R.layout.main_fragment_1, container, false);
         initialize(v);
+        setForJiaoOrTu();
         return v;
     }
 	
@@ -122,15 +135,109 @@ public class MainFragment1 extends Fragment {
     private void initialize(View v) {
 		userIdEdit = (EditText) v.findViewById(R.id.loginUserId);
 		userPasswordEdit = (EditText) v.findViewById(R.id.loginUserPassword);
+		
 		submitButton = (Button) v.findViewById(R.id.loginButton);
 		submitButton.setOnClickListener(new SubmitOnClickListener());
+		
 		popupButton = (ImageButton) v.findViewById(R.id.popup_button);
+		popupButton.setOnClickListener(new PopupOnClickListener());
+		
 		checkBox = (CheckBox) v.findViewById(R.id.remember_password);
-		liXianButton = (Button) v.findViewById(R.id.lixian_kebiao_button);
 		userIdTextView = (TextView) v.findViewById(R.id.login_userid_text);
 		ToTuButton = (Button) v.findViewById(R.id.to_tu_button);
 		ToJiaoButton = (Button) v.findViewById(R.id.to_jiao_button);
+        
+		submitButton.setOnClickListener(new SubmitOnClickListener());
+		popupButton.setOnClickListener(new PopupOnClickListener());
+		checkBox.setOnCheckedChangeListener(new RememberCheckedListener());
+		ToTuButton.setOnClickListener(new ToTuOnClickListener());
+		ToJiaoButton.setOnClickListener(new ToJiaoOnClickListener());
+		userIdEdit.setOnClickListener(new EditClickListener());
+        
+		myListAdapter = new LoginPopupListAdapter(activity, userIdList, userPasswordList, new LoginPopupListAdapter.LoginPopupCallback() {
+			
+			@Override
+			public void popupTextClick(String userIdText, String userPasswordText) {
+				// TODO Auto-generated method stub
+				popupTextClickMethod(userIdText, userPasswordText);
+			}
+			
+			@Override
+			public void popupDeleteButtonClick(String userIdText) {
+				// TODO Auto-generated method stub
+				loginDbHelper.deleteUserItem(jiaoTuFlag, userIdText);
+                myListAdapter.notifyDataSetChanged();
+			}
+		});
 	}
+    
+	class EditClickListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			if (!jiaoTuFlag) {
+				if (userIdEdit.getText().length() == 0) {
+					userIdEdit.setText("0000");
+					userIdEdit.setSelection(4);
+				}
+			}
+		}
+
+	}
+
+	public class ToTuOnClickListener implements OnClickListener {
+
+		@Override
+		public void onClick(View arg0) {
+			// TODO Auto-generated method stub
+			if (jiaoTuFlag) {
+				jiaoTuFlag = !jiaoTuFlag;
+				setForJiaoOrTu();
+			}
+		}
+
+	}
+
+	public class ToJiaoOnClickListener implements OnClickListener {
+
+		@Override
+		public void onClick(View arg0) {
+			// TODO Auto-generated method stub
+			if (!jiaoTuFlag) {
+				jiaoTuFlag = !jiaoTuFlag;
+				setForJiaoOrTu();
+			}
+		}
+
+	}
+    
+	private class RememberCheckedListener implements OnCheckedChangeListener {
+
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView,
+		        boolean isChecked) {
+			// TODO Auto-generated method stub
+			isRememberOrNot = isChecked;
+		}
+
+	}
+    
+    private void popupTextClickMethod(String userIdText, String userPasswordText){
+		popupWindow.dismiss();
+		isPopupOrNot = false;
+		userIdEdit.setText(userIdText);
+		userIdEdit.setSelection(userIdEdit.getText().length());
+		if (userPasswordText.equals("")) {
+			checkBox.setChecked(false);
+			isRememberOrNot = false;
+		} else {
+			checkBox.setChecked(true);
+			isRememberOrNot = true;
+		}
+		userPasswordEdit.setText(userPasswordText);
+		userPasswordEdit.setSelection(userPasswordEdit.getText().length());
+    }
 
 	private class SubmitOnClickListener implements OnClickListener {
 
@@ -171,5 +278,54 @@ public class MainFragment1 extends Fragment {
     		return false;
     	}
     }
+    
+    
+	private void updateIdAndPassword(String table) {
+        loginDbHelper.updateIdAndPassword(table, userIdText, userPasswordText, isRememberOrNot);
+        loginDbHelper.getListFromDb(table);
+		if (myListAdapter != null)
+			myListAdapter.notifyDataSetChanged();
+	}
 	
+	private class PopupOnClickListener implements OnClickListener {
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			if (popupWindow == null) {
+				popupListView = new ListView(activity);
+				popupListView.setAdapter(myListAdapter);
+				popupWindow = new PopupWindow(popupListView, userIdEdit.getWidth(), LayoutParams.WRAP_CONTENT);
+				popupWindow.showAsDropDown(userIdEdit);
+				isPopupOrNot = true;
+			} else if (isPopupOrNot) {
+				popupWindow.dismiss();
+				isPopupOrNot = false;
+			} else if (!isPopupOrNot) {
+				popupWindow.showAsDropDown(userIdEdit);
+				isPopupOrNot = true;
+			}
+		}
+	}
+    
+	private void setForJiaoOrTu() {
+		// 选择教务处或者图书馆
+		if (jiaoTuFlag) {
+			userIdTextView.setText("学号  ");
+			userIdEdit.setHint("请输入学号");
+			loginDbHelper.getListFromDb(UserInfoAdapter.DATABASE_JIAO_TABLE_NAME);
+			ToTuButton.setBackgroundResource(R.drawable.tujieo_focused_bg);
+			ToJiaoButton.setBackgroundResource(R.drawable.tujiao_normal_bg);
+		} else {
+			userIdTextView.setText("卡号  ");
+			userIdEdit.setHint("请输入卡号(前加4个0)");
+			loginDbHelper.getListFromDb(UserInfoAdapter.DATABASE_TU_TABLE_NAME);
+			ToTuButton.setBackgroundResource(R.drawable.tujiao_normal_bg);
+			ToJiaoButton.setBackgroundResource(R.drawable.tujieo_focused_bg);
+		}
+		userIdEdit.setText("");
+		userPasswordEdit.setText("");
+		if (myListAdapter != null)
+			myListAdapter.notifyDataSetChanged();
+	}
+    
 }

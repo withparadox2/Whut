@@ -17,7 +17,7 @@ public class InformationActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.information);
 		actionBar = (ActionBar) findViewById(R.id.information_actionbar);
-		actionBar.setHomeAction(new IntentAction(this, LoginActivity
+		actionBar.setHomeAction(new IntentAction(this, MainActivity
 		        .createIntent(this), R.drawable.ic_actionbar_whut));
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle("WHUT beta");

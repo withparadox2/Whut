@@ -2,14 +2,10 @@ package com.withparadox2.whut.ui;
 
 import java.util.ArrayList;
 
-import com.markupartist.android.widget.ActionBar;
-import com.markupartist.android.widget.ActionBar.AbstractAction;
-import com.withparadox2.whut.R;
-import com.withparadox2.whut.adapter.MainFragmentPagerAdapter;
-import com.withparadox2.whut.fragment.MainFragment1;
-import com.withparadox2.whut.fragment.MainFragment2;
-import com.withparadox2.whut.util.Helper;
-
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -17,6 +13,15 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.KeyEvent;
 import android.view.View;
+
+import com.markupartist.android.widget.ActionBar;
+import com.markupartist.android.widget.ActionBar.AbstractAction;
+import com.withparadox2.whut.R;
+import com.withparadox2.whut.adapter.MainFragmentPagerAdapter;
+import com.withparadox2.whut.fragment.MainFragment1;
+import com.withparadox2.whut.fragment.MainFragment2;
+import com.withparadox2.whut.util.GlobalConstant;
+import com.withparadox2.whut.util.Helper;
 
 
 public class MainActivity extends FragmentActivity implements MainFragment1.Callback{
@@ -28,6 +33,9 @@ public class MainActivity extends FragmentActivity implements MainFragment1.Call
     private MainFragment2 fragment2;
 	private ActionBar actionBar;
     
+	public static final int PAGE_DEFAULT = -1;
+	public static final int PAGE_FIRST = 0;
+	public static final int PAGE_SECOND = 1;
 	@Override
     protected void onCreate(Bundle arg0) {
 	    // TODO Auto-generated method stub
@@ -37,11 +45,21 @@ public class MainActivity extends FragmentActivity implements MainFragment1.Call
         initViewPager();
     }
     
+	
+	@Override
+    protected void onResume() {
+	    // TODO Auto-generated method stub
+	    super.onResume();
+        setCurrentPage();
+    }
+
+
 	private void initActionBar() {
 	    // TODO Auto-generated method stub
 	    actionBar = (ActionBar)findViewById(R.id.actionbar);
         actionBar.setTitle("WHUT");
         actionBar.setHomeAction(new HomeAction(R.drawable.ic_actionbar_whut));
+        actionBar.addAction(new AboutAction());
     }
 	
 	class HomeAction extends AbstractAction{
@@ -58,6 +76,30 @@ public class MainActivity extends FragmentActivity implements MainFragment1.Call
         }
 		
 	}
+	public class AboutAction extends AbstractAction {
+
+		public AboutAction() {
+			super(R.drawable.ic_actionbar_about);
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		public void performAction(View view) {
+			// TODO Auto-generated method stub
+			Intent i = new Intent();
+			i.setClass(MainActivity.this, InformationActivity.class);
+			startActivity(i);
+		}
+
+	}
+    
+	public static Intent createIntent(Context context) {
+		Intent i = new Intent(context, MainActivity.class);
+		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		return i;
+	}
+    
+	
 
 	private void initViewPager(){
 	    viewPager = (ViewPager)findViewById(R.id.main_viewpager);
@@ -71,6 +113,8 @@ public class MainActivity extends FragmentActivity implements MainFragment1.Call
         viewPager.setOnPageChangeListener(new MyPageChangeListener());
 	}
     
+	
+    
 	public class MyPageChangeListener implements OnPageChangeListener{
 
 		@Override
@@ -78,8 +122,10 @@ public class MainActivity extends FragmentActivity implements MainFragment1.Call
 	        // TODO Auto-generated method stub
 			if(index == 0){
 				actionBar.setTitle("WHUT");
+				saveCurrentPageIndex(PAGE_FIRST);
 			}else{
 				actionBar.setTitle("其他功能");
+				saveCurrentPageIndex(PAGE_SECOND);
 			}
         }
 
@@ -113,7 +159,20 @@ public class MainActivity extends FragmentActivity implements MainFragment1.Call
 			return super.onKeyDown(keyCode, event);
 		}
     }
-
-	
     
+	private void saveCurrentPageIndex(int index){
+		SharedPreferences sharedPreferences = getSharedPreferences(GlobalConstant.SP_LOCAL_TEMP, Context.MODE_PRIVATE);
+		Editor editor = sharedPreferences.edit();
+		editor.putInt(GlobalConstant.CURRENT_PAGE_INDEX, index);
+		editor.commit();
+	}
+	
+	private void setCurrentPage(){
+		SharedPreferences sharedPreferences = getSharedPreferences(GlobalConstant.SP_LOCAL_TEMP, Context.MODE_PRIVATE);
+		int index = sharedPreferences.getInt(GlobalConstant.CURRENT_PAGE_INDEX, PAGE_DEFAULT);
+        if(index == PAGE_SECOND){
+        	viewPager.setCurrentItem(index);
+        }
+	}
+
 }

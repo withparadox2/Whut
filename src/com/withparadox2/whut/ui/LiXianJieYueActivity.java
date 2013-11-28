@@ -50,7 +50,7 @@ public class LiXianJieYueActivity extends Activity {
 			WhutGlobal.htmlData = save.getCustomArray();
 		}
 		actionBar = (ActionBar) findViewById(R.id.xujie_actionbar);
-		actionBar.setHomeAction(new IntentAction(this, LoginActivity
+		actionBar.setHomeAction(new IntentAction(this, MainActivity
 		        .createIntent(this), R.drawable.ic_actionbar_whut));
 		actionBar.setDisplayHomeAsUpEnabled(true);
 

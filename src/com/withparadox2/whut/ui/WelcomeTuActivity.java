@@ -52,10 +52,9 @@ public class WelcomeTuActivity extends Activity {
 		jieyueChaxunButton = (Button) findViewById(R.id.jieyue_chaxun_button);
 		tushuXujieButton = (Button) findViewById(R.id.tushu_xujie_button);
 		actionBar = (ActionBar) findViewById(R.id.welcometu_actionbar);
-		actionBar.setHomeActionPic(new IntentAction(this, createIntent(this),
+		actionBar.setHomeActionPic(new IntentAction(this, MainActivity.createIntent(this),
 		        R.drawable.ic_actionbar_whut));
 		actionBar.setTitle("»¶Ó­Äú£º" + WhutGlobal.USER_NAME + "Í¬Ñ§");
-		actionBar.addAction(new ExitAppAction());
 		myHandler = new UpdateUIHandler(Looper.myLooper());
 		jieyueChaxunButton.setOnClickListener(new JieYueOnClickListener());
 		tushuXujieButton.setOnClickListener(new XuJieOnClickListener());
@@ -76,20 +75,6 @@ public class WelcomeTuActivity extends Activity {
 		return i;
 	}
 
-	public class ExitAppAction extends AbstractAction {
-
-		public ExitAppAction() {
-			super(R.drawable.ic_actionbar_exit);
-			// TODO Auto-generated constructor stub
-		}
-
-		@Override
-		public void performAction(View view) {
-			// TODO Auto-generated method stub
-			exitActivity();
-		}
-
-	}
 
 	class JieYueOnClickListener implements OnClickListener {
 
@@ -192,20 +177,6 @@ public class WelcomeTuActivity extends Activity {
 		}
 	}
 
-	public void exitActivity() {
-		Intent i = new Intent();
-		i.setClass(WelcomeTuActivity.this, LoginActivity.class);
-		startActivity(i);
-		WelcomeTuActivity.this.finish();
-	}
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// TODO Auto-generated method stub
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			exitActivity();
-		}
-		return true;
-	}
 
 }

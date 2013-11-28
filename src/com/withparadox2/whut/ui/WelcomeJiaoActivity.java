@@ -61,7 +61,7 @@ public class WelcomeJiaoActivity extends Activity {
 		actionBar = (ActionBar) findViewById(R.id.welcomen_actionbar);
 		actionBar.setHomeActionPic(new IntentAction(this, createIntent(this),
 		        R.drawable.ic_actionbar_whut));
-		actionBar.setTitle("欢迎您：" + WhutGlobal.USER_NAME + "同学");
+		actionBar.setTitle("欢迎您：" + getIntent().getExtras().get("UserName") + "同学");
 		actionBar.addAction(new ExitAppAction());
 		myHandler = new UpdateUIHandler(Looper.myLooper());
 

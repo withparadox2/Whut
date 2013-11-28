@@ -45,16 +45,21 @@
              android:theme="@android:style/Theme.NoTitleBar">                     
            
          </activity>
+         <activity
+             android:name=".ui.MainActivity"
+             android:theme="@android:style/Theme.NoTitleBar">                     
+           <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>          
+         </activity>
 
          <activity
             android:name=".ui.LoginActivity"
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" 
             android:configChanges="orientation|keyboardHidden">
-             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+           
              
         </activity>
     </application>

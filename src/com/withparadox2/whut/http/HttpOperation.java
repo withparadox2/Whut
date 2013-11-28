@@ -180,8 +180,7 @@ public class HttpOperation {
 		httpPost = new HttpPost("http://202.114.89.11/opac/reader/doLogin");
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
 		nameValuePairs.add(new BasicNameValuePair("rdid", WhutGlobal.USER_ID));
-		nameValuePairs.add(new BasicNameValuePair("rdPasswd",
-		        WhutGlobal.USER_PASSWORD));
+		nameValuePairs.add(new BasicNameValuePair("rdPasswd",WhutGlobal.USER_PASSWORD));
 		nameValuePairs.add(new BasicNameValuePair("returnUrl", ""));
 		BasicHttpParams basicHttpParams = new BasicHttpParams();
 		basicHttpParams.setParameter("rdid", "vikaspatidar");

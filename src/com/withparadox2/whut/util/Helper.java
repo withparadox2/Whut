@@ -1,12 +1,21 @@
 package com.withparadox2.whut.util;
 
+import java.util.List;
+
+import org.apache.http.client.HttpClient;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.AbstractHttpClient;
+
+import com.withparadox2.whut.dao.WhutGlobal;
+
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 import android.widget.Toast;
 
 public class Helper {
-
     public static boolean isNetworkConnected(Context context) {
         if (context == null) {
             return false;
@@ -16,6 +25,20 @@ public class Helper {
         NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
         return (activeNetInfo != null) && (activeNetInfo.isConnected());
     }
+    
+	public static void getCookie(HttpClient httpClient) {
+		List<Cookie> cookies = ((AbstractHttpClient) httpClient).getCookieStore().getCookies();
+		if (cookies.isEmpty()) {
+			System.out.println("None");
+		} else {
+			for (int i = 0; i < cookies.size(); i++) {
+				if (cookies.get(i).getName().toString().equals("JSESSIONID")) {
+					WhutGlobal.JSESSIONID = cookies.get(i).getValue().toString();
+					Log.i("HttpOperation", WhutGlobal.JSESSIONID);
+				}
+			}
+		}
+	}
     
     public static void showToast(Context context, String message, int duration) {
         Toast.makeText(context, message, duration).show();

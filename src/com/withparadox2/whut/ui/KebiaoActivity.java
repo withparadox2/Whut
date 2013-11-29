@@ -32,17 +32,22 @@ import com.withparadox2.whut.R.id;
 import com.withparadox2.whut.R.layout;
 import com.withparadox2.whut.dao.SaveTwoDimArray;
 import com.withparadox2.whut.dao.WhutGlobal;
+import com.withparadox2.whut.http.FetchKebiaoTask;
 import com.withparadox2.whut.view.MyHScrollView;
 import com.withparadox2.whut.view.MyHScrollView.OnScrollChangedListener;
 
-public class KebiaoActivity extends Activity {
+public class KebiaoActivity extends Activity implements FetchKebiaoTask.Callback{
 	/** Called when the activity is first created. */
 	ListView mListView1;
 	MyAdapter myAdapter;
 	RelativeLayout mHead;
-	String[][] result;
+	String[][] result = new String[4][5];
 	private ActionBar actionBar;
 	private String TAG = "ScrollTableActivity";
+    
+	private FetchKebiaoTask fetchKebiaoTask;
+	
+	private int dataLength = 0;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -64,6 +69,8 @@ public class KebiaoActivity extends Activity {
 		mListView1.setOnTouchListener(new ListViewAndHeadViewTouchLinstener());
 		myAdapter = new MyAdapter(this, R.layout.kebiao_item);
 		mListView1.setAdapter(myAdapter);
+        
+		getKeBiaoData();
 	}
 
 	public class DownLoadKeBiaoAction extends AbstractAction {
@@ -131,7 +138,7 @@ public class KebiaoActivity extends Activity {
 		@Override
 		public int getCount() {
 			// TODO Auto-generated method stub
-			return 4;
+			return dataLength;
 		}
 
 		@Override
@@ -232,7 +239,18 @@ public class KebiaoActivity extends Activity {
 		}
 	}// end class my
 
-	private void updateKebiaoData() {
-
+	private void getKeBiaoData() {
+		fetchKebiaoTask = new FetchKebiaoTask(KebiaoActivity.this);
+        actionBar.setTitle("正在获取数据...");
+		fetchKebiaoTask.execute();
 	}
+
+	@Override
+    public void onPostExecute(String[][] result) {
+	    // TODO Auto-generated method stub
+        this.result = result;
+        dataLength = 4;
+        actionBar.setTitle("课表");
+        myAdapter.notifyDataSetChanged();
+    }
 }

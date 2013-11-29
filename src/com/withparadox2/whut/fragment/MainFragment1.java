@@ -263,8 +263,8 @@ public class MainFragment1 extends Fragment {
 		public void onPostExecute(String result) {
 			// TODO Auto-generated method stub             
             isLoading = false;
+            Helper.saveValueInSharePreference(activity, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_NAME, result);
 			Intent i = new Intent();
-            i.putExtra("UserName", result);
 			i.setClass(activity, WelcomeJiaoActivity.class);
 			startActivity(i);
 		}
@@ -313,14 +313,14 @@ public class MainFragment1 extends Fragment {
 			userIdTextView.setText("学号  ");
 			userIdEdit.setHint("请输入学号");
 			loginDbHelper.getListFromDb(UserInfoAdapter.DATABASE_JIAO_TABLE_NAME);
-			ToTuButton.setBackgroundResource(R.drawable.tujieo_focused_bg);
-			ToJiaoButton.setBackgroundResource(R.drawable.tujiao_normal_bg);
+			ToTuButton.setBackgroundResource(R.drawable.to_tu_button_normal);
+			ToJiaoButton.setBackgroundResource(R.drawable.to_jiao_button_selected);
 		} else {
 			userIdTextView.setText("卡号  ");
 			userIdEdit.setHint("请输入卡号(前加4个0)");
 			loginDbHelper.getListFromDb(UserInfoAdapter.DATABASE_TU_TABLE_NAME);
-			ToTuButton.setBackgroundResource(R.drawable.tujiao_normal_bg);
-			ToJiaoButton.setBackgroundResource(R.drawable.tujieo_focused_bg);
+			ToTuButton.setBackgroundResource(R.drawable.to_tu_button_selectedl);
+			ToJiaoButton.setBackgroundResource(R.drawable.to_jiao_button_normal);
 		}
 		userIdEdit.setText("");
 		userPasswordEdit.setText("");

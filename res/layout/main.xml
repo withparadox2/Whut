@@ -14,16 +14,15 @@
             android:id="@+id/main_viewpager"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />    
+       
         <TextView 
             android:id="@+id/footer_view"
-            android:layout_height="30dp"
-            android:layout_width="fill_parent"
-            android:text="asdfas"    
+            android:layout_height="7dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="18dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/main_page_indicator_1"
             android:layout_alignParentBottom="true"/>
     </RelativeLayout>
     
-    
-   
-
-
 </LinearLayout>

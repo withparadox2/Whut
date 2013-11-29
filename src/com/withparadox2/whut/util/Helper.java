@@ -10,6 +10,7 @@ import com.withparadox2.whut.dao.WhutGlobal;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
@@ -50,5 +51,17 @@ public class Helper {
 
     public static void showLongToast(Context context, String message) {
         showToast(context, message, Toast.LENGTH_LONG);
+    }
+    
+    public static void saveValueInSharePreference(Context ctx, String spName, String Key, String value){
+		SharedPreferences sharedPreferences = ctx.getSharedPreferences(spName, Context.MODE_PRIVATE);
+		Editor editor = sharedPreferences.edit();
+		editor.putString(Key, value);
+		editor.commit();
+    }
+    
+    public static String getValueInSharePreference(Context ctx, String spName, String Key, String value){
+		SharedPreferences sharedPreferences = ctx.getSharedPreferences(spName, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(Key, value);
     }
 }

@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.TextView;
 
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.AbstractAction;
@@ -32,6 +33,7 @@ public class MainActivity extends FragmentActivity implements MainFragment1.Call
     private MainFragment1 fragment1;
     private MainFragment2 fragment2;
 	private ActionBar actionBar;
+    private TextView footView;
     
 	public static final int PAGE_DEFAULT = -1;
 	public static final int PAGE_FIRST = 0;
@@ -43,6 +45,7 @@ public class MainActivity extends FragmentActivity implements MainFragment1.Call
 	    setContentView(R.layout.main);
         initActionBar();
         initViewPager();
+        footView = (TextView) findViewById(R.id.footer_view);
     }
     
 	
@@ -123,9 +126,11 @@ public class MainActivity extends FragmentActivity implements MainFragment1.Call
 			if(index == 0){
 				actionBar.setTitle("WHUT");
 				saveCurrentPageIndex(PAGE_FIRST);
+                footView.setBackgroundResource(R.drawable.main_page_indicator_1);
 			}else{
 				actionBar.setTitle("其他功能");
 				saveCurrentPageIndex(PAGE_SECOND);
+                footView.setBackgroundResource(R.drawable.main_page_indicator_2);
 			}
         }
 

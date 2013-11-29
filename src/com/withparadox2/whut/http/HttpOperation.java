@@ -153,6 +153,8 @@ public class HttpOperation {
 
 	public void getKebiaoHtml(String getString) throws ClientProtocolException,
 	        UnsupportedEncodingException, IOException {
+    	System.out.println( "1+get html JessionId is" + WhutGlobal.JSESSIONID);
+        getJs();
 		httpGet = new HttpGet(getString);
 		Log.i("TAG1", "innerside httpGet==null" + (httpGet == null));
 		httpGet.setHeader("Cookie", WhutGlobal.JSESSIONID);
@@ -175,6 +177,43 @@ public class HttpOperation {
 		html = EntityUtils.toString(entity, "GB2312");
 		// System.out.println("kkkkkkkkbbbbbbbbbb==="+html);
 	}
+	
+	public void getJs()throws ClientProtocolException,
+    UnsupportedEncodingException, IOException {
+        httpGet = new HttpGet("http://202.114.90.176:8080/DailyMgt/");
+        httpGet.setHeader("Cookie", WhutGlobal.JSESSIONID);
+        HttpResponse response;
+    	System.out.println( "get html JessionId is" + WhutGlobal.JSESSIONID);
+        response = httpClient.execute(httpGet);
+        List<Cookie> cookies = ((AbstractHttpClient) httpClient)
+                .getCookieStore().getCookies();
+        if (cookies.isEmpty()) {
+        	System.out.println("None");
+        } else {
+        	for (int i = 0; i < cookies.size(); i++) {
+        		if (cookies.get(i).getName().toString().equals("JSESSIONID")) {
+        			WhutGlobal.JSESSIONID = "JSESSIONID="
+        			        + cookies.get(i).getValue().toString();
+        		}
+        	}
+        	System.out.println( "get html JessionId is" + WhutGlobal.JSESSIONID);
+        }
+}
+    public String[][] getKeBiaoData() throws IndexOutOfBoundsException{
+        Document document = Jsoup.parse(html);
+        Elements trs = document.select("#weekTable tbody tr");
+        String fuck;
+             String[][] result = new String[4][5] ;
+        for(int i=0; i<4; i++){
+                Elements tds = trs.get(i).select("td");
+                for(int j=1; j<6; j++){
+                        fuck = tds.get(j).select("div").html().toString().replaceAll("◇", "\n").replaceAll("&nbsp;", "");
+                        result[i][j-1] = fuck;
+        System.out.println(fuck);
+                }
+        }
+           return result;
+   }
 
 	public void loginTu() throws ClientProtocolException, IOException {
 		httpPost = new HttpPost("http://202.114.89.11/opac/reader/doLogin");

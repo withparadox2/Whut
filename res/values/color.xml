@@ -9,5 +9,6 @@
     <color name="typical_red">#FF5735</color>
     <color name="searchbooks_group_background">#ebe9b9</color> 
     <color name="searchbooks_child_background">#e3c9ca</color> 
+    <color name="gray">#666666</color>
 
 </resources>

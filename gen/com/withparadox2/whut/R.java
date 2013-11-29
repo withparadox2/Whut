@@ -172,6 +172,7 @@ containing a value of this type.
         public static final int actionbar_separator=0x7f080000;
         public static final int actionbar_title=0x7f080001;
         public static final int black=0x7f080007;
+        public static final int gray=0x7f08000f;
         public static final int green=0x7f080008;
         public static final int holo_blue_darker=0x7f08000b;
         public static final int holo_blue_lighter=0x7f080009;
@@ -190,6 +191,8 @@ containing a value of this type.
         public static final int indicator_corner_radius=0x7f060001;
         public static final int indicator_internal_padding=0x7f060002;
         public static final int indicator_right_padding=0x7f060000;
+        public static final int tu_jiao_button_radius=0x7f060008;
+        public static final int tu_jiao_button_radius_zero=0x7f060009;
     }
     public static final class drawable {
         public static final int actionbar_back_indicator=0x7f020000;
@@ -246,18 +249,24 @@ containing a value of this type.
         public static final int login_checked_focused=0x7f020033;
         public static final int login_unchecked=0x7f020034;
         public static final int login_unchecked_focused=0x7f020035;
-        public static final int more_select=0x7f020036;
-        public static final int pull_to_reffresh_indicator=0x7f020037;
-        public static final int search_popup_method=0x7f020038;
-        public static final int textfield_activated_holo_dark=0x7f020039;
-        public static final int textfield_default_holo_dark=0x7f02003a;
-        public static final int textfield_disabled_focused_holo_dark=0x7f02003b;
-        public static final int textfield_disabled_holo_dark=0x7f02003c;
-        public static final int textfield_focused_holo_dark=0x7f02003d;
-        public static final int tu_jiao_bt_bg=0x7f02003e;
-        public static final int tujiao_normal_bg=0x7f02003f;
-        public static final int tujiao_normal_bg1=0x7f020040;
-        public static final int tujieo_focused_bg=0x7f020041;
+        public static final int main_page_indicator_1=0x7f020036;
+        public static final int main_page_indicator_2=0x7f020037;
+        public static final int more_select=0x7f020038;
+        public static final int pull_to_reffresh_indicator=0x7f020039;
+        public static final int search_popup_method=0x7f02003a;
+        public static final int textfield_activated_holo_dark=0x7f02003b;
+        public static final int textfield_default_holo_dark=0x7f02003c;
+        public static final int textfield_disabled_focused_holo_dark=0x7f02003d;
+        public static final int textfield_disabled_holo_dark=0x7f02003e;
+        public static final int textfield_focused_holo_dark=0x7f02003f;
+        public static final int to_jiao_button_normal=0x7f020040;
+        public static final int to_jiao_button_selected=0x7f020041;
+        public static final int to_tu_button_normal=0x7f020042;
+        public static final int to_tu_button_selectedl=0x7f020043;
+        public static final int tu_jiao_bt_bg=0x7f020044;
+        public static final int tujiao_normal_bg=0x7f020045;
+        public static final int tujiao_normal_bg1=0x7f020046;
+        public static final int tujieo_focused_bg=0x7f020047;
     }
     public static final class id {
         public static final int actionbar=0x7f05005f;

@@ -59,6 +59,9 @@ public class HttpOperateThread extends Thread {
 		case 1:
 			loginJiaoSubmit();
 			break;
+		case 2:
+			keBiaoSubmit();
+            break;
 
 		case 9:
 			loginTuSubmit();
@@ -75,6 +78,35 @@ public class HttpOperateThread extends Thread {
 		}
 	}
 
+	   private void keBiaoSubmit(){
+           sendMyMessage(1);
+           try {
+                   httpOperation.getKebiaoHtml("http://202.114.90.176:8080/DailyMgt/kbcx.do");
+           } catch (ClientProtocolException e) {
+                   // TODO Auto-generated catch block
+                   e.printStackTrace();
+           } catch (UnsupportedEncodingException e) {
+                   // TODO Auto-generated catch block
+                   e.printStackTrace();
+           } catch (IOException e) {
+                   // TODO Auto-generated catch block
+                   e.printStackTrace();
+           }
+           
+           sendMyMessage(2);
+           
+           try {
+                   WhutGlobal.htmlData = httpOperation.getKeBiaoData();
+           } catch (IndexOutOfBoundsException e) {
+                   e.printStackTrace();
+                   Log.i(TAG, "html数据处理出现异常");
+                   WhutGlobal.JUMP_OR_NOT = false;
+                   sendMyMessage(100);
+           }
+           
+           sendMyMessage(3);
+   }
+	   
 	private void loginJiaoSubmit() {
 		int statusCode;
 		int loginSuccessStatus;

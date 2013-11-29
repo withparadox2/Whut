@@ -2,12 +2,15 @@ package com.withparadox2.whut.http;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
@@ -22,7 +25,7 @@ import com.withparadox2.whut.dao.WhutGlobal;
 
 public class HttpKebiaoThread extends Thread {
 	private HttpGet httpGet;
-	private HttpClient httpClient = new DefaultHttpClient();
+	private HttpClient httpClient = SingleHttpClient.getHttpClient();
 	private HttpResponse response;
 	private String html;
 	private Message msg;
@@ -73,13 +76,16 @@ public class HttpKebiaoThread extends Thread {
 	private void getKebiaoHtml(String getString)
 	        throws ClientProtocolException, UnsupportedEncodingException,
 	        IOException {
+        getJs();
 		httpGet = new HttpGet(getString);
 		Log.i("TAG1", "innerside httpGet==null" + (httpGet == null));
-		httpGet.setHeader("Cookie", WhutGlobal.JSESSIONID);
+//		httpGet.setHeader("Cookie", "JSESSIONID=0E94D7F1C17CCBA25CF43D9C4511480F");
 		response = httpClient.execute(httpGet);
 		HttpEntity entity = response.getEntity();
 		html = EntityUtils.toString(entity, "GB2312");
 		System.out.println(html);
+		getcj();
+		getChengJiHtml("http://202.114.90.172:8080/Score/lscjList.do");
 	}
 
 	private String[][] getKeBiaoData() throws IndexOutOfBoundsException {
@@ -97,5 +103,29 @@ public class HttpKebiaoThread extends Thread {
 		}
 		return result;
 	}
-
+	
+	public void getJs()throws ClientProtocolException,
+    UnsupportedEncodingException, IOException {
+        httpGet = new HttpGet("http://202.114.90.176:8080/DailyMgt/");
+//        httpGet.setHeader("Cookie", "JSESSIONID="+"336463A125DFCEB62A6FF0F4AB4FEBE3");
+        httpClient.execute(httpGet);
+    }
+    
+	public void getcj()throws ClientProtocolException,
+    UnsupportedEncodingException, IOException {
+        httpGet = new HttpGet("http://202.114.90.172:8080/Score/");
+//        httpGet.setHeader("Cookie", "JSESSIONID="+"336463A125DFCEB62A6FF0F4AB4FEBE3");
+        httpClient.execute(httpGet);
+    }
+    
+	private void getChengJiHtml(String getString)
+	        throws ClientProtocolException, UnsupportedEncodingException,
+	        IOException {
+        getJs();
+		httpGet = new HttpGet(getString);
+		response = httpClient.execute(httpGet);
+		HttpEntity entity = response.getEntity();
+		html = EntityUtils.toString(entity, "GB2312");
+		System.out.println(html);
+	}
 }

@@ -32,6 +32,8 @@ import com.withparadox2.whut.dao.WhutGlobal;
 import com.withparadox2.whut.http.HttpKebiaoThread;
 import com.withparadox2.whut.http.HttpOperateThread;
 import com.withparadox2.whut.http.HttpOperation;
+import com.withparadox2.whut.util.GlobalConstant;
+import com.withparadox2.whut.util.Helper;
 
 public class WelcomeJiaoActivity extends Activity {
 
@@ -60,7 +62,7 @@ public class WelcomeJiaoActivity extends Activity {
 		pingjiaoButton = (Button) findViewById(R.id.pingjiao_button);
 		actionBar = (ActionBar) findViewById(R.id.welcomen_actionbar);
         actionBar.setHomeAction(new IntentAction(this, MainActivity.createIntent(this), R.drawable.ic_actionbar_whut));
-		actionBar.setTitle("欢迎您：" + getIntent().getExtras().get("UserName") + "同学");
+		actionBar.setTitle("欢迎您：" + Helper.getValueInSharePreference(this, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_NAME, "") + "同学");
 		myHandler = new UpdateUIHandler(Looper.myLooper());
 
 		timeTableButton.setOnClickListener(new TimeTableOnClickListener());
@@ -82,11 +84,15 @@ public class WelcomeJiaoActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			WhutGlobal.WhichAction = 2;
-			cancelDialogByHand = false;
-			progressDialog = new ProgressDialog(WelcomeJiaoActivity.this);
-			progressDialog.setOnCancelListener(new DialogCancelListener());
-			new HttpKebiaoThread(myHandler).start();
+//			WhutGlobal.WhichAction = 2;
+//			cancelDialogByHand = false;
+//			progressDialog = new ProgressDialog(WelcomeJiaoActivity.this);
+//			progressDialog.setOnCancelListener(new DialogCancelListener());
+//			new HttpKebiaoThread(myHandler).start();
+//            System.out.println("登陆的是课表，fuck");
+            Intent i = new Intent();
+            i.setClass(WelcomeJiaoActivity.this, KebiaoActivity.class);
+            startActivity(i);
 		}
 
 	}

@@ -45,6 +45,7 @@ public class FetchChengjiTask extends AsyncTask<Void, Void, String[][]>{
 	    // TODO Auto-generated method stub
         HttpGet httpGet = new HttpGet(GlobalConstant.CHENGJI_TEMP_URL);
         HttpPost httpPost = new HttpPost(GlobalConstant.CHENGJI_URL);
+        HttpResponse httpResponse = null;
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
 		nameValuePairs.add(new BasicNameValuePair("numPerPage", "500"));
 		nameValuePairs.add(new BasicNameValuePair("pageNum", "1"));
@@ -56,7 +57,7 @@ public class FetchChengjiTask extends AsyncTask<Void, Void, String[][]>{
 	        HttpConnectionParams.setConnectionTimeout(httpParams, GlobalConstant.TIMEOUT_SECONDS * 1000);
 	        HttpConnectionParams.setSoTimeout(httpParams, GlobalConstant.TIMEOUT_SECONDS * 1000);
             defaultHttpClient.execute(httpGet);
-			HttpResponse httpResponse = defaultHttpClient.execute(httpPost);
+			httpResponse = defaultHttpClient.execute(httpPost);
 			int statusCode = httpResponse.getStatusLine().getStatusCode();
 			if (statusCode == GlobalConstant.HTTP_STATUS_OK) {
 				return getChengjiData(EntityUtils.toString(httpResponse.getEntity()));
@@ -69,10 +70,13 @@ public class FetchChengjiTask extends AsyncTask<Void, Void, String[][]>{
         } catch (IOException e) {
 	        // TODO Auto-generated catch block
 	        e.printStackTrace();
-        }			
-        return null;
+        }finally{
+        	releaseConnection(httpResponse);
+        }
+        return new String[1][1];
 }
     
+	
 	@Override
     protected void onPostExecute(String[][] result) {
 	    // TODO Auto-generated method stub
@@ -95,6 +99,17 @@ public class FetchChengjiTask extends AsyncTask<Void, Void, String[][]>{
         	result[i][5] = tds.get(10).text();
         }
 		return result;
+	}
+	
+	private void releaseConnection(HttpResponse response){
+	      if( response.getEntity() != null ) {
+	          try {
+	            response.getEntity().consumeContent();
+            } catch (IOException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+            }
+	       }//if
 	}
     
     

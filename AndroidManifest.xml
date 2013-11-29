@@ -26,6 +26,10 @@
             android:theme="@android:style/Theme.NoTitleBar">                     
         </activity>
         <activity
+            android:name=".ui.XuefenXuejiActivity" 
+            android:theme="@android:style/Theme.NoTitleBar">                     
+        </activity>
+        <activity
             android:name=".ui.JieYueChaXunActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>  
         <activity

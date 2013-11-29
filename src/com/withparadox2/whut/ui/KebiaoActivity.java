@@ -33,6 +33,7 @@ import com.withparadox2.whut.R.layout;
 import com.withparadox2.whut.dao.SaveTwoDimArray;
 import com.withparadox2.whut.dao.WhutGlobal;
 import com.withparadox2.whut.http.FetchKebiaoTask;
+import com.withparadox2.whut.util.Helper;
 import com.withparadox2.whut.view.MyHScrollView;
 import com.withparadox2.whut.view.MyHScrollView.OnScrollChangedListener;
 
@@ -248,9 +249,15 @@ public class KebiaoActivity extends Activity implements FetchKebiaoTask.Callback
 	@Override
     public void onPostExecute(String[][] result) {
 	    // TODO Auto-generated method stub
-        this.result = result;
-        dataLength = 4;
-        actionBar.setTitle("课表");
-        myAdapter.notifyDataSetChanged();
+        if(result.length == 1){
+        	Helper.showShortToast(KebiaoActivity.this, "出错了...");
+            actionBar.setTitle("课表");
+        }else{
+        	this.result = result;
+            dataLength = 4;
+            actionBar.setTitle("课表");
+            myAdapter.notifyDataSetChanged();
+        }
+        
     }
 }

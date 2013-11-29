@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,16 +23,14 @@ import com.markupartist.android.widget.ActionBar.IntentAction;
 import com.withparadox2.whut.R;
 import com.withparadox2.whut.dao.SaveTwoDimArray;
 import com.withparadox2.whut.dao.WhutGlobal;
-import com.withparadox2.whut.view.MyHScrollView;
-import com.withparadox2.whut.view.MyHScrollView.OnScrollChangedListener;
 import com.withparadox2.whut.http.FetchChengjiTask;
-import com.withparadox2.whut.http.FetchKebiaoTask;
+import com.withparadox2.whut.util.Helper;
 
 public class ChengJiActivity extends Activity implements FetchChengjiTask.Callback{
          /** Called when the activity is first created. */
                 ListView mListView1;
                 MyAdapter myAdapter;
-                RelativeLayout mHead;
+                LinearLayout mHead;
                 String[][] result;
                 ActionBar actionBar;
                 private int dataLength;
@@ -42,48 +41,19 @@ public class ChengJiActivity extends Activity implements FetchChengjiTask.Callba
                         setContentView(R.layout.chengji);
                       
                         result = WhutGlobal.htmlData;
-                        mHead = (RelativeLayout) findViewById(R.id.chengji_head);
-                        mHead.setFocusable(false);
-                        mHead.setClickable(false);
-                        mHead.setBackgroundColor(Color.parseColor("#FF5735"));
-                        mHead.setOnTouchListener(new ListViewAndHeadViewTouchLinstener());
-                        
+                        mHead = (LinearLayout) findViewById(R.id.chengji_head);
+                        mHead.setBackgroundColor(getResources().getColor(R.color.typical_red));
                         actionBar = (ActionBar)findViewById(R.id.chengji_actionbar);
                         actionBar.setHomeAction(new IntentAction(this, WelcomeJiaoActivity.createIntent(this), R.drawable.ic_actionbar_whut));                        
                         mListView1 = (ListView) findViewById(R.id.chengji_listview);
                         actionBar.setDisplayHomeAsUpEnabled(true);
                         actionBar.setTitle("全部成绩");
-                        mListView1.setOnTouchListener(new ListViewAndHeadViewTouchLinstener());
 
                         myAdapter = new MyAdapter(this, R.layout.chengji_item);
                         mListView1.setAdapter(myAdapter);
                         getChengjiData();
                 }
                 
-                @Override
-                protected void onSaveInstanceState(Bundle outState) {
-                        // TODO Auto-generated method stub
-                        super.onSaveInstanceState(outState);
-                        SaveTwoDimArray mySave = SaveTwoDimArray.getSingletonObject();
-                        mySave.setCustomArray(result);
-                        mySave.setPingJiaoUrls(WhutGlobal.PINGJIAO_URLS);
-                        outState.putSerializable(SaveTwoDimArray.NAME, mySave);
-                        outState.putString("URL_HEADER_STR", WhutGlobal.URL_HEADER_STR);
-                        outState.putString("USER_ID", WhutGlobal.USER_ID);
-                        outState.putString("USER_NAME", WhutGlobal.USER_NAME);
-                }
-
-                class ListViewAndHeadViewTouchLinstener implements View.OnTouchListener {
-
-                        @Override
-                        public boolean onTouch(View arg0, MotionEvent arg1) {
-                                //当在列头 和 listView控件上touch时，将这个touch的事件分发给 ScrollView
-                                HorizontalScrollView headSrcrollView = (HorizontalScrollView) mHead
-                                                .findViewById(R.id.chengji_horizontalScrollView1);
-                                headSrcrollView.onTouchEvent(arg1);
-                                return false;
-                        }
-                }
 
                 public class MyAdapter extends BaseAdapter {
                         public List<ViewHolder> mHolderList = new ArrayList<ViewHolder>();
@@ -124,10 +94,6 @@ public class ChengJiActivity extends Activity implements FetchChengjiTask.Callba
                                                 convertView = mInflater.inflate(id_row_layout, null);
                                                 holder = new ViewHolder();
 
-                                                MyHScrollView scrollView1 = (MyHScrollView) convertView
-                                                                .findViewById(R.id.chengji_horizontalScrollView1);
-
-                                                holder.scrollView = scrollView1;
                                                 holder.txt1 = (TextView) convertView
                                                                 .findViewById(R.id.chengji_textView1);
                                                 holder.txt2 = (TextView) convertView
@@ -140,12 +106,6 @@ public class ChengJiActivity extends Activity implements FetchChengjiTask.Callba
                                                                 .findViewById(R.id.chengji_textView5);
                                                 holder.txt6= (TextView) convertView
                                                         .findViewById(R.id.chengji_textView6);
-
-                                                MyHScrollView headSrcrollView = (MyHScrollView) mHead
-                                                                .findViewById(R.id.chengji_horizontalScrollView1);
-                                                headSrcrollView
-                                                                .AddOnScrollChangedListener(new OnScrollChangedListenerImp(
-                                                                                scrollView1));
 
                                                 convertView.setTag(holder);
                                                 mHolderList.add(holder);
@@ -162,19 +122,7 @@ public class ChengJiActivity extends Activity implements FetchChengjiTask.Callba
                                 return convertView;
                         }
 
-                        class OnScrollChangedListenerImp implements OnScrollChangedListener {
-                                MyHScrollView mScrollViewArg;
-
-                                public OnScrollChangedListenerImp(MyHScrollView scrollViewar) {
-                                        mScrollViewArg = scrollViewar;
-                                }
-
-                                @Override
-                                public void onScrollChanged(int l, int t, int oldl, int oldt) {
-                                        mScrollViewArg.smoothScrollTo(l, t);
-                                }
-                        };
-
+                       
                         class ViewHolder {
                                 TextView txt1;
                                 TextView txt2;
@@ -183,7 +131,6 @@ public class ChengJiActivity extends Activity implements FetchChengjiTask.Callba
                                 TextView txt5;
                                 TextView txt6;
                          
-                                HorizontalScrollView scrollView;
                         }
                 }// end class my
 
@@ -195,10 +142,14 @@ public class ChengJiActivity extends Activity implements FetchChengjiTask.Callba
 				@Override
                 public void onPostExecute(String[][] result) {
 	                // TODO Auto-generated method stub
+                    if(result.length != 1){
 				       this.result = result;
 				        dataLength = result.length;
-				        actionBar.setTitle("成绩");
 				        myAdapter.notifyDataSetChanged();
+                    }else{
+                    	Helper.showShortToast(ChengJiActivity.this, "出错了...");
+                    }
+			        actionBar.setTitle("成绩");
                 }
 
 }

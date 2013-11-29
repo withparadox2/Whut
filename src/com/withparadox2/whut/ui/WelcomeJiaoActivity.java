@@ -106,13 +106,9 @@ public class WelcomeJiaoActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			WhutGlobal.WhichAction = 3;
-			cancelDialogByHand = false;
-			progressDialog = new ProgressDialog(WelcomeJiaoActivity.this);
-			progressDialog.setOnCancelListener(new DialogCancelListener());
-			myThread = new HttpOperateThread(WelcomeJiaoActivity.this,
-			        myHandler, httpOperation);
-			myThread.start();
+            Intent i = new Intent();
+            i.setClass(WelcomeJiaoActivity.this, XueFenXueJiActivity.class);
+            startActivity(i);		
 		}
 
 	}

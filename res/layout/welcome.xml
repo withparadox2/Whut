@@ -45,7 +45,7 @@
 			   <TextView 
 			       android:layout_width="wrap_content"
 			       android:layout_height="wrap_content"
-			       android:text="个人课表"/>	 				              
+			       android:text="学分学绩"/>	 				              
 	       </LinearLayout>
 	       
 	       <LinearLayout 

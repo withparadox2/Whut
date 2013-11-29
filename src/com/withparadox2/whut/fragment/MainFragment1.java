@@ -32,6 +32,7 @@ import com.withparadox2.whut.R;
 import com.withparadox2.whut.adapter.LoginPopupListAdapter;
 import com.withparadox2.whut.dao.LoginDbHelper;
 import com.withparadox2.whut.dao.UserInfoAdapter;
+import com.withparadox2.whut.dao.WhutGlobal;
 import com.withparadox2.whut.http.HttpOperateThread;
 import com.withparadox2.whut.http.HttpOperation;
 import com.withparadox2.whut.http.LoginJiaoTask;
@@ -248,6 +249,11 @@ public class MainFragment1 extends Fragment {
 			userPasswordText = userPasswordEdit.getText().toString().trim();
 			if (!userIdText.equals("") && !userPasswordText.equals("")) {
 				callback.loading();
+				if (jiaoTuFlag) {
+					updateIdAndPassword(UserInfoAdapter.DATABASE_JIAO_TABLE_NAME);
+				} else {
+					updateIdAndPassword(UserInfoAdapter.DATABASE_TU_TABLE_NAME);
+				}
 				isLoading = true;
 				loginJiaoTask = new LoginJiaoTask(new LoginJiaoTaskCallBack());
                 loginJiaoTask.execute(userIdText, userPasswordText);

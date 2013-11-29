@@ -1,6 +1,7 @@
 package com.withparadox2.whut.http;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -9,38 +10,40 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-import android.os.AsyncTask;
 
 import com.withparadox2.whut.util.GlobalConstant;
 
-public class FetchKebiaoTask extends AsyncTask<Void, Void, String[][]>{
-    
-	private Callback callback;
+import android.os.AsyncTask;
 
-	public interface Callback{
-		void onPostExecute(String[][] result);
-	}
+public class FetchXuefenXuejiTask extends AsyncTask<Void, Void, ArrayList<String[]>>{
+
     
-	public FetchKebiaoTask (Callback callback){
-		this.callback = callback;
-	}
+    private Callback callback;
+    private ArrayList<String[]> list = new ArrayList<String[]>();
+   
+    public interface Callback{
+    	public void onPostExecute(ArrayList<String[]> result);
+    }
     
+    public FetchXuefenXuejiTask(Callback callback){
+    	this.callback = callback;
+    }
 	@Override
-    protected String[][] doInBackground(Void... params) {
+    protected ArrayList<String[]> doInBackground(Void... params) {
 	    // TODO Auto-generated method stub
 		HttpGet httpGetTemp, httpGet;
 		HttpResponse response = null;
 		DefaultHttpClient httpClient = SingleHttpClient.getHttpClient();
-		httpGetTemp = new HttpGet(GlobalConstant.KEBIAO_TEMP_URL);
-        httpGet = new HttpGet(GlobalConstant.KEBIAO_URL);
+		httpGetTemp = new HttpGet(GlobalConstant.CHENGJI_TEMP_URL);
+        httpGet = new HttpGet(GlobalConstant.XUEFEN_URL);
         try {
         	response = httpClient.execute(httpGetTemp);
     		response = httpClient.execute(httpGet);
 			int statusCode = response.getStatusLine().getStatusCode();
     		if (statusCode == GlobalConstant.HTTP_STATUS_OK) {
-                return getKeBiaoData(EntityUtils.toString(response.getEntity()));
+                return getXueFenData(EntityUtils.toString(response.getEntity()));
              } else {
                  throw new IOException(response.getStatusLine().getReasonPhrase());
              }	
@@ -60,34 +63,44 @@ public class FetchKebiaoTask extends AsyncTask<Void, Void, String[][]>{
 	            e.printStackTrace();
             }
         }
-	    return new String[1][1];
+	    return list;
     }
-    
-	
     
 	@Override
-    protected void onPostExecute(String[][] result) {
+    protected void onPostExecute(ArrayList<String[]> result) {
 	    // TODO Auto-generated method stub
-        callback.onPostExecute(result);
+	    super.onPostExecute(result);
     }
-
-
-
-	private String[][] getKeBiaoData(String html) throws IndexOutOfBoundsException {
+	
+	private ArrayList<String[]> getXueFenData(String html){
         System.out.println(html);
+		String[] input;
 		Document document = Jsoup.parse(html);
-		Elements trs = document.select("#weekTable tbody tr");
-		String tempStr;
-		String[][] result = new String[4][5];
-		for (int i = 0; i < 4; i++) {
-			Elements tds = trs.get(i).select("td");
-			for (int j = 1; j < 6; j++) {
-				tempStr = tds.get(j).select("div").html().toString()
-				        .replaceAll("¡ó", "\n").replaceAll("&nbsp;", "");
-				result[i][j - 1] = tempStr;
-			}
-		}
-		return result;
+		Elements jidians = document.select("input");
+		input = new String[3];
+		input[0] = jidians.get(0).attr("value");
+		input[1] = jidians.get(1).attr("value");
+		input[2] = "";
+        list.add(input);
+		input = new String[3];
+		input[0] = jidians.get(2).attr("value");
+		input[1] = jidians.get(3).attr("value");
+		input[2] = "";
+        list.add(input);
+        
+        Elements trs = document.select("tr[target=sid_user]");
+        Elements tds;
+        String[] row;
+        for(Element tr:trs){
+        	tds = tr.select("td");
+        	row = new String[3];
+        	row[0] = tds.get(0).text();
+            row[1] = tds.get(1).text();
+            row[2] = tds.get(2).text();
+            list.add(row);
+        }
+		return list;
 	}
 
+    
 }

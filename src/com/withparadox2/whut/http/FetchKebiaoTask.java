@@ -2,7 +2,6 @@ package com.withparadox2.whut.http;
 
 import java.io.IOException;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
@@ -12,9 +11,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import com.withparadox2.whut.util.GlobalConstant;
-
 import android.os.AsyncTask;
+
+import com.withparadox2.whut.util.GlobalConstant;
 
 public class FetchKebiaoTask extends AsyncTask<Void, Void, String[][]>{
     
@@ -33,7 +32,7 @@ public class FetchKebiaoTask extends AsyncTask<Void, Void, String[][]>{
 	    // TODO Auto-generated method stub
 		HttpGet httpGetTemp, httpGet;
 		DefaultHttpClient httpClient = SingleHttpClient.getHttpClient();
-		httpGetTemp = new HttpGet(GlobalConstant.KEBIAO_TMEP_URL);
+		httpGetTemp = new HttpGet(GlobalConstant.KEBIAO_TEMP_URL);
         httpGet = new HttpGet(GlobalConstant.KEBIAO_URL);
         try {
         	httpClient.execute(httpGetTemp);

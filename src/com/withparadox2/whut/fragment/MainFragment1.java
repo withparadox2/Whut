@@ -264,6 +264,8 @@ public class MainFragment1 extends Fragment {
 			// TODO Auto-generated method stub             
             isLoading = false;
             Helper.saveValueInSharePreference(activity, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_NAME, result);
+            Helper.saveValueInSharePreference(activity, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_ID, userIdText);
+            Helper.saveValueInSharePreference(activity, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_PASSWORD, userPasswordText);
 			Intent i = new Intent();
 			i.setClass(activity, WelcomeJiaoActivity.class);
 			startActivity(i);

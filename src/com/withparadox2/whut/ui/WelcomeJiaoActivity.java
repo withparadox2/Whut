@@ -29,11 +29,13 @@ import com.withparadox2.whut.R.id;
 import com.withparadox2.whut.R.layout;
 import com.withparadox2.whut.dao.SaveTwoDimArray;
 import com.withparadox2.whut.dao.WhutGlobal;
+import com.withparadox2.whut.http.FetchChengjiTask;
 import com.withparadox2.whut.http.HttpKebiaoThread;
 import com.withparadox2.whut.http.HttpOperateThread;
 import com.withparadox2.whut.http.HttpOperation;
 import com.withparadox2.whut.util.GlobalConstant;
 import com.withparadox2.whut.util.Helper;
+import com.withparadox2.whut.http.FetchChengjiTask;
 
 public class WelcomeJiaoActivity extends Activity {
 
@@ -49,6 +51,8 @@ public class WelcomeJiaoActivity extends Activity {
 	private boolean cancelDialogByHand = false;
 
 	private HttpOperation httpOperation;
+	
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -118,13 +122,9 @@ public class WelcomeJiaoActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			WhutGlobal.WhichAction = 4;
-			cancelDialogByHand = false;
-			progressDialog = new ProgressDialog(WelcomeJiaoActivity.this);
-			progressDialog.setOnCancelListener(new DialogCancelListener());
-			myThread = new HttpOperateThread(WelcomeJiaoActivity.this,
-			        myHandler, httpOperation);
-			myThread.start();
+			Intent i = new Intent();
+            i.setClass(WelcomeJiaoActivity.this, ChengJiActivity.class);
+            startActivity(i);
 		}
 
 	}
@@ -210,6 +210,7 @@ public class WelcomeJiaoActivity extends Activity {
 			}
 		}
 	}
+
 
 
 }

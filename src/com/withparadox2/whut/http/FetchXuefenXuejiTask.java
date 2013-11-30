@@ -69,7 +69,7 @@ public class FetchXuefenXuejiTask extends AsyncTask<Void, Void, ArrayList<String
 	@Override
     protected void onPostExecute(ArrayList<String[]> result) {
 	    // TODO Auto-generated method stub
-	    super.onPostExecute(result);
+        callback.onPostExecute(result);
     }
 	
 	private ArrayList<String[]> getXueFenData(String html){

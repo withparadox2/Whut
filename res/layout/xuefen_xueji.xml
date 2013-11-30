@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
      <com.markupartist.android.widget.ActionBar
-          android:id="@+id/chengji_actionbar"
+          android:id="@+id/actionbar"
           style="@style/ActionBar"/>
      <LinearLayout 
          android:layout_height="wrap_content"

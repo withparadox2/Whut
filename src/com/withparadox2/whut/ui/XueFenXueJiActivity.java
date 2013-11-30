@@ -12,6 +12,8 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.markupartist.android.widget.ActionBar;
+import com.markupartist.android.widget.ActionBar.IntentAction;
 import com.withparadox2.whut.R;
 import com.withparadox2.whut.http.FetchXuefenXuejiTask;
 
@@ -24,20 +26,26 @@ public class XueFenXueJiActivity extends Activity implements FetchXuefenXuejiTas
     
     private ListView myListView;
     private MyAdapter myAdapter;
+    private ActionBar actionBar;
     
     private ArrayList<String[]> list = new ArrayList<String[]>();
-    private int dataLength = 0;
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
 	    // TODO Auto-generated method stub
 	    super.onCreate(savedInstanceState);
         setContentView(R.layout.xuefen_xueji);
+        actionBar = (ActionBar) findViewById(R.id.actionbar);
+		actionBar.setHomeAction(new IntentAction(this, WelcomeJiaoActivity
+		        .createIntent(this), R.drawable.ic_actionbar_whut));
+		actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("学分和绩点");
         classRankText = (TextView)findViewById(R.id.class_rank_text);
         scoreYearText = (TextView)findViewById(R.id.score_year_text);
         courseRankText = (TextView)findViewById(R.id.course_rank_text);
         scoreTotalText = (TextView)findViewById(R.id.score_total_text);
         myListView = (ListView)findViewById(R.id.xuefen_listview);
         myAdapter = new MyAdapter(this);
+        myListView.setAdapter(myAdapter);
         getXuefenData();
     }
 	
@@ -45,6 +53,8 @@ public class XueFenXueJiActivity extends Activity implements FetchXuefenXuejiTas
 	    // TODO Auto-generated method stub
 	    FetchXuefenXuejiTask fetchXuefenXuejiTask = new FetchXuefenXuejiTask(XueFenXueJiActivity.this);
 	    fetchXuefenXuejiTask.execute();
+        actionBar.setTitle("正在加载...");
+
     }
 
 	class MyAdapter extends BaseAdapter{
@@ -103,13 +113,15 @@ public class XueFenXueJiActivity extends Activity implements FetchXuefenXuejiTas
 	@Override
     public void onPostExecute(ArrayList<String[]> result) {
 	    // TODO Auto-generated method stub
-	    classRankText.setText(result.get(0)[0]);
-	    scoreYearText.setText(result.get(0)[1]);
-	    courseRankText.setText(result.get(1)[0]);
-	    scoreTotalText.setText(result.get(1)[1]);
+	    classRankText.setText("班级排名：" + result.get(0)[0]);
+	    scoreYearText.setText("学年平均学分绩：" + result.get(0)[1]);
+	    courseRankText.setText("专业排名：" + result.get(1)[0]);
+	    scoreTotalText.setText("总平均学分绩：" + result.get(1)[1]);
         result.remove(0);
-        result.remove(1);
+        result.remove(0);
         list = result;
+        actionBar.setTitle("学分和绩点");
+        myAdapter.notifyDataSetChanged();
     }
 	
 

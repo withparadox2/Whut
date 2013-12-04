@@ -1,49 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="80dp"
+    android:layout_height="wrap_content"
     android:orientation="horizontal" >
     <TextView
         android:id="@+id/xujie_textView1"
-        android:layout_width="100dp"
+        android:layout_width="0dp"
         android:layout_height="fill_parent"
+        android:layout_weight="2"
         android:gravity="center"
-        android:background="#FF5735"
+        android:background="@color/typical_red"
         android:textColor="@color/white"
         android:textSize="12dp" />
-    <TextView          
-      	android:layout_width="1px" 
-      	android:layout_height="fill_parent" 
-      	android:background="#DADADA" />
     
     <TextView
         android:id="@+id/xujie_textView2"
-        android:layout_width="80dp"
+        android:layout_width="0dp"
         android:layout_height="fill_parent"
-        android:textColor="@color/white"
-        android:gravity="center_vertical"
-        android:paddingLeft="10dp"
+        android:layout_weight="2"
+        android:textColor="@color/black"
+        android:background="@color/searchbooks_group_background"
+        android:gravity="center"
         android:textSize="12dp"/>
-    <TextView          
-      	android:layout_width="1px" 
-      	android:layout_height="fill_parent" 
-      	android:background="#DADADA" />  
+    
     <TextView
         android:id="@+id/xujie_textView3"
-        android:layout_width="70dp"
+        android:layout_width="0dp"
         android:layout_height="fill_parent"
-        android:textColor="@color/white"
+        android:layout_weight="1"
+        android:textColor="@color/black"
+        android:background="@color/searchbooks_child_background"
         android:gravity="center"
-        android:textSize="12dp"/>  
-    <TextView          
-      	android:layout_width="1px" 
-      	android:layout_height="fill_parent" 
-      	android:background="#DADADA" />        	        
-    <Button 
-        android:layout_marginLeft="10dp"
-        style="@style/customButtonStyle"
-        android:id="@+id/xujie_button"
-        android:text="续借"
-        android:layout_width="50dp"
-        android:layout_height="30dp"/>
+        android:textSize="12dp"/>
+    
+    <LinearLayout 
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:textColor="@color/black"
+        android:background="@color/searchbooks_group_background"
+        android:gravity="center"
+        android:layout_weight="1.5">    
+        <Button 
+            android:id="@+id/xujie_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:text="续借"
+            android:background="@color/holo_blue_lighter"
+            android:textColor="@color/white"
+            android:focusable="false"/>
+        
+    </LinearLayout>	        
+
 </LinearLayout>

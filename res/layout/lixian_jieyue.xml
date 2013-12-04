@@ -21,7 +21,6 @@
 	        android:layout_weight="1"
 	        android:text="题名"
 	        android:gravity="center"
-	        android:background="@color/typical_red"
 	        android:textColor="@color/white"
 	        android:textSize="12dp" />
 	    
@@ -32,8 +31,7 @@
 	        android:layout_height="fill_parent"
             android:layout_weight="1"
 	        android:text="借出时间"
-	        android:background="@color/searchbooks_group_background"
-	        android:textColor="@color/black"
+	        android:textColor="@color/white"
 	        android:gravity="center"
 	        android:textSize="12dp"/>
 	  
@@ -43,10 +41,19 @@
 	        android:layout_height="fill_parent"
 	        android:layout_weight="1"
 	        android:text="应还时间"
-	        android:textColor="@color/black"
-	        android:background="@color/searchbooks_child_background"
+	        android:textColor="@color/white"
 	        android:gravity="center"
-	        android:textSize="12dp"/>	    
+	        android:textSize="12dp"/>
+	    	    
+        <TextView
+            android:id="@+id/xujie_textView4"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:text="馆藏位置"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:textSize="12dp"/>            
 	</LinearLayout>
      <ListView
         android:id="@+id/xujie_listview"

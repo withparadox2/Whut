@@ -41,18 +41,11 @@ public class WelcomeJiaoActivity extends Activity {
 
 	private Button timeTableButton;
 	private Button geRenKeBiaoButton;
-	private Button pingjiaoButton;
 	private Button chengJiButton;
 	private ProgressDialog progressDialog;
 	private HttpOperateThread myThread;
-	private UpdateUIHandler myHandler;
 	private ActionBar actionBar;
 	private final String TAG = "WelcomeJiaoActivity";
-	private boolean cancelDialogByHand = false;
-
-	private HttpOperation httpOperation;
-	
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,17 +56,13 @@ public class WelcomeJiaoActivity extends Activity {
 		timeTableButton = (Button) findViewById(R.id.time_table_button);
 		geRenKeBiaoButton = (Button) findViewById(R.id.gerenkebiao_button);
 		chengJiButton = (Button) findViewById(R.id.chengji_button);
-		pingjiaoButton = (Button) findViewById(R.id.pingjiao_button);
 		actionBar = (ActionBar) findViewById(R.id.welcomen_actionbar);
         actionBar.setHomeAction(new IntentAction(this, MainActivity.createIntent(this), R.drawable.ic_actionbar_whut));
 		actionBar.setTitle("欢迎您：" + Helper.getValueInSharePreference(this, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_NAME, "") + "同学");
-		myHandler = new UpdateUIHandler(Looper.myLooper());
 
 		timeTableButton.setOnClickListener(new TimeTableOnClickListener());
 		geRenKeBiaoButton.setOnClickListener(new GeRenKeBiaoOnClickListener());
 		chengJiButton.setOnClickListener(new ChengJiOnClickListener());
-		pingjiaoButton.setOnClickListener(new PingJiaoOnClickListener());
-		httpOperation = new HttpOperation(this);
 	}
 
 
@@ -88,12 +77,6 @@ public class WelcomeJiaoActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-//			WhutGlobal.WhichAction = 2;
-//			cancelDialogByHand = false;
-//			progressDialog = new ProgressDialog(WelcomeJiaoActivity.this);
-//			progressDialog.setOnCancelListener(new DialogCancelListener());
-//			new HttpKebiaoThread(myHandler).start();
-//            System.out.println("登陆的是课表，fuck");
             Intent i = new Intent();
             i.setClass(WelcomeJiaoActivity.this, KebiaoActivity.class);
             startActivity(i);
@@ -124,89 +107,5 @@ public class WelcomeJiaoActivity extends Activity {
 		}
 
 	}
-
-	public class PingJiaoOnClickListener implements OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			Intent i = new Intent();
-			// i.setClass(WelcomeJiaoActivity.this, PrePingJiaoActivity.class);
-			startActivity(i);
-		}
-
-	}
-
-	public class UpdateUIHandler extends Handler {
-		public UpdateUIHandler(Looper looper) {
-			super(looper);
-		}
-
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.arg1) {
-			case 1:
-				progressDialog.setMessage("路漫漫其修远兮...");
-				progressDialog.show();
-				break;
-			case 2:
-				progressDialog.setMessage("正在咀嚼数据...");
-				break;
-			case 3:
-				progressDialog.dismiss();
-				if (WhutGlobal.JUMP_OR_NOT && (!cancelDialogByHand)) {
-					Intent i = new Intent();
-					switch (WhutGlobal.WhichAction) {
-					case 2:
-						i.setClass(WelcomeJiaoActivity.this,
-						        KebiaoActivity.class);
-						startActivity(i);
-						break;
-					case 3:
-						// i.setClass(WelcomeJiaoActivity.this,
-						// GeRenKeBiaoActivity.class);
-						startActivity(i);
-						break;
-					case 4:
-						// i.setClass(WelcomeJiaoActivity.this,
-						// ChengJiActivity.class);
-						startActivity(i);
-						break;
-					case 5:
-						// i.setClass(WelcomeJiaoActivity.this,
-						// PrePingJiaoActivity.class);
-						startActivity(i);
-						break;
-					}
-				}
-				break;
-			case 100:
-				if (!cancelDialogByHand) {
-					Toast.makeText(WelcomeJiaoActivity.this, "不好意思，数据有问题...",
-					        Toast.LENGTH_LONG).show();
-				}
-				break;
-			}
-		}
-	}
-
-	private class DialogCancelListener implements OnCancelListener {
-
-		@Override
-		public void onCancel(DialogInterface dialog) {
-			// TODO Auto-generated method stub
-			cancelDialogByHand = true;
-			switch (WhutGlobal.WhichAction) {
-			case 2:
-				httpOperation.closeHttpGet();
-				break;
-			case 4:
-				httpOperation.closeHttpPost();
-				break;
-			}
-		}
-	}
-
-
 
 }

@@ -36,7 +36,9 @@ import com.withparadox2.whut.dao.WhutGlobal;
 import com.withparadox2.whut.http.HttpOperateThread;
 import com.withparadox2.whut.http.HttpOperation;
 import com.withparadox2.whut.http.LoginJiaoTask;
+import com.withparadox2.whut.http.LoginTuTask;
 import com.withparadox2.whut.ui.WelcomeJiaoActivity;
+import com.withparadox2.whut.ui.WelcomeTuActivity;
 import com.withparadox2.whut.util.GlobalConstant;
 import com.withparadox2.whut.util.Helper;
 
@@ -60,9 +62,6 @@ public class MainFragment1 extends Fragment {
 	private ArrayList<String> userPasswordList;
 	private UserInfoAdapter dbHelper;
 	private boolean isRememberOrNot = false;
-	private ProgressDialog progressDialog;
-	private HttpOperateThread myThread;
-	private HttpOperation httpOperation;
 	private ActionBar actionBar;
 	private boolean cancelDialogByHand = false;
 	private int closeHttpFlag;// 是关闭httpurl还是关闭httppost
@@ -72,6 +71,7 @@ public class MainFragment1 extends Fragment {
 	private Callback callback;
 	private boolean isLoading;
 	private LoginJiaoTask loginJiaoTask;
+    private LoginTuTask loginTuTask;
     
     private LoginPopupListAdapter myListAdapter;
     private LoginDbHelper loginDbHelper;
@@ -250,13 +250,15 @@ public class MainFragment1 extends Fragment {
 			if (!userIdText.equals("") && !userPasswordText.equals("")) {
 				callback.loading();
 				if (jiaoTuFlag) {
+    				loginJiaoTask = new LoginJiaoTask(new LoginJiaoTaskCallBack());
+                    loginJiaoTask.execute(userIdText, userPasswordText);
 					updateIdAndPassword(UserInfoAdapter.DATABASE_JIAO_TABLE_NAME);
 				} else {
+                    loginTuTask = new LoginTuTask(new LoginTuTaskCallBack());
+                    loginTuTask.execute(userIdText, userPasswordText);
 					updateIdAndPassword(UserInfoAdapter.DATABASE_TU_TABLE_NAME);
 				}
 				isLoading = true;
-				loginJiaoTask = new LoginJiaoTask(new LoginJiaoTaskCallBack());
-                loginJiaoTask.execute(userIdText, userPasswordText);
 			}else{
 				Helper.showShortToast(activity, "输入不可以为空...");
 			}
@@ -287,6 +289,21 @@ public class MainFragment1 extends Fragment {
     	}
     }
     
+    public class LoginTuTaskCallBack implements LoginTuTask.Callback{
+
+		@Override
+        public void onPostExecute(String result) {
+	        // TODO Auto-generated method stub
+            isLoading = false;
+            Helper.saveValueInSharePreference(activity, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_NAME, result);
+            Helper.saveValueInSharePreference(activity, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_ID, userIdText);
+            Helper.saveValueInSharePreference(activity, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_PASSWORD, userPasswordText);
+			Intent i = new Intent();
+			i.setClass(activity, WelcomeTuActivity.class);
+			startActivity(i);	        
+        }
+    	
+    }
     
 	private void updateIdAndPassword(String table) {
         loginDbHelper.updateIdAndPassword(table, userIdText, userPasswordText, isRememberOrNot);

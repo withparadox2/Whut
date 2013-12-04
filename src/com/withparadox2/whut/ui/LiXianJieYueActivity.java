@@ -44,11 +44,7 @@ public class LiXianJieYueActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lixian_jieyue);
-		if (savedInstanceState != null) {
-			SaveTwoDimArray save = (SaveTwoDimArray) savedInstanceState
-			        .getSerializable(SaveTwoDimArray.NAME);
-			WhutGlobal.htmlData = save.getCustomArray();
-		}
+		
 		actionBar = (ActionBar) findViewById(R.id.xujie_actionbar);
 		actionBar.setHomeAction(new IntentAction(this, MainActivity
 		        .createIntent(this), R.drawable.ic_actionbar_whut));
@@ -58,22 +54,11 @@ public class LiXianJieYueActivity extends Activity {
 		actionBar.setTitle("共借：" + result.length + "本|过期：" + getGuoQiNum()
 		        + "本");
 		mHead = (LinearLayout) findViewById(R.id.xujie_head);
-		mHead.setFocusable(false);
-		mHead.setClickable(false);
-		mHead.setBackgroundColor(Color.parseColor("#FF5735"));
+		mHead.setBackgroundColor(getResources().getColor(R.color.typical_red));
 
 		myListView = (ListView) findViewById(R.id.xujie_listview);
 		myAdapter = new MyAdapter(this, R.layout.lixian_jieyue_item);
 		myListView.setAdapter(myAdapter);
-	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		// TODO Auto-generated method stub
-		super.onSaveInstanceState(outState);
-		SaveTwoDimArray mySave = SaveTwoDimArray.getSingletonObject();
-		mySave.setCustomArray(result);
-		outState.putSerializable(SaveTwoDimArray.NAME, mySave);
 	}
 
 	public class MyAdapter extends BaseAdapter {
@@ -120,6 +105,8 @@ public class LiXianJieYueActivity extends Activity {
 					        .findViewById(R.id.xujie_textView2);
 					holder.txt3 = (TextView) convertView
 					        .findViewById(R.id.xujie_textView3);
+					holder.txt4 = (TextView) convertView
+					        .findViewById(R.id.xujie_textView4);                    
 					convertView.setTag(holder);
 				}
 			} else {
@@ -133,6 +120,7 @@ public class LiXianJieYueActivity extends Activity {
 
 			holder.txt2.setText(result[position][1]);
 			holder.txt3.setText(result[position][2]);
+			holder.txt4.setText(result[position][3]);			
 			return convertView;
 		}
 
@@ -140,6 +128,7 @@ public class LiXianJieYueActivity extends Activity {
 			TextView txt1;
 			TextView txt2;
 			TextView txt3;
+			TextView txt4;
 		}
 
 	}

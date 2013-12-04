@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.DialogInterface.OnCancelListener;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -43,10 +44,13 @@ import com.withparadox2.whut.R.id;
 import com.withparadox2.whut.R.layout;
 import com.withparadox2.whut.dao.SaveTwoDimArray;
 import com.withparadox2.whut.dao.WhutGlobal;
+import com.withparadox2.whut.http.FetchRenewListTask;
 import com.withparadox2.whut.http.HttpOperateThread;
 import com.withparadox2.whut.http.HttpOperation;
+import com.withparadox2.whut.http.XuJieTask;
+import com.withparadox2.whut.util.Helper;
 
-public class XuJieActivity extends Activity {
+public class XuJieActivity extends Activity implements FetchRenewListTask.Callback{
 
 	private ActionBar actionBar;
 	private ListView myListView;
@@ -57,59 +61,44 @@ public class XuJieActivity extends Activity {
 	private HttpOperation httpOperation;
 	private ProgressDialog progressDialog;
 	private HttpOperateThread myThread;
-	private UpdateUIHandler myHandler;
 	private boolean cancelDialogByHand = false;
 	private boolean closeHttpFlag = true;// true then close httpPost, false
 										 // close httpGet
 	private List<NameValuePair> nameValuePairs;
 	private boolean[] guoQiFlag; // 过期为true，没过期为false，然后在表中用颜色标记出来
-	private int resultActualLength;
+	private int resultActualLength = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.xujie);
-		if (savedInstanceState != null) {
-			SaveTwoDimArray save = (SaveTwoDimArray) savedInstanceState
-			        .getSerializable(SaveTwoDimArray.NAME);
-			WhutGlobal.htmlData = save.getCustomArray();
-			WhutGlobal.USER_NAME = savedInstanceState.getString("USER_NAME");
-			WhutGlobal.JSESSIONID = savedInstanceState.getString("JSESSIONID");
-		}
+
 		actionBar = (ActionBar) findViewById(R.id.xujie_actionbar);
 		actionBar.setHomeAction(new IntentAction(this, WelcomeTuActivity
 		        .createIntent(this), R.drawable.ic_actionbar_whut));
 		actionBar.setDisplayHomeAsUpEnabled(true);
-
 		actionBar.addAction(new XuJieAllAction());
 
-		result = WhutGlobal.htmlData;
-		resultActualLength = result.length - 1;
-		actionBar.setTitle("共借：" + resultActualLength + "本|过期：" + getGuoQiNum()
-		        + "本");
+
 		mHead = (LinearLayout) findViewById(R.id.xujie_head);
-		mHead.setFocusable(false);
-		mHead.setClickable(false);
-		mHead.setBackgroundColor(Color.parseColor("#FF5735"));
+		mHead.setBackgroundColor(getResources().getColor(R.color.typical_red));
+        
 
 		myListView = (ListView) findViewById(R.id.xujie_listview);
 		myAdapter = new MyAdapter(this, R.layout.xujie_item);
 		myListView.setAdapter(myAdapter);
-		myHandler = new UpdateUIHandler(Looper.myLooper());
-		httpOperation = new HttpOperation(this);
+        getRenewList();
 	}
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		// TODO Auto-generated method stub
-		super.onSaveInstanceState(outState);
-		SaveTwoDimArray mySave = SaveTwoDimArray.getSingletonObject();
-		mySave.setCustomArray(result);
-		outState.putSerializable(SaveTwoDimArray.NAME, mySave);
-		outState.putString("USER_NAME", WhutGlobal.USER_NAME);
-		outState.putString("JSESSIONID", WhutGlobal.JSESSIONID);
-	}
+	
+	private void getRenewList() {
+	    // TODO Auto-generated method stub
+	    FetchRenewListTask fetchRenewListTask = new FetchRenewListTask(this);
+	    fetchRenewListTask.execute();
+	    actionBar.setTitle("正在获取数据...");
+    }
+
 
 	public class XuJieAllAction extends AbstractAction {
 
@@ -123,23 +112,16 @@ public class XuJieActivity extends Activity {
 			// TODO Auto-generated method stub
 			boolean allXuJie = false;
 			for (int i = 0; i < resultActualLength; i++) {
-				if (result[i + 1][8].equals("0")) {
+				if (result[i][8].equals("0")) {
 					allXuJie = true;
 				}
 			}
 			if (allXuJie) {
 				setAllNVPairs();
-				WhutGlobal.WhichAction = 12;
-				cancelDialogByHand = false;
-				progressDialog = new ProgressDialog(XuJieActivity.this);
-				progressDialog.setOnCancelListener(new DialogCancelListener());
-				myThread = new HttpOperateThread(XuJieActivity.this, myHandler,
-				        httpOperation);
-				myThread.setPostParas(nameValuePairs);
-				myThread.start();
+                XuJieTask xuJieTask = new XuJieTask(new XuJieTaskCallBack(), nameValuePairs);
+                xuJieTask.execute();
 			} else {
-				Toast.makeText(XuJieActivity.this, "没有可以续借的书...",
-				        Toast.LENGTH_LONG).show();
+                Helper.showShortToast(XuJieActivity.this,  "没有可以续借的书...");
 			}
 		}
 
@@ -197,18 +179,13 @@ public class XuJieActivity extends Activity {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			holder.txt1.setText(result[position + 1][1]);
-			if (guoQiFlag[position]) {
+			holder.txt1.setText(result[position][1]);
+			holder.txt2.setText("借出:\n" + result[position][6] + "\n" + "应还:\n" + result[position][7]);
+			holder.txt3.setText(result[position][8]);
+			holder.button.setOnClickListener(new xuJieSingleClickListener(position));
+            if(guoQiFlag[position]){
 				holder.txt1.setBackgroundResource(R.color.holo_blue_darker);
-			} else {
-				holder.txt1.setBackgroundColor(Color.parseColor("#FF5735"));
-			}
-
-			holder.txt2.setText("借出:\n" + result[position + 1][6] + "\n"
-			        + "应还:\n" + result[position + 1][7]);
-			holder.txt3.setText(result[position + 1][8]);
-			holder.button.setOnClickListener(new xuJieSingleClickListener(
-			        position + 1));
+            }
 			return convertView;
 		}
 
@@ -232,11 +209,12 @@ public class XuJieActivity extends Activity {
 				// TODO Auto-generated method stub
 				Log.i(TAG, "点击了啊");
 				if (result[position][8].equals("1")) {
-					Toast.makeText(XuJieActivity.this, "已经续借过了...",
-					        Toast.LENGTH_LONG).show();
+                    Helper.showShortToast(XuJieActivity.this, "已经续借过了...");
 				} else {
+                    actionBar.setTitle("正在提交。。。");
 					setNVPairs(position);
-					xuJieSinglePost();
+	                XuJieTask xuJieTask = new XuJieTask(new XuJieTaskCallBack(), nameValuePairs);
+	                xuJieTask.execute();
 				}
 
 			}
@@ -244,16 +222,16 @@ public class XuJieActivity extends Activity {
 		}
 
 	}
+    
+	public class FetchRenewListCallBack implements FetchRenewListTask.Callback{
 
-	private void xuJieSinglePost() {
-		WhutGlobal.WhichAction = 12;
-		cancelDialogByHand = false;
-		progressDialog = new ProgressDialog(XuJieActivity.this);
-		progressDialog.setOnCancelListener(new DialogCancelListener());
-		myThread = new HttpOperateThread(XuJieActivity.this, myHandler,
-		        httpOperation);
-		myThread.setPostParas(nameValuePairs);
-		myThread.start();
+		@Override
+        public void onPostExecute(String[][] result) {
+	        // TODO Auto-generated method stub
+	        XuJieActivity.this.result = result;
+            resultActualLength = result.length;
+        }
+		
 	}
 
 	private void setNVPairs(int position) {
@@ -270,71 +248,7 @@ public class XuJieActivity extends Activity {
 		        "/opac/loan/renewList"));
 		for (int i = 0; i < resultActualLength; i++) {
 			nameValuePairs.add(new BasicNameValuePair("barcodeList",
-			        result[i + 1][0]));
-		}
-	}
-
-	private class DialogCancelListener implements OnCancelListener {
-
-		@Override
-		public void onCancel(DialogInterface dialog) {
-			// TODO Auto-generated method stub
-			cancelDialogByHand = true;
-			if (closeHttpFlag) {
-				WhutGlobal.CANCEL_DOWNLOAD_FLAG = true;
-				WhutGlobal.JUMP_OR_NOT = false;
-				httpOperation.closeHttpPost();
-			} else {
-				httpOperation.closeHttpGet();
-			}
-		}
-	}
-
-	public class UpdateUIHandler extends Handler {
-		public UpdateUIHandler(Looper looper) {
-			super(looper);
-		}
-
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.arg1) {
-			case 1:
-				progressDialog.setMessage("正在提交数据...");
-				progressDialog.show();
-				closeHttpFlag = true;
-				break;
-			case 2:
-				progressDialog.setMessage("正在处理结果...");
-				break;
-			case 3:
-				if (WhutGlobal.XUJIE_SUCCESS_FLAG) {
-					progressDialog.setMessage("续借成功\n正在下载新数据...");
-				} else {
-					progressDialog.setMessage("续借失败\n正在下载新数据...");
-				}
-				closeHttpFlag = false;
-				break;
-
-			case 4:
-				if (WhutGlobal.XUJIE_SUCCESS_FLAG) {
-					progressDialog.setMessage("续借成功\n正在处理新数据...");
-				} else {
-					progressDialog.setMessage("续借失败\n正在处理新数据...");
-				}
-				break;
-			case 5:
-				progressDialog.dismiss();
-				if (WhutGlobal.JUMP_OR_NOT && (!cancelDialogByHand)) {
-					initialData();
-				}
-				break;
-			case 100:
-				if (!cancelDialogByHand) {
-					Toast.makeText(XuJieActivity.this, "不好意思，数据有问题...",
-					        Toast.LENGTH_LONG).show();
-				}
-				break;
-			}
+			        result[i][0]));
 		}
 	}
 
@@ -344,7 +258,7 @@ public class XuJieActivity extends Activity {
 		Log.i(TAG, "时间" + s);
 		int num = 0;
 		for (int i = 0; i < guoQiFlag.length; i++) {
-			if (guoQiDetect(s, result[i + 1][7])) {
+			if (guoQiDetect(s, result[i][7])) {
 				guoQiFlag[i] = true;
 				num++;
 			} else {
@@ -354,13 +268,6 @@ public class XuJieActivity extends Activity {
 		return num;
 	}
 
-	private void initialData() {
-		result = WhutGlobal.htmlData;
-		resultActualLength = result.length - 1;
-		actionBar.setTitle("共借：" + resultActualLength + "本|过期：" + getGuoQiNum()
-		        + "本");
-		myAdapter.notifyDataSetChanged();
-	}
 
 	private boolean guoQiDetect(String dateString1, String dateString2) {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -393,5 +300,50 @@ public class XuJieActivity extends Activity {
 		if (s.length() == 1)
 			s = "0" + s;
 		return s;
+	}
+
+	@Override
+    public void onPostExecute(String[][] result) {
+	    // TODO Auto-generated method stub
+        if(result != null){
+        	this.result = result;
+        	resultActualLength = result.length;
+            getGuoQiNum();
+    		actionBar.setTitle("共借：" + resultActualLength + "本|过期：" + getGuoQiNum() + "本");
+            myAdapter.notifyDataSetChanged();
+            saveDataToOffline();
+        }else{
+        	Helper.showShortToast(this, "出错了...");
+            actionBar.setTitle("续借");
+        }
+    }
+    
+	public class  XuJieTaskCallBack implements XuJieTask.Callback{
+
+		@Override
+        public void onPostExecute(boolean reuslt) {
+	        // TODO Auto-generated method stub
+            if(reuslt){
+                Helper.showShortToast(XuJieActivity.this, "续借成功，正在更新数据...");
+            	getRenewList();
+            }else{
+                Helper.showShortToast(XuJieActivity.this, "续借失败...");
+                actionBar.setTitle("共借：" + resultActualLength + "本|过期：" + getGuoQiNum() + "本");
+            }
+        }
+	}
+    
+	private void saveDataToOffline(){
+		SharedPreferences share = getSharedPreferences("liXianJieYue",
+		        Activity.MODE_PRIVATE);
+		SharedPreferences.Editor edit = share.edit();
+		for (int i = 0; i < resultActualLength; i++) {
+			edit.putString("title" + i, result[i][1]);
+			edit.putString("start_time" + i, result[i][6]);
+			edit.putString("end_time" + i, result[i][7]);
+			edit.putString("location" + i, result[i][3]);
+		}
+		edit.putString("length", "" + resultActualLength);
+		edit.commit();
 	}
 }

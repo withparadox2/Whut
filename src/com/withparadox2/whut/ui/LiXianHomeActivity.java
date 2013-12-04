@@ -99,13 +99,15 @@ public class LiXianHomeActivity extends Activity {
 		SharedPreferences share = getSharedPreferences(
 		        WhutGlobal.SHARE_LIXIAN_JIEYUE_NAME, Activity.MODE_PRIVATE);
 		int length = Integer.parseInt(share.getString("length", "100"));
+        System.out.println("lixian" + length);
 		if (length < 100) {
 			exist = true;
-			jieYue = new String[length][3];
+			jieYue = new String[length][4];
 			for (int i = 0; i < length; i++) {
 				jieYue[i][0] = share.getString("title" + i, "");
 				jieYue[i][1] = share.getString("start_time" + i, "");
 				jieYue[i][2] = share.getString("end_time" + i, "");
+				jieYue[i][3] = share.getString("location" + i, "");
 			}
 		}
 

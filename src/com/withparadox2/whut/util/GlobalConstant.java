@@ -11,6 +11,7 @@ public class GlobalConstant {
     
     public static final int TIMEOUT_SECONDS = 5;
     public static final int HTTP_STATUS_OK = 200;
+    public static final int HTTP_STATUS_REDIRECT = 302;
     
     
     public static final String SP_LOCAL_TEMP = "local_varible";

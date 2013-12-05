@@ -2,4 +2,6 @@
 <resources>
     <dimen name="tu_jiao_button_radius">4dp</dimen>
     <dimen name="tu_jiao_button_radius_zero">0.001dp</dimen>
+    
+    <dimen name="listview_divider_height">1px</dimen>
 </resources>

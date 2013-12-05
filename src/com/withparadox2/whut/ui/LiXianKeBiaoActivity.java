@@ -159,6 +159,19 @@ public class LiXianKeBiaoActivity extends Activity {
 			holder.txt5.setText(result[position][3]);
 			holder.txt6.setText(result[position][4]);
 
+            if(position%2 == 0){
+    			holder.txt2.setBackgroundColor(getResources().getColor(R.color.searchbooks_child_background));
+    			holder.txt3.setBackgroundColor(getResources().getColor(R.color.searchbooks_group_background));
+    			holder.txt4.setBackgroundColor(getResources().getColor(R.color.searchbooks_child_background));
+    			holder.txt5.setBackgroundColor(getResources().getColor(R.color.searchbooks_group_background));
+    			holder.txt6.setBackgroundColor(getResources().getColor(R.color.searchbooks_child_background));
+            }else{
+    			holder.txt2.setBackgroundColor(getResources().getColor(R.color.searchbooks_group_background));
+    			holder.txt3.setBackgroundColor(getResources().getColor(R.color.searchbooks_child_background));
+    			holder.txt4.setBackgroundColor(getResources().getColor(R.color.searchbooks_group_background));
+    			holder.txt5.setBackgroundColor(getResources().getColor(R.color.searchbooks_child_background));
+    			holder.txt6.setBackgroundColor(getResources().getColor(R.color.searchbooks_group_background));
+            }
 			return convertView;
 		}
 

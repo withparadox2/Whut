@@ -191,6 +191,7 @@ containing a value of this type.
         public static final int indicator_corner_radius=0x7f060001;
         public static final int indicator_internal_padding=0x7f060002;
         public static final int indicator_right_padding=0x7f060000;
+        public static final int listview_divider_height=0x7f06000a;
         public static final int tu_jiao_button_radius=0x7f060008;
         public static final int tu_jiao_button_radius_zero=0x7f060009;
     }
@@ -269,7 +270,7 @@ containing a value of this type.
         public static final int tujieo_focused_bg=0x7f020047;
     }
     public static final class id {
-        public static final int actionbar=0x7f050069;
+        public static final int actionbar=0x7f05005f;
         public static final int actionbar_actions=0x7f050013;
         public static final int actionbar_home=0x7f05000e;
         public static final int actionbar_home_bg=0x7f050010;
@@ -299,14 +300,14 @@ containing a value of this type.
         public static final int chengji_textView4=0x7f050028;
         public static final int chengji_textView5=0x7f050029;
         public static final int chengji_textView6=0x7f05002a;
-        public static final int class_rank_text=0x7f05008a;
-        public static final int course_rank_text=0x7f05008c;
+        public static final int class_rank_text=0x7f050089;
+        public static final int course_rank_text=0x7f05008b;
         public static final int disabled=0x7f050000;
         public static final int expandable_listview=0x7f050021;
         public static final int fl_inner=0x7f050077;
         public static final int flip=0x7f050008;
         public static final int footer_loadmore_text=0x7f05002c;
-        public static final int footer_view=0x7f05006b;
+        public static final int footer_view=0x7f050061;
         public static final int geren_dialog_cancelbutton=0x7f050034;
         public static final int geren_dialog_radio1=0x7f050031;
         public static final int geren_dialog_radio2=0x7f050032;
@@ -320,9 +321,8 @@ containing a value of this type.
         public static final int gridview=0x7f050009;
         public static final int head=0x7f050048;
         public static final int horizontalScrollView1=0x7f05004b;
-        public static final int huode_xuefen_textview=0x7f050091;
+        public static final int huode_xuefen_textview=0x7f050090;
         public static final int information_actionbar=0x7f050035;
-        public static final int jieyue_chaxun_button=0x7f050088;
         public static final int jieyue_chaxun_head=0x7f05003b;
         public static final int jieyue_chaxun_listview=0x7f050046;
         public static final int jieyue_chaxun_textView1=0x7f05003c;
@@ -338,17 +338,17 @@ containing a value of this type.
         public static final int jieyuechaxun_actionbar=0x7f05003a;
         public static final int kebiao_actionbar=0x7f050047;
         public static final int kebiao_listview=0x7f050051;
-        public static final int kecheng_xingzhi_textview=0x7f05008f;
+        public static final int kecheng_xingzhi_textview=0x7f05008e;
         public static final int listview=0x7f050022;
         public static final int lixian_actionbar=0x7f050052;
         public static final int lixian_jieyue_button=0x7f050054;
         public static final int lixian_kebiao_button=0x7f050053;
-        public static final int loginButton=0x7f050065;
-        public static final int loginUserId=0x7f050061;
-        public static final int loginUserPassword=0x7f050063;
-        public static final int login_actionbar=0x7f05005d;
-        public static final int login_userid_text=0x7f050062;
-        public static final int main_viewpager=0x7f05006a;
+        public static final int loginButton=0x7f05006b;
+        public static final int loginUserId=0x7f050066;
+        public static final int loginUserPassword=0x7f050068;
+        public static final int login_actionbar=0x7f050062;
+        public static final int login_userid_text=0x7f050067;
+        public static final int main_viewpager=0x7f050060;
         public static final int manualOnly=0x7f050004;
         public static final int pingjiao_actionbar=0x7f05006c;
         public static final int pingjiao_head=0x7f05006d;
@@ -359,8 +359,8 @@ containing a value of this type.
         public static final int pingjiao_textView3=0x7f05006f;
         public static final int popup_button=0x7f050020;
         public static final int popup_listview=0x7f050081;
-        public static final int popup_text=0x7f050067;
-        public static final int popup_text_delete=0x7f050068;
+        public static final int popup_text=0x7f05005d;
+        public static final int popup_text_delete=0x7f05005e;
         public static final int prepingjiao_actionbar=0x7f050073;
         public static final int prepingjiao_listview=0x7f050074;
         public static final int prepingjiao_text1=0x7f050075;
@@ -375,13 +375,13 @@ containing a value of this type.
         public static final int pull_to_refresh_progress=0x7f050079;
         public static final int pull_to_refresh_sub_text=0x7f05007b;
         public static final int pull_to_refresh_text=0x7f05007a;
-        public static final int remember_password=0x7f050066;
+        public static final int remember_password=0x7f05006a;
         public static final int room_location1=0x7f050036;
         public static final int room_location2=0x7f050037;
         public static final int room_location3=0x7f050038;
         public static final int rotate=0x7f050007;
-        public static final int score_total_text=0x7f05008d;
-        public static final int score_year_text=0x7f05008b;
+        public static final int score_total_text=0x7f05008c;
+        public static final int score_year_text=0x7f05008a;
         public static final int screen=0x7f05000d;
         public static final int scrollview=0x7f05000b;
         public static final int scroollContainter=0x7f05004a;
@@ -397,25 +397,25 @@ containing a value of this type.
         public static final int textView5=0x7f05004f;
         public static final int textView6=0x7f050050;
         public static final int time_table_button=0x7f050084;
-        public static final int to_jiao_button=0x7f05005f;
-        public static final int to_tu_button=0x7f050060;
-        public static final int tu_jiao_buttons=0x7f05005e;
-        public static final int tushu_xujie_button=0x7f050089;
-        public static final int two_login_buttons=0x7f050064;
+        public static final int to_jiao_button=0x7f050064;
+        public static final int to_tu_button=0x7f050065;
+        public static final int tu_jiao_buttons=0x7f050063;
+        public static final int tushu_xujie_button=0x7f050088;
+        public static final int two_login_buttons=0x7f050069;
         public static final int viewpager=0x7f05000c;
         public static final int webview=0x7f05000a;
         public static final int welcomen_actionbar=0x7f050083;
         public static final int welcometu_actionbar=0x7f050087;
-        public static final int xuefen_listview=0x7f05008e;
+        public static final int xuefen_listview=0x7f05008d;
         public static final int xujie_actionbar=0x7f050056;
-        public static final int xujie_button=0x7f050092;
+        public static final int xujie_button=0x7f050091;
         public static final int xujie_head=0x7f050057;
         public static final int xujie_listview=0x7f05005c;
         public static final int xujie_textView1=0x7f050058;
         public static final int xujie_textView2=0x7f050059;
         public static final int xujie_textView3=0x7f05005a;
         public static final int xujie_textView4=0x7f05005b;
-        public static final int yaoqiu_xuefen_textview=0x7f050090;
+        public static final int yaoqiu_xuefen_textview=0x7f05008f;
     }
     public static final class layout {
         public static final int actionbar=0x7f030000;
@@ -442,28 +442,27 @@ containing a value of this type.
         public static final int lixian_home=0x7f030015;
         public static final int lixian_jieyue=0x7f030016;
         public static final int lixian_jieyue_item=0x7f030017;
-        public static final int login=0x7f030018;
-        public static final int login_popup_item=0x7f030019;
-        public static final int main=0x7f03001a;
-        public static final int main_fragment_1=0x7f03001b;
-        public static final int main_fragment_2=0x7f03001c;
-        public static final int need_this_for_maven=0x7f03001d;
-        public static final int pingjiao=0x7f03001e;
-        public static final int pingjiao_item=0x7f03001f;
-        public static final int prepingjiao=0x7f030020;
-        public static final int prepingjiao_item=0x7f030021;
-        public static final int pull_to_refresh_header_horizontal=0x7f030022;
-        public static final int pull_to_refresh_header_vertical=0x7f030023;
-        public static final int search_book=0x7f030024;
-        public static final int search_book_item=0x7f030025;
-        public static final int search_method_pop=0x7f030026;
-        public static final int search_method_pop_item=0x7f030027;
-        public static final int welcome=0x7f030028;
-        public static final int welcome_tu=0x7f030029;
-        public static final int xuefen_xueji=0x7f03002a;
-        public static final int xuefen_xueji_item=0x7f03002b;
-        public static final int xujie=0x7f03002c;
-        public static final int xujie_item=0x7f03002d;
+        public static final int login_popup_item=0x7f030018;
+        public static final int main=0x7f030019;
+        public static final int main_fragment_1=0x7f03001a;
+        public static final int main_fragment_2=0x7f03001b;
+        public static final int need_this_for_maven=0x7f03001c;
+        public static final int pingjiao=0x7f03001d;
+        public static final int pingjiao_item=0x7f03001e;
+        public static final int prepingjiao=0x7f03001f;
+        public static final int prepingjiao_item=0x7f030020;
+        public static final int pull_to_refresh_header_horizontal=0x7f030021;
+        public static final int pull_to_refresh_header_vertical=0x7f030022;
+        public static final int search_book=0x7f030023;
+        public static final int search_book_item=0x7f030024;
+        public static final int search_method_pop=0x7f030025;
+        public static final int search_method_pop_item=0x7f030026;
+        public static final int welcome=0x7f030027;
+        public static final int welcome_tu=0x7f030028;
+        public static final int xuefen_xueji=0x7f030029;
+        public static final int xuefen_xueji_item=0x7f03002a;
+        public static final int xujie=0x7f03002b;
+        public static final int xujie_item=0x7f03002c;
     }
     public static final class string {
         public static final int about1=0x7f070016;
@@ -472,6 +471,7 @@ containing a value of this type.
         public static final int edit_jiao_hint=0x7f07000b;
         public static final int edit_library_hint=0x7f07000c;
         public static final int edit_password_hint=0x7f07000d;
+        public static final int friday=0x7f07001d;
         public static final int hello=0x7f070006;
         public static final int imagebutton_content_description=0x7f070015;
         public static final int jiao_id_text=0x7f07000e;
@@ -479,6 +479,7 @@ containing a value of this type.
         public static final int library_id_text=0x7f07000f;
         public static final int library_name=0x7f07000a;
         public static final int login_button=0x7f070011;
+        public static final int monday=0x7f070019;
         public static final int offline_books_button=0x7f070013;
         public static final int offline_kebiao_button=0x7f070012;
         public static final int password_text=0x7f070010;
@@ -493,6 +494,10 @@ containing a value of this type.
         public static final int pull_to_refresh_release_label=0x7f070001;
         public static final int remember_password_checkbox=0x7f070014;
         public static final int search_book_button=0x7f070017;
+        public static final int thursday=0x7f07001c;
+        public static final int timetable=0x7f070018;
+        public static final int tuesday=0x7f07001a;
+        public static final int wednesday=0x7f07001b;
     }
     public static final class style {
         public static final int ActionBar=0x7f090000;

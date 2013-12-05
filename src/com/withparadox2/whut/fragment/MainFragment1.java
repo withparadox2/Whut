@@ -3,12 +3,7 @@ package com.withparadox2.whut.fragment;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,7 +11,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -27,14 +21,10 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-import com.markupartist.android.widget.ActionBar;
 import com.withparadox2.whut.R;
 import com.withparadox2.whut.adapter.LoginPopupListAdapter;
 import com.withparadox2.whut.dao.LoginDbHelper;
 import com.withparadox2.whut.dao.UserInfoAdapter;
-import com.withparadox2.whut.dao.WhutGlobal;
-import com.withparadox2.whut.http.HttpOperateThread;
-import com.withparadox2.whut.http.HttpOperation;
 import com.withparadox2.whut.http.LoginJiaoTask;
 import com.withparadox2.whut.http.LoginTuTask;
 import com.withparadox2.whut.ui.WelcomeJiaoActivity;
@@ -50,7 +40,6 @@ public class MainFragment1 extends Fragment {
 	private String userIdText;
 	private String userPasswordText;
 	private Button submitButton;
-	private Button liXianButton;
 	private Button ToTuButton;
 	private Button ToJiaoButton;
 	private CheckBox checkBox;
@@ -60,15 +49,11 @@ public class MainFragment1 extends Fragment {
 	private ListView popupListView;
 	private ArrayList<String> userIdList;
 	private ArrayList<String> userPasswordList;
-	private UserInfoAdapter dbHelper;
 	private boolean isRememberOrNot = false;
-	private ActionBar actionBar;
-	private boolean cancelDialogByHand = false;
-	private int closeHttpFlag;// 是关闭httpurl还是关闭httppost
 	private boolean jiaoTuFlag = true;// true for jiaowuchu, false for library
     
-	private String userName;
-	private Callback callback;
+	private LoadingCallback loadingCallback;
+    private DoneCallback doneCallback;
 	private boolean isLoading;
 	private LoginJiaoTask loginJiaoTask;
     private LoginTuTask loginTuTask;
@@ -77,13 +62,19 @@ public class MainFragment1 extends Fragment {
     private LoginDbHelper loginDbHelper;
 
     
-    /*
-     * 登陆时候调用此方法，MainActivity实现此接口
+    /**
+     * 登陆时候回调用此方法，MainActivity实现此接口
      */
-	public interface Callback{
+	public interface LoadingCallback{
 		public void loading();
 	}
     
+    /**
+     * 登陆结束回调用此方法，MainActivity实现此接口
+     */
+	public interface DoneCallback{
+		public void done();
+	}
     
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -102,7 +93,8 @@ public class MainFragment1 extends Fragment {
 	    // TODO Auto-generated method stub
 	    super.onAttach(activity);
 	    try {
-	    	callback = (Callback) activity;
+	    	loadingCallback = (LoadingCallback) activity;
+            doneCallback = (DoneCallback) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnHeadlineSelectedListener");
@@ -248,17 +240,21 @@ public class MainFragment1 extends Fragment {
 			userIdText = userIdEdit.getText().toString().trim();
 			userPasswordText = userPasswordEdit.getText().toString().trim();
 			if (!userIdText.equals("") && !userPasswordText.equals("")) {
-				callback.loading();
-				if (jiaoTuFlag) {
-    				loginJiaoTask = new LoginJiaoTask(new LoginJiaoTaskCallBack());
-                    loginJiaoTask.execute(userIdText, userPasswordText);
-					updateIdAndPassword(UserInfoAdapter.DATABASE_JIAO_TABLE_NAME);
-				} else {
-                    loginTuTask = new LoginTuTask(new LoginTuTaskCallBack());
-                    loginTuTask.execute(userIdText, userPasswordText);
-					updateIdAndPassword(UserInfoAdapter.DATABASE_TU_TABLE_NAME);
-				}
-				isLoading = true;
+                if(!isLoading){
+    				loadingCallback.loading();
+    				if (jiaoTuFlag) {
+        				loginJiaoTask = new LoginJiaoTask(new LoginJiaoTaskCallBack());
+                        loginJiaoTask.execute(userIdText, userPasswordText);
+    					updateIdAndPassword(UserInfoAdapter.DATABASE_JIAO_TABLE_NAME);
+    				} else {
+                        loginTuTask = new LoginTuTask(new LoginTuTaskCallBack());
+                        loginTuTask.execute(userIdText, userPasswordText);
+    					updateIdAndPassword(UserInfoAdapter.DATABASE_TU_TABLE_NAME);
+    				}
+    				isLoading = true;
+                }else{
+                	Helper.showShortToast(activity, "正在登陆...");
+                }
 			}else{
 				Helper.showShortToast(activity, "输入不可以为空...");
 			}
@@ -270,20 +266,28 @@ public class MainFragment1 extends Fragment {
 		@Override
 		public void onPostExecute(String result) {
 			// TODO Auto-generated method stub             
+            if(result == null){
+            	Helper.showShortToast(activity, "出错了...");
+            }else if(result.equals("")){
+            	Helper.showShortToast(activity, "用户名或密码错误...");
+            }else{
+                Helper.saveValueInSharePreference(activity, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_NAME, result);
+                Helper.saveValueInSharePreference(activity, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_ID, userIdText);
+                Helper.saveValueInSharePreference(activity, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_PASSWORD, userPasswordText);
+    			Intent i = new Intent();
+    			i.setClass(activity, WelcomeJiaoActivity.class);
+    			startActivity(i);
+            }
             isLoading = false;
-            Helper.saveValueInSharePreference(activity, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_NAME, result);
-            Helper.saveValueInSharePreference(activity, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_ID, userIdText);
-            Helper.saveValueInSharePreference(activity, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_PASSWORD, userPasswordText);
-			Intent i = new Intent();
-			i.setClass(activity, WelcomeJiaoActivity.class);
-			startActivity(i);
+            doneCallback.done();
 		}
-		
 	}
     
     public boolean cancelTask(){
     	if(isLoading){
-    		return loginJiaoTask.cancel(true);
+            isLoading = false;
+    		return (loginJiaoTask==null ? false : loginJiaoTask.cancel(true)) || 
+    			   (loginTuTask == null ? false : loginTuTask.cancel(true));
     	}else{
     		return false;
     	}
@@ -294,13 +298,20 @@ public class MainFragment1 extends Fragment {
 		@Override
         public void onPostExecute(String result) {
 	        // TODO Auto-generated method stub
+            if(result == null){
+            	Helper.showShortToast(activity, "出错了...");
+            }else if(result.equals("")){
+            	Helper.showShortToast(activity, "用户名或密码错误...");
+            }else{
+                Helper.saveValueInSharePreference(activity, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_NAME, result);
+                Helper.saveValueInSharePreference(activity, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_ID, userIdText);
+                Helper.saveValueInSharePreference(activity, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_PASSWORD, userPasswordText);
+    			Intent i = new Intent();
+    			i.setClass(activity, WelcomeTuActivity.class);
+    			startActivity(i);	        
+            }
             isLoading = false;
-            Helper.saveValueInSharePreference(activity, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_NAME, result);
-            Helper.saveValueInSharePreference(activity, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_ID, userIdText);
-            Helper.saveValueInSharePreference(activity, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_PASSWORD, userPasswordText);
-			Intent i = new Intent();
-			i.setClass(activity, WelcomeTuActivity.class);
-			startActivity(i);	        
+            doneCallback.done();
         }
     	
     }

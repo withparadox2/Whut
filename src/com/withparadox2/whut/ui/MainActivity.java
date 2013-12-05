@@ -25,7 +25,7 @@ import com.withparadox2.whut.util.GlobalConstant;
 import com.withparadox2.whut.util.Helper;
 
 
-public class MainActivity extends FragmentActivity implements MainFragment1.Callback{
+public class MainActivity extends FragmentActivity implements MainFragment1.LoadingCallback, MainFragment1.DoneCallback{
 
     private ViewPager viewPager;
     private MainFragmentPagerAdapter myAdapter;
@@ -124,11 +124,9 @@ public class MainActivity extends FragmentActivity implements MainFragment1.Call
         public void onPageSelected(int index) {
 	        // TODO Auto-generated method stub
 			if(index == 0){
-				actionBar.setTitle("WHUT");
 				saveCurrentPageIndex(PAGE_FIRST);
                 footView.setBackgroundResource(R.drawable.main_page_indicator_1);
 			}else{
-				actionBar.setTitle("其他功能");
 				saveCurrentPageIndex(PAGE_SECOND);
                 footView.setBackgroundResource(R.drawable.main_page_indicator_2);
 			}
@@ -151,6 +149,12 @@ public class MainActivity extends FragmentActivity implements MainFragment1.Call
     public void loading() {
 	    // TODO Auto-generated method stub
 	    actionBar.setTitle("正在登陆...");
+    }	
+	
+	@Override
+    public void done() {
+	    // TODO Auto-generated method stub
+	    actionBar.setTitle("WHUT");
     }
 
 	@Override
@@ -179,5 +183,8 @@ public class MainActivity extends FragmentActivity implements MainFragment1.Call
         	viewPager.setCurrentItem(index);
         }
 	}
+
+
+
 
 }

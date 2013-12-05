@@ -25,7 +25,7 @@ import com.withparadox2.whut.dao.WhutGlobal;
 
 public class HttpKebiaoThread extends Thread {
 	private HttpGet httpGet;
-	private HttpClient httpClient = SingleHttpClient.getHttpClient();
+	private HttpClient httpClient = HttpHelper.getHttpClient();
 	private HttpResponse response;
 	private String html;
 	private Message msg;

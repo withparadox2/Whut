@@ -8,13 +8,6 @@
           android:id="@+id/chengji_actionbar"
           style="@style/ActionBar"
           android:layout_alignParentTop="true"/>
-     
-     
-     
-     
-     
-     
-     
     <LinearLayout 
         android:id="@+id/chengji_head"
         android:layout_width="fill_parent"

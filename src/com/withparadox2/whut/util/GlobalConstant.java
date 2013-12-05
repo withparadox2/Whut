@@ -9,6 +9,9 @@ public class GlobalConstant {
     public static final String CHENGJI_TEMP_URL =  "http://202.114.90.172:8080/Score/";
     public static final String XUEFEN_URL =  "http://202.114.90.172:8080/Score/xftjList.do";
     
+    public static final String LOGIN_TU_URL = "http://202.114.89.11/opac/reader/doLogin";
+    public static final String LOGIN_TU_REFERER = "http://202.114.89.11/opac/reader/login";
+    
     public static final int TIMEOUT_SECONDS = 5;
     public static final int HTTP_STATUS_OK = 200;
     public static final int HTTP_STATUS_REDIRECT = 302;

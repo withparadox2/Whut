@@ -5,10 +5,11 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,10 +28,6 @@ import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.AbstractAction;
 import com.markupartist.android.widget.ActionBar.IntentAction;
 import com.withparadox2.whut.R;
-import com.withparadox2.whut.R.drawable;
-import com.withparadox2.whut.R.id;
-import com.withparadox2.whut.R.layout;
-import com.withparadox2.whut.dao.SaveTwoDimArray;
 import com.withparadox2.whut.dao.WhutGlobal;
 import com.withparadox2.whut.http.FetchKebiaoTask;
 import com.withparadox2.whut.util.Helper;
@@ -44,11 +41,12 @@ public class KebiaoActivity extends Activity implements FetchKebiaoTask.Callback
 	RelativeLayout mHead;
 	String[][] result = new String[4][5];
 	private ActionBar actionBar;
-	private String TAG = "ScrollTableActivity";
     
 	private FetchKebiaoTask fetchKebiaoTask;
 	
 	private int dataLength = 0;
+    
+	private boolean isLoading = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +56,6 @@ public class KebiaoActivity extends Activity implements FetchKebiaoTask.Callback
 		actionBar.setHomeAction(new IntentAction(this, WelcomeJiaoActivity
 		        .createIntent(this), R.drawable.ic_actionbar_whut));
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.addAction(new DownLoadKeBiaoAction());
 		result = WhutGlobal.htmlData;
 		mHead = (RelativeLayout) findViewById(R.id.head);
 		mHead.setFocusable(false);
@@ -74,29 +71,16 @@ public class KebiaoActivity extends Activity implements FetchKebiaoTask.Callback
 		getKeBiaoData();
 	}
 
-	public class DownLoadKeBiaoAction extends AbstractAction {
-
-		public DownLoadKeBiaoAction() {
-			super(R.drawable.ic_actionbar_download_kebiao);
-			// TODO Auto-generated constructor stub
-		}
-
-		@Override
-		public void performAction(View view) {
-			// TODO Auto-generated method stub
-			SharedPreferences share = getSharedPreferences(
-			        WhutGlobal.ShARE_LIXIAN_KEBIAO_NAME, Activity.MODE_PRIVATE);
-			SharedPreferences.Editor edit = share.edit();
-			for (int i = 0; i < 4; i++) {
-				for (int j = 0; j < 5; j++) {
-					edit.putString("" + (j + 5 * i), result[i][j]);
-				}
+	private void saveLiXianKeBiao(){
+		SharedPreferences share = getSharedPreferences(
+		        WhutGlobal.ShARE_LIXIAN_KEBIAO_NAME, Activity.MODE_PRIVATE);
+		SharedPreferences.Editor edit = share.edit();
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 5; j++) {
+				edit.putString("" + (j + 5 * i), result[i][j]);
 			}
-			edit.commit();
-			Toast.makeText(KebiaoActivity.this, "保存成功...", Toast.LENGTH_LONG)
-			        .show();
 		}
-
+		edit.commit();
 	}
 
 	class ListViewOnClickListener implements OnItemClickListener {
@@ -162,28 +146,18 @@ public class KebiaoActivity extends Activity implements FetchKebiaoTask.Callback
 					convertView = mInflater.inflate(id_row_layout, null);
 					holder = new ViewHolder();
 
-					MyHScrollView scrollView1 = (MyHScrollView) convertView
-					        .findViewById(R.id.horizontalScrollView1);
+					MyHScrollView scrollView1 = (MyHScrollView) convertView.findViewById(R.id.horizontalScrollView1);
 
 					holder.scrollView = scrollView1;
-					holder.txt1 = (TextView) convertView
-					        .findViewById(R.id.textView1);
-					holder.txt2 = (TextView) convertView
-					        .findViewById(R.id.textView2);
-					holder.txt3 = (TextView) convertView
-					        .findViewById(R.id.textView3);
-					holder.txt4 = (TextView) convertView
-					        .findViewById(R.id.textView4);
-					holder.txt5 = (TextView) convertView
-					        .findViewById(R.id.textView5);
-					holder.txt6 = (TextView) convertView
-					        .findViewById(R.id.textView6);
+					holder.txt1 = (TextView) convertView.findViewById(R.id.textView1);
+					holder.txt2 = (TextView) convertView.findViewById(R.id.textView2);
+					holder.txt3 = (TextView) convertView.findViewById(R.id.textView3);
+					holder.txt4 = (TextView) convertView.findViewById(R.id.textView4);
+					holder.txt5 = (TextView) convertView.findViewById(R.id.textView5);
+					holder.txt6 = (TextView) convertView.findViewById(R.id.textView6);
 
-					MyHScrollView headSrcrollView = (MyHScrollView) mHead
-					        .findViewById(R.id.horizontalScrollView1);
-					headSrcrollView
-					        .AddOnScrollChangedListener(new OnScrollChangedListenerImp(
-					                scrollView1));
+					MyHScrollView headSrcrollView = (MyHScrollView) mHead.findViewById(R.id.horizontalScrollView1);
+					headSrcrollView.AddOnScrollChangedListener(new OnScrollChangedListenerImp(scrollView1));
 
 					convertView.setTag(holder);
 					mHolderList.add(holder);
@@ -197,23 +171,21 @@ public class KebiaoActivity extends Activity implements FetchKebiaoTask.Callback
 			holder.txt4.setText(result[position][2]);
 			holder.txt5.setText(result[position][3]);
 			holder.txt6.setText(result[position][4]);
-			holder.txt2.setOnClickListener(new TextViewOnClickListener());
-			holder.txt3.setOnClickListener(new TextViewOnClickListener());
-			holder.txt4.setOnClickListener(new TextViewOnClickListener());
-			holder.txt5.setOnClickListener(new TextViewOnClickListener());
-			holder.txt6.setOnClickListener(new TextViewOnClickListener());
-
+            
+            if(position%2 == 0){
+    			holder.txt2.setBackgroundColor(getResources().getColor(R.color.searchbooks_child_background));
+    			holder.txt3.setBackgroundColor(getResources().getColor(R.color.searchbooks_group_background));
+    			holder.txt4.setBackgroundColor(getResources().getColor(R.color.searchbooks_child_background));
+    			holder.txt5.setBackgroundColor(getResources().getColor(R.color.searchbooks_group_background));
+    			holder.txt6.setBackgroundColor(getResources().getColor(R.color.searchbooks_child_background));
+            }else{
+    			holder.txt2.setBackgroundColor(getResources().getColor(R.color.searchbooks_group_background));
+    			holder.txt3.setBackgroundColor(getResources().getColor(R.color.searchbooks_child_background));
+    			holder.txt4.setBackgroundColor(getResources().getColor(R.color.searchbooks_group_background));
+    			holder.txt5.setBackgroundColor(getResources().getColor(R.color.searchbooks_child_background));
+    			holder.txt6.setBackgroundColor(getResources().getColor(R.color.searchbooks_group_background));
+            }
 			return convertView;
-		}
-
-		class TextViewOnClickListener implements OnClickListener {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				v.setBackgroundColor(Color.CYAN);
-			}
-
 		}
 
 		class OnScrollChangedListenerImp implements OnScrollChangedListener {
@@ -244,20 +216,49 @@ public class KebiaoActivity extends Activity implements FetchKebiaoTask.Callback
 		fetchKebiaoTask = new FetchKebiaoTask(KebiaoActivity.this);
         actionBar.setTitle("正在获取数据...");
 		fetchKebiaoTask.execute();
+        isLoading = true;
 	}
 
 	@Override
     public void onPostExecute(String[][] result) {
 	    // TODO Auto-generated method stub
-        if(result.length == 1){
+        if(result == null){
         	Helper.showShortToast(KebiaoActivity.this, "出错了...");
-            actionBar.setTitle("课表");
         }else{
         	this.result = result;
             dataLength = 4;
-            actionBar.setTitle("课表");
             myAdapter.notifyDataSetChanged();
+            saveLiXianKeBiao();
         }
-        
+        actionBar.setTitle("课表");
+        isLoading = false;
     }
+	
+	@Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    // TODO Auto-generated method stub
+		if (keyCode == KeyEvent.KEYCODE_BACK && cancelTask()) {  
+        	 actionBar.setTitle("课表");
+     	     Helper.showShortToast(KebiaoActivity.this, "取消操作...");
+             if(dataLength == 0){
+            	 Intent i = new Intent();
+            	 i.setClass(KebiaoActivity.this, WelcomeJiaoActivity.class);
+            	 startActivity(i);
+            	 this.finish();
+             }
+     	     return true;
+		} else{
+			return super.onKeyDown(keyCode, event);
+		}
+    } 
+	
+    
+	private boolean cancelTask(){
+		if(isLoading){
+            isLoading = false;
+			return (fetchKebiaoTask == null ? false : fetchKebiaoTask.cancel(true));
+		}else{
+			return false;
+		}
+	}    
 }

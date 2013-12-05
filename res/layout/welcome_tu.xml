@@ -7,69 +7,45 @@
 <com.markupartist.android.widget.ActionBar
     android:id="@+id/welcometu_actionbar"
     style="@style/ActionBar"/>
-	<TableLayout 
-	      android:layout_width="fill_parent"
-	      android:layout_height="fill_parent"
-	      android:padding="10dp">
-	   <TableRow 
-	       android:layout_weight="1"
-	       android:layout_width="fill_parent">
-	       <LinearLayout 
-	           android:layout_width="fill_parent"
-	           android:layout_height="fill_parent"
-	             android:layout_weight="1"
-	             android:orientation="vertical"
-	             android:gravity="center">
-				<Button 
-				    android:layout_width="48dp"
-				    android:layout_height="48dp"
-				    android:background="@drawable/ic_menu_jieyuechaxun"
-				    android:id="@+id/jieyue_chaxun_button"/>
-				<TextView 
-				    android:layout_width="wrap_content"
-				    android:layout_height="wrap_content"
-				    android:text="借阅查询"/>	           
-	       </LinearLayout>
+    <LinearLayout 
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:orientation="horizontal">
+         <LinearLayout
+               android:layout_width="0dp"
+               android:layout_height="fill_parent"
+               android:layout_weight="1"
+               android:gravity="center"
+               android:orientation="vertical" >
 
-	       <LinearLayout
-	           android:layout_width="fill_parent"
-	           android:layout_height="fill_parent"
-	           android:layout_weight="1"
-	           android:gravity="center"
-	           android:orientation="vertical" >
+               <Button
+                   android:id="@+id/tushu_xujie_button"
+                   android:layout_width="48dp"
+                   android:layout_height="48dp"
+                   android:background="@drawable/ic_menu_xujie" />
 
-	           <Button
-	               android:id="@+id/tushu_xujie_button"
-	               android:layout_width="48dp"
-	               android:layout_height="48dp"
-	               android:background="@drawable/ic_menu_xujie" />
-
-	           <TextView
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:text="图书续借" />
-	       </LinearLayout>
-	       
-	       <LinearLayout 
-	           android:layout_width="fill_parent"
-	           android:layout_height="fill_parent"
-	             android:layout_weight="2"
-	             android:orientation="vertical"
-	             android:gravity="center">	
-			    	             
-	       </LinearLayout>	       	       
-     
-	   </TableRow>
-	   <TableRow 
-	        android:layout_weight="2">     	     
-
-	   </TableRow> 
-	   <TableRow 
-	        android:layout_weight="2">
-	   </TableRow>  	
-	</TableLayout>    
-
-
-    
-
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="图书续借" />
+           </LinearLayout>
+           <LinearLayout 
+               android:layout_height="fill_parent"
+               android:layout_width="0dp"
+               android:layout_weight="1"/>
+           <LinearLayout 
+               android:layout_height="fill_parent"
+               android:layout_width="0dp"
+               android:layout_weight="1"/>
+               
+    </LinearLayout>
+    <LinearLayout 
+        android:layout_height="0dp"
+        android:layout_width="fill_parent"
+        android:layout_weight="1"/>    
+    <LinearLayout 
+        android:layout_height="0dp"
+        android:layout_width="fill_parent"
+        android:layout_weight="1"/>    
 </LinearLayout>

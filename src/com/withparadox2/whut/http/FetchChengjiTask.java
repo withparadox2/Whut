@@ -29,89 +29,78 @@ import com.withparadox2.whut.util.Helper;
 public class FetchChengjiTask extends AsyncTask<Void, Void, String[][]>{
 
 	private Callback callback;
-    private Context context;
-    public interface Callback{
-        public void onPostExecute(String[][] result);
-    	
-    }
-    
-    public FetchChengjiTask(Context context, Callback callback){
-        this.callback = callback;
-        this.context = context;
-    }
-    
+	private Context context;
+	public interface Callback{
+		public void onPostExecute(String[][] result);
+
+	}
+
+	public FetchChengjiTask(Context context, Callback callback){
+		this.callback = callback;
+		this.context = context;
+	}
+
 	@Override
-    protected String[][] doInBackground(Void... params) {
-	    // TODO Auto-generated method stub
-        HttpGet httpGet = new HttpGet(GlobalConstant.CHENGJI_TEMP_URL);
-        HttpPost httpPost = new HttpPost(GlobalConstant.CHENGJI_URL);
-        HttpResponse httpResponse = null;
+	protected String[][] doInBackground(Void... params) {
+		// TODO Auto-generated method stub
+		HttpGet httpGet = new HttpGet(GlobalConstant.CHENGJI_TEMP_URL);
+		HttpPost httpPost = new HttpPost(GlobalConstant.CHENGJI_URL);
+		HttpResponse httpResponse = null;
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
 		nameValuePairs.add(new BasicNameValuePair("numPerPage", "500"));
 		nameValuePairs.add(new BasicNameValuePair("pageNum", "1"));
 		nameValuePairs.add(new BasicNameValuePair("xh", Helper.getValueInSharePreference(context, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_ID, "")));
 		try {
-	        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
-	        DefaultHttpClient defaultHttpClient = SingleHttpClient.getHttpClient();
-	        HttpParams httpParams = defaultHttpClient.getParams();
-	        HttpConnectionParams.setConnectionTimeout(httpParams, GlobalConstant.TIMEOUT_SECONDS * 1000);
-	        HttpConnectionParams.setSoTimeout(httpParams, GlobalConstant.TIMEOUT_SECONDS * 1000);
-            defaultHttpClient.execute(httpGet);
+			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
+			DefaultHttpClient defaultHttpClient = HttpHelper.getHttpClient();
+			HttpParams httpParams = defaultHttpClient.getParams();
+			HttpConnectionParams.setConnectionTimeout(httpParams, GlobalConstant.TIMEOUT_SECONDS * 1000);
+			HttpConnectionParams.setSoTimeout(httpParams, GlobalConstant.TIMEOUT_SECONDS * 1000);
+			defaultHttpClient.execute(httpGet);
 			httpResponse = defaultHttpClient.execute(httpPost);
 			int statusCode = httpResponse.getStatusLine().getStatusCode();
 			if (statusCode == GlobalConstant.HTTP_STATUS_OK) {
 				return getChengjiData(EntityUtils.toString(httpResponse.getEntity()));
-            } else {
-                throw new IOException(httpResponse.getStatusLine().getReasonPhrase());
-            }
+			} else {
+				throw new IOException(httpResponse.getStatusLine().getReasonPhrase());
+			}
 		}catch (ClientProtocolException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-        } catch (IOException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-        }finally{
-        	releaseConnection(httpResponse);
-        }
-        return new String[1][1];
-}
-    
-	
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IndexOutOfBoundsException e) {
+			// TODO: handle exception
+            e.printStackTrace();
+		}finally{
+			HttpHelper.releaseConnection(httpResponse);
+		}
+		return null;
+	}
+
+
 	@Override
-    protected void onPostExecute(String[][] result) {
-	    // TODO Auto-generated method stub
-	    callback.onPostExecute(result);
-    }
-    
+	protected void onPostExecute(String[][] result) {
+		// TODO Auto-generated method stub
+		callback.onPostExecute(result);
+	}
+
 	private String[][] getChengjiData(String html){
 		Document document = Jsoup.parse(html);
-        System.out.println(html);
 		Elements trs = document.select("tr[target=sid_cj_id]");
-        int size = trs.size();
-        String[][] result = new String[size][6];
-        for(int i=0; i<size; i++){
-        	Elements tds = trs.get(i).select("td");
-        	result[i][0] = tds.get(2).text();
-        	result[i][1] = tds.get(0).text();
-        	result[i][2] = tds.get(3).text();
-        	result[i][3] = tds.get(4).text();
-        	result[i][4] = tds.get(5).text();
-        	result[i][5] = tds.get(10).text();
-        }
+		int size = trs.size();
+		String[][] result = new String[size][6];
+		for(int i=0; i<size; i++){
+			Elements tds = trs.get(i).select("td");
+			result[i][0] = tds.get(2).text();
+			result[i][1] = tds.get(0).text();
+			result[i][2] = tds.get(3).text();
+			result[i][3] = tds.get(4).text();
+			result[i][4] = tds.get(5).text();
+			result[i][5] = tds.get(10).text();
+		}
 		return result;
 	}
-	
-	private void releaseConnection(HttpResponse response){
-	      if( response.getEntity() != null ) {
-	          try {
-	            response.getEntity().consumeContent();
-            } catch (IOException e) {
-	            // TODO Auto-generated catch block
-	            e.printStackTrace();
-            }
-	       }//if
-	}
-    
-    
 
 }

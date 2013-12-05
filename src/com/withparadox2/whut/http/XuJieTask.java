@@ -35,7 +35,7 @@ public class XuJieTask extends AsyncTask<Void, Void, Boolean>{
     protected Boolean doInBackground(Void... params) {
 	    // TODO Auto-generated method stub
 		HttpPost httpPost = new HttpPost("http://202.114.89.11/opac/loan/doRenew");
-        DefaultHttpClient httpClient = SingleHttpClient.getHttpClient();
+        DefaultHttpClient httpClient = HttpHelper.getHttpClient();
 		try {
 	        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
     		HttpResponse response = httpClient.execute(httpPost);

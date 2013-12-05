@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.withparadox2.whut.R;
 import com.withparadox2.whut.dao.UserInfoAdapter;
-import com.withparadox2.whut.ui.LoginActivity;
 
 public class LoginPopupListAdapter extends BaseAdapter{
 	LayoutInflater layoutInflater;

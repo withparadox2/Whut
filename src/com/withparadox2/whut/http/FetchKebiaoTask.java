@@ -32,7 +32,7 @@ public class FetchKebiaoTask extends AsyncTask<Void, Void, String[][]>{
 	    // TODO Auto-generated method stub
 		HttpGet httpGetTemp, httpGet;
 		HttpResponse response = null;
-		DefaultHttpClient httpClient = SingleHttpClient.getHttpClient();
+		DefaultHttpClient httpClient = HttpHelper.getHttpClient();
 		httpGetTemp = new HttpGet(GlobalConstant.KEBIAO_TEMP_URL);
         httpGet = new HttpGet(GlobalConstant.KEBIAO_URL);
         try {
@@ -50,17 +50,15 @@ public class FetchKebiaoTask extends AsyncTask<Void, Void, String[][]>{
         } catch (IOException e) {
 	        // TODO Auto-generated catch block
 	        e.printStackTrace();
-        }finally{
-        	try {
-                if(response != null){
-    	            response.getEntity().consumeContent();
-                }
-            } catch (IOException e) {
-	            // TODO Auto-generated catch block
-	            e.printStackTrace();
-            }
+        } catch (IndexOutOfBoundsException e) {
+			// TODO: handle exception
+        	e.printStackTrace();
+		}finally{
+        	if(response != null){
+			    HttpHelper.releaseConnection(response);
+			}
         }
-	    return new String[1][1];
+	    return null;
     }
     
 	

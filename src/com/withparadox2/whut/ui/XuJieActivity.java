@@ -12,17 +12,12 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.DialogInterface.OnCancelListener;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,21 +27,12 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.AbstractAction;
 import com.markupartist.android.widget.ActionBar.IntentAction;
 import com.withparadox2.whut.R;
-import com.withparadox2.whut.R.color;
-import com.withparadox2.whut.R.drawable;
-import com.withparadox2.whut.R.id;
-import com.withparadox2.whut.R.layout;
-import com.withparadox2.whut.dao.SaveTwoDimArray;
-import com.withparadox2.whut.dao.WhutGlobal;
 import com.withparadox2.whut.http.FetchRenewListTask;
-import com.withparadox2.whut.http.HttpOperateThread;
-import com.withparadox2.whut.http.HttpOperation;
 import com.withparadox2.whut.http.XuJieTask;
 import com.withparadox2.whut.util.Helper;
 
@@ -58,15 +44,13 @@ public class XuJieActivity extends Activity implements FetchRenewListTask.Callba
 	private MyAdapter myAdapter;
 	private String[][] result;
 	private final String TAG = "XuJieActivity";
-	private HttpOperation httpOperation;
-	private ProgressDialog progressDialog;
-	private HttpOperateThread myThread;
-	private boolean cancelDialogByHand = false;
-	private boolean closeHttpFlag = true;// true then close httpPost, false
-										 // close httpGet
 	private List<NameValuePair> nameValuePairs;
 	private boolean[] guoQiFlag; // 过期为true，没过期为false，然后在表中用颜色标记出来
 	private int resultActualLength = 0;
+    private FetchRenewListTask fetchRenewListTask;
+    private XuJieTask xuJieTask;
+    
+    private boolean isLoading = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -94,9 +78,10 @@ public class XuJieActivity extends Activity implements FetchRenewListTask.Callba
 	
 	private void getRenewList() {
 	    // TODO Auto-generated method stub
-	    FetchRenewListTask fetchRenewListTask = new FetchRenewListTask(this);
+	    fetchRenewListTask = new FetchRenewListTask(this);
 	    fetchRenewListTask.execute();
 	    actionBar.setTitle("正在获取数据...");
+        isLoading = true;
     }
 
 
@@ -117,8 +102,9 @@ public class XuJieActivity extends Activity implements FetchRenewListTask.Callba
 				}
 			}
 			if (allXuJie) {
+                isLoading = true;
 				setAllNVPairs();
-                XuJieTask xuJieTask = new XuJieTask(new XuJieTaskCallBack(), nameValuePairs);
+                xuJieTask = new XuJieTask(new XuJieTaskCallBack(), nameValuePairs);
                 xuJieTask.execute();
 			} else {
                 Helper.showShortToast(XuJieActivity.this,  "没有可以续借的书...");
@@ -207,13 +193,13 @@ public class XuJieActivity extends Activity implements FetchRenewListTask.Callba
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Log.i(TAG, "点击了啊");
 				if (result[position][8].equals("1")) {
                     Helper.showShortToast(XuJieActivity.this, "已经续借过了...");
 				} else {
+					isLoading = true;
                     actionBar.setTitle("正在提交。。。");
 					setNVPairs(position);
-	                XuJieTask xuJieTask = new XuJieTask(new XuJieTaskCallBack(), nameValuePairs);
+	                xuJieTask = new XuJieTask(new XuJieTaskCallBack(), nameValuePairs);
 	                xuJieTask.execute();
 				}
 
@@ -223,32 +209,17 @@ public class XuJieActivity extends Activity implements FetchRenewListTask.Callba
 
 	}
     
-	public class FetchRenewListCallBack implements FetchRenewListTask.Callback{
-
-		@Override
-        public void onPostExecute(String[][] result) {
-	        // TODO Auto-generated method stub
-	        XuJieActivity.this.result = result;
-            resultActualLength = result.length;
-        }
-		
-	}
-
 	private void setNVPairs(int position) {
 		nameValuePairs = new ArrayList<NameValuePair>();
-		nameValuePairs.add(new BasicNameValuePair("furl",
-		        "/opac/loan/renewList"));
-		nameValuePairs.add(new BasicNameValuePair("barcodeList",
-		        result[position][0]));
+		nameValuePairs.add(new BasicNameValuePair("furl", "/opac/loan/renewList"));
+		nameValuePairs.add(new BasicNameValuePair("barcodeList", result[position][0]));
 	}
 
 	private void setAllNVPairs() {
 		nameValuePairs = new ArrayList<NameValuePair>();
-		nameValuePairs.add(new BasicNameValuePair("furl",
-		        "/opac/loan/renewList"));
+		nameValuePairs.add(new BasicNameValuePair("furl", "/opac/loan/renewList"));
 		for (int i = 0; i < resultActualLength; i++) {
-			nameValuePairs.add(new BasicNameValuePair("barcodeList",
-			        result[i][0]));
+			nameValuePairs.add(new BasicNameValuePair("barcodeList", result[i][0]));
 		}
 	}
 
@@ -316,6 +287,7 @@ public class XuJieActivity extends Activity implements FetchRenewListTask.Callba
         	Helper.showShortToast(this, "出错了...");
             actionBar.setTitle("续借");
         }
+        isLoading = false;
     }
     
 	public class  XuJieTaskCallBack implements XuJieTask.Callback{
@@ -330,6 +302,7 @@ public class XuJieActivity extends Activity implements FetchRenewListTask.Callba
                 Helper.showShortToast(XuJieActivity.this, "续借失败...");
                 actionBar.setTitle("共借：" + resultActualLength + "本|过期：" + getGuoQiNum() + "本");
             }
+            isLoading = false;
         }
 	}
     
@@ -345,5 +318,34 @@ public class XuJieActivity extends Activity implements FetchRenewListTask.Callba
 		}
 		edit.putString("length", "" + resultActualLength);
 		edit.commit();
+	}
+	
+	@Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    // TODO Auto-generated method stub
+		if (keyCode == KeyEvent.KEYCODE_BACK && cancelTask()) {  
+        	 actionBar.setTitle("续借");
+     	     Helper.showShortToast(XuJieActivity.this, "取消操作...");
+             if(resultActualLength == 0){
+            	 Intent i = new Intent();
+            	 i.setClass(XuJieActivity.this, WelcomeTuActivity.class);
+            	 startActivity(i);
+            	 this.finish();
+             }
+     	     return true;
+		} else{
+			return super.onKeyDown(keyCode, event);
+		}
+    } 
+	
+    
+	private boolean cancelTask(){
+		if(isLoading){
+            isLoading = false;
+			return (fetchRenewListTask == null ? false : fetchRenewListTask.cancel(true))||
+				   (xuJieTask == null ? false :xuJieTask.cancel(true));
+		}else{
+			return false;
+		}
 	}
 }

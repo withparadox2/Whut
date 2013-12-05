@@ -3,7 +3,6 @@ package com.withparadox2.whut.fragment;
 import com.withparadox2.whut.R;
 import com.withparadox2.whut.dao.WhutGlobal;
 import com.withparadox2.whut.ui.BookListTempActivity;
-import com.withparadox2.whut.ui.LiXianHomeActivity;
 import com.withparadox2.whut.ui.LiXianJieYueActivity;
 import com.withparadox2.whut.ui.LiXianKeBiaoActivity;
 import com.withparadox2.whut.ui.SearchBookActivity;

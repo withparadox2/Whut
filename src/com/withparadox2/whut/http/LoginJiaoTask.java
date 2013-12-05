@@ -27,6 +27,9 @@ public class LoginJiaoTask  extends AsyncTask<String, Void, String>{
     private CallBack callBack;
     
     public interface  CallBack{
+        /**
+         * @param result 返回用户名，null--出错，""--用户名或密码错误
+         */
 		void onPostExecute(String result);
 	}
     
@@ -46,7 +49,7 @@ public class LoginJiaoTask  extends AsyncTask<String, Void, String>{
 		httpPost.setHeader("Accept-Language", "zh-CN");
 		try {
 	        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
-	        DefaultHttpClient defaultHttpClient = SingleHttpClient.getHttpClient();
+	        DefaultHttpClient defaultHttpClient = HttpHelper.getHttpClient();
 	        HttpParams httpParams = defaultHttpClient.getParams();
 	        HttpConnectionParams.setConnectionTimeout(httpParams, GlobalConstant.TIMEOUT_SECONDS * 1000);
 	        HttpConnectionParams.setSoTimeout(httpParams, GlobalConstant.TIMEOUT_SECONDS * 1000);
@@ -63,7 +66,11 @@ public class LoginJiaoTask  extends AsyncTask<String, Void, String>{
         } catch (IOException e) {
 	        // TODO Auto-generated catch block
 	        e.printStackTrace();
-        }
+        } catch (IndexOutOfBoundsException e) {
+			// TODO: handle exception
+	        e.printStackTrace();
+            return "";
+		}
 	    return null;
     }
 
@@ -73,10 +80,14 @@ public class LoginJiaoTask  extends AsyncTask<String, Void, String>{
 	    callBack.onPostExecute(result);
     }
     
-	private String getUserInfo(String html) {
-		Document document = Jsoup.parse(html);
-		Elements s = document.select("div.nav td .font2");
-		return s.get(0).html().toString();
+	private String getUserInfo(String html) throws IndexOutOfBoundsException{
+        if(html.contains("用户名或密码错误")){
+        	return "";
+        }else{
+    		Document document = Jsoup.parse(html);
+    		Elements s = document.select("div.nav td .font2");
+    		return s.get(0).html().toString();
+        }
 	}
 
 

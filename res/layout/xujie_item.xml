@@ -7,17 +7,17 @@
         android:id="@+id/xujie_textView1"
         android:layout_width="0dp"
         android:layout_height="fill_parent"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:gravity="center"
-        android:background="@color/typical_red"
-        android:textColor="@color/white"
+        android:background="@color/searchbooks_child_background"
+        android:textColor="@color/black"
         android:textSize="12dp" />
     
     <TextView
         android:id="@+id/xujie_textView2"
         android:layout_width="0dp"
         android:layout_height="fill_parent"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:textColor="@color/black"
         android:background="@color/searchbooks_group_background"
         android:gravity="center"
@@ -39,7 +39,7 @@
         android:textColor="@color/black"
         android:background="@color/searchbooks_group_background"
         android:gravity="center"
-        android:layout_weight="1.5">    
+        android:layout_weight="1">    
         <Button 
             android:id="@+id/xujie_button"
             android:layout_width="40dp"

@@ -37,7 +37,7 @@ public class FetchRenewListTask extends AsyncTask<Void, Void, String[][]>{
 		HttpPost httpPost = new HttpPost("http://202.114.89.11/opac/loan/renewList");
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
 		nameValuePairs.add(new BasicNameValuePair("rows", "30"));
-		DefaultHttpClient httpClient = SingleHttpClient.getHttpClient();
+		DefaultHttpClient httpClient = HttpHelper.getHttpClient();
         try {
 	        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
     		HttpResponse response = httpClient.execute(httpPost);

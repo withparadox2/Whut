@@ -20,4 +20,11 @@
         另外，软件尚不完善，不建议经常使用一些譬如评教、续借等需要交互的功能，由于网站变更而带来的问题，我会及时修复，但本软件不承担相关责任。\n\n最后感谢大家对我的支持和鼓励，我在此衷心
         的祝福你们。\n\nBy withparadox2</string>
      <string name="search_book_button">图书搜索</string>
+     
+     <string name="timetable">课表</string>
+     <string name="monday">星期一</string>
+     <string name="tuesday">星期一</string>
+     <string name="wednesday">星期一</string>
+     <string name="thursday">星期一</string>
+     <string name="friday">星期一</string>
 </resources>

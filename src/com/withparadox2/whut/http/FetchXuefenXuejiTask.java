@@ -71,7 +71,6 @@ public class FetchXuefenXuejiTask extends AsyncTask<Void, Void, ArrayList<String
     }
 	
 	private ArrayList<String[]> getXueFenData(String html){
-        System.out.println(html);
 		String[] input;
 		Document document = Jsoup.parse(html);
 		Elements jidians = document.select("input");

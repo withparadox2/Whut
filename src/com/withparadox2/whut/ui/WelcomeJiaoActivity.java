@@ -32,6 +32,7 @@ public class WelcomeJiaoActivity extends Activity {
 		chengJiButton = (Button) findViewById(R.id.chengji_button);
 		actionBar = (ActionBar) findViewById(R.id.welcomen_actionbar);
         actionBar.setHomeAction(new IntentAction(this, MainActivity.createIntent(this), R.drawable.ic_actionbar_whut));
+        actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle("»¶Ó­Äú£º" + Helper.getValueInSharePreference(this, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_NAME, "") + "Í¬Ñ§");
 
 		timeTableButton.setOnClickListener(new TimeTableOnClickListener());

@@ -155,10 +155,7 @@ public class ChengJiActivity extends Activity implements FetchChengjiTask.Callba
         	 actionBar.setTitle("成绩");
      	     Helper.showShortToast(ChengJiActivity.this, "取消操作...");
              if(dataLength == 0){
-            	 Intent i = new Intent();
-            	 i.setClass(ChengJiActivity.this, WelcomeJiaoActivity.class);
-            	 startActivity(i);
-            	 this.finish();
+            	 startActivity(WelcomeJiaoActivity.createIntent(ChengJiActivity.this));
              }
      	     return true;
 		} else{

@@ -72,7 +72,7 @@ public class FetchChengjiTask extends AsyncTask<Void, Void, String[][]>{
 			e.printStackTrace();
 		} catch (IndexOutOfBoundsException e) {
 			// TODO: handle exception
-            e.printStackTrace();
+			e.printStackTrace();
 		}finally{
 			HttpHelper.releaseConnection(httpResponse);
 		}
@@ -87,20 +87,26 @@ public class FetchChengjiTask extends AsyncTask<Void, Void, String[][]>{
 	}
 
 	private String[][] getChengjiData(String html){
+		System.out.println(html);
 		Document document = Jsoup.parse(html);
 		Elements trs = document.select("tr[target=sid_cj_id]");
 		int size = trs.size();
-		String[][] result = new String[size][6];
-		for(int i=0; i<size; i++){
-			Elements tds = trs.get(i).select("td");
-			result[i][0] = tds.get(2).text();
-			result[i][1] = tds.get(0).text();
-			result[i][2] = tds.get(3).text();
-			result[i][3] = tds.get(4).text();
-			result[i][4] = tds.get(5).text();
-			result[i][5] = tds.get(10).text();
+		if(size == 0){
+			return null;
+		}else{
+			String[][] result = new String[size][6];
+			for(int i=0; i<size; i++){
+				Elements tds = trs.get(i).select("td");
+				result[i][0] = tds.get(2).text();
+				result[i][1] = tds.get(0).text();
+				result[i][2] = tds.get(3).text();
+				result[i][3] = tds.get(4).text();
+				result[i][4] = tds.get(5).text();
+				result[i][5] = tds.get(10).text();
+			}
+			return result;
 		}
-		return result;
+
 	}
 
 }

@@ -23,8 +23,8 @@
      
      <string name="timetable">课表</string>
      <string name="monday">星期一</string>
-     <string name="tuesday">星期一</string>
-     <string name="wednesday">星期一</string>
-     <string name="thursday">星期一</string>
-     <string name="friday">星期一</string>
+     <string name="tuesday">星期二</string>
+     <string name="wednesday">星期三</string>
+     <string name="thursday">星期四</string>
+     <string name="friday">星期五</string>
 </resources>

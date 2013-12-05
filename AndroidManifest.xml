@@ -2,78 +2,88 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.withparadox2.whut"
     android:versionCode="1"
-    android:versionName="0.0.1alpha" >
+    android:versionName="0.0.2alpha" >
 
     <uses-sdk android:minSdkVersion="7" 
          android:targetSdkVersion="14" >
     </uses-sdk>
 
     <application
+        android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" android:killAfterRestore="true">
+        android:label="@string/app_name" android:killAfterRestore="true"
+>
         <activity
             android:name=".ui.WelcomeJiaoActivity" 
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"/>
         <activity
             android:name=".ui.WelcomeTuActivity" 
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"/>   
         <activity
             android:name=".ui.KebiaoActivity" 
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar">                     
         </activity>
         <activity
             android:name=".ui.ChengJiActivity" 
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar">                     
         </activity>
         <activity
             android:name=".ui.XueFenXueJiActivity" 
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar">                     
         </activity>
         <activity
             android:name=".ui.JieYueChaXunActivity" 
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"/>  
         <activity
             android:name=".ui.LiXianJieYueActivity" 
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"/>              
         <activity
             android:name=".ui.XuJieActivity" 
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"/>                                
          <activity
             android:name=".ui.LiXianKeBiaoActivity" 
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"/>
          <activity
             android:name=".ui.InformationActivity" 
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"/>                     
          <activity
             android:name=".ui.SearchBookActivity" 
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar">
          </activity>                     
          <activity
             android:name=".ui.BookListTempActivity" 
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar">                     
          </activity>
          <activity
              android:name=".ui.LiXianHomeActivity"
+            android:screenOrientation="portrait"
              android:theme="@android:style/Theme.NoTitleBar">                     
            
          </activity>
          <activity
              android:name=".ui.MainActivity"
-             android:theme="@android:style/Theme.NoTitleBar">                     
+             android:screenOrientation="portrait"
+             android:theme="@android:style/Theme.NoTitleBar"
+             android:windowSoftInputMode="adjustUnspecified|stateHidden" 
+             android:configChanges="orientation|keyboardHidden">                     
            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>          
          </activity>
 
-         <activity
-            android:name=".ui.LoginActivity"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden" 
-            android:configChanges="orientation|keyboardHidden">
-           
-             
-        </activity>
     </application>
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>

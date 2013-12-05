@@ -241,10 +241,7 @@ public class KebiaoActivity extends Activity implements FetchKebiaoTask.Callback
         	 actionBar.setTitle("课表");
      	     Helper.showShortToast(KebiaoActivity.this, "取消操作...");
              if(dataLength == 0){
-            	 Intent i = new Intent();
-            	 i.setClass(KebiaoActivity.this, WelcomeJiaoActivity.class);
-            	 startActivity(i);
-            	 this.finish();
+                 startActivity(WelcomeJiaoActivity.createIntent(KebiaoActivity.this));
              }
      	     return true;
 		} else{

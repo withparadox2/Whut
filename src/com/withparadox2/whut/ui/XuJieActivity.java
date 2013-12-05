@@ -327,10 +327,7 @@ public class XuJieActivity extends Activity implements FetchRenewListTask.Callba
         	 actionBar.setTitle("续借");
      	     Helper.showShortToast(XuJieActivity.this, "取消操作...");
              if(resultActualLength == 0){
-            	 Intent i = new Intent();
-            	 i.setClass(XuJieActivity.this, WelcomeTuActivity.class);
-            	 startActivity(i);
-            	 this.finish();
+            	 startActivity(WelcomeTuActivity.createIntent(XuJieActivity.this));
              }
      	     return true;
 		} else{

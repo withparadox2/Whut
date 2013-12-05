@@ -143,10 +143,7 @@ public class XueFenXueJiActivity extends Activity implements FetchXuefenXuejiTas
         	 actionBar.setTitle("学分和学绩");
      	     Helper.showShortToast(XueFenXueJiActivity.this, "取消操作...");
              if(list.size() == 0){
-            	 Intent i = new Intent();
-            	 i.setClass(XueFenXueJiActivity.this, WelcomeJiaoActivity.class);
-            	 startActivity(i);
-            	 this.finish();
+                 startActivity(WelcomeJiaoActivity.createIntent(XueFenXueJiActivity.this));
              }
      	     return true;
 		} else{

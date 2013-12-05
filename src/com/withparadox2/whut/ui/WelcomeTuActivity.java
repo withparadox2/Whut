@@ -28,6 +28,7 @@ public class WelcomeTuActivity extends Activity {
 		tushuXujieButton = (Button) findViewById(R.id.tushu_xujie_button);
 		actionBar = (ActionBar) findViewById(R.id.welcometu_actionbar);
 		actionBar.setHomeAction(new IntentAction(this, MainActivity.createIntent(this), R.drawable.ic_actionbar_whut));
+        actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle("»¶Ó­Äú£º" + Helper.getValueInSharePreference(this, GlobalConstant.SP_LOCAL_TEMP, GlobalConstant.USER_NAME, "") + "Í¬Ñ§");
 		tushuXujieButton.setOnClickListener(new XuJieOnClickListener());
 	}

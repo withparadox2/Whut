@@ -12,7 +12,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.withparadox2.whut.R;
-import com.withparadox2.whut.dao.UserInfoAdapter;
 
 public class LoginPopupListAdapter extends BaseAdapter{
 	LayoutInflater layoutInflater;

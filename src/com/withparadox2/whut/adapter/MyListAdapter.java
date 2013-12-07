@@ -3,8 +3,6 @@ package com.withparadox2.whut.adapter;
 import java.util.Map;
 
 import com.withparadox2.whut.R;
-import com.withparadox2.whut.adapter.MyExpandableListAdapter.AddClickListener;
-import com.withparadox2.whut.adapter.MyExpandableListAdapter.GroupViewHolder;
 import com.withparadox2.whut.dao.BookListDatabase;
 import com.withparadox2.whut.dao.WhutGlobal;
 

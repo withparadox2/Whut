@@ -17,8 +17,7 @@
     <string name="imagebutton_content_description">下拉列表</string>
     <string name="about1">WHUT属于个人开发软件，仅支持Android平台，目的在于方便大家获取有关信息，如课表、图书借阅情况等，仅此而已。\n\n非常感谢您下载本软件，并进行试用，如果在使用过程中出现了什么问题或者有什么好的建议，
         可以通过以下方式联系我：\nEmail:withparadox2@gmail.com\n\n所有的数据均来自学校相关网站，此软件只充当一个中介平台，不会获取用户任何数据。
-        另外，软件尚不完善，不建议经常使用一些譬如评教、续借等需要交互的功能，由于网站变更而带来的问题，我会及时修复，但本软件不承担相关责任。\n\n最后感谢大家对我的支持和鼓励，我在此衷心
-        的祝福你们。\n\nBy withparadox2</string>
+        另外，软件尚不完善，不建议经常使用一些譬如评教、续借等需要交互的功能，由于网站变更而带来的问题，我会及时修复，但本软件不承担相关责任。</string>
      <string name="search_book_button">图书搜索</string>
      
      <string name="timetable">课表</string>

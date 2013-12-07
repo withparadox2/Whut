@@ -20,7 +20,7 @@ public class InformationActivity extends Activity {
 		actionBar.setHomeAction(new IntentAction(this, MainActivity
 		        .createIntent(this), R.drawable.ic_actionbar_whut));
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle("WHUT beta");
+		actionBar.setTitle("WHUT");
 	}
 
 }

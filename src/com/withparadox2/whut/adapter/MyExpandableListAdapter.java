@@ -20,7 +20,6 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter{
     
     private Context context;
 	private Map<Integer, Boolean> addToDatabaseFlag; 
-	private MyExpandableListAdapter myExpandableAdapter;
 	private BookListDatabase mDbHelper;
 	
     public MyExpandableListAdapter(Context context, Map<Integer, Boolean> addToDatabaseFlag ){

@@ -56,12 +56,6 @@ public class BookListTempActivity extends Activity {
 		expandableListView.setGroupIndicator(null);
 		myExpandableAdapter = new MyExpandableListAdapter();
 		expandableListView.setAdapter(myExpandableAdapter);
-		expandableListView
-		        .setOnGroupClickListener(new MyOnGroupClickListener());
-		expandableListView
-		        .setOnGroupCollapseListener(new MyOnGroupCollapseListener());
-		expandableListView
-		        .setOnGroupExpandListener(new MyOnGroupExpandListener());
 		AnimationSet set = new AnimationSet(true);
 
         Animation animation = new AlphaAnimation(0.0f, 1.0f);
@@ -80,45 +74,6 @@ public class BookListTempActivity extends Activity {
         expandableListView.setLayoutAnimation(controller);
 	}
 
-	class MyOnGroupClickListener implements OnGroupClickListener {
-
-		@Override
-		public boolean onGroupClick(ExpandableListView parent, View v,
-		        int groupPosition, long id) {
-			// TODO Auto-generated method stub
-
-			return false;
-
-		}
-	}
-
-	class MyOnGroupCollapseListener implements OnGroupCollapseListener {
-
-		@Override
-		public void onGroupCollapse(int groupPosition) {
-			// TODO Auto-generated method stub
-			if (lastChildExpandedPosition == groupPosition) {
-				lastChildExpandedPosition = -1;
-			}
-		}
-
-	}
-
-	class MyOnGroupExpandListener implements OnGroupExpandListener {
-
-		@Override
-		public void onGroupExpand(int groupPosition) {
-			// TODO Auto-generated method stub
-
-			if (lastChildExpandedPosition != -1
-			        && groupPosition != lastChildExpandedPosition) {
-				expandableListView.collapseGroup(lastChildExpandedPosition);
-				System.out.println("Expand fired");
-			}
-			lastChildExpandedPosition = groupPosition;
-		}
-
-	}
 
 	class MyExpandableListAdapter extends BaseExpandableListAdapter {
 

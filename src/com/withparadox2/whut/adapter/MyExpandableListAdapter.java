@@ -56,6 +56,9 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter{
 		} else {
 			viewHolder = (ChildViewHolder) convertView.getTag();
 		}
+        System.out.println(WhutGlobal.CHILDLIST.get(
+		        groupPosition).size());
+        
 		viewHolder.bookLocation.setText(WhutGlobal.CHILDLIST.get(
 		        groupPosition).get(childPosition)[1]);
 		viewHolder.bookCode.setText(WhutGlobal.CHILDLIST.get(groupPosition)

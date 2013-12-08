@@ -103,6 +103,7 @@ public class XuJieActivity extends Activity implements FetchRenewListTask.Callba
 			}
 			if (allXuJie) {
                 isLoading = true;
+                actionBar.setTitle("正在提交。。。");
 				setAllNVPairs();
                 xuJieTask = new XuJieTask(new XuJieTaskCallBack(), nameValuePairs);
                 xuJieTask.execute();

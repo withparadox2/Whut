@@ -3,9 +3,7 @@ package com.withparadox2.whut.http;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,10 +17,10 @@ import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.TextNode;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 
@@ -39,14 +37,16 @@ public class HttpSearchThread extends Thread {
 	private Message msg;
 
 	private Handler myHandler;
+	private int groupClickPosition;
 
 	public HttpSearchThread(Handler handler, int page) {
 		this.myHandler = handler;
 		this.page = page;
 	}
 
-	public HttpSearchThread(Handler handler) {
+	public HttpSearchThread(Handler handler, int groupClickPosition, Context ctx) {
 		this.myHandler = handler;
+		this.groupClickPosition = groupClickPosition;
 	}
 
 	@Override
@@ -125,6 +125,8 @@ public class HttpSearchThread extends Thread {
 			WhutGlobal.BOOKLIST.add(item);
 			WhutGlobal.CLICK_GROUP_FLAG.add(false);
 			childArrayList = new ArrayList<String[]>();
+            String[] init = {"正在查询...", ""}; 
+            childArrayList.add(init);
 			WhutGlobal.CHILDLIST.add(childArrayList);
 		}
 		return books.size();
@@ -153,6 +155,7 @@ public class HttpSearchThread extends Thread {
 
 	private void getChildData() {
 		Document xmlParse = null;
+        List<String[]> childList = WhutGlobal.CHILDLIST.get(groupClickPosition);
 		String s[];
 		try {
 			xmlParse = Jsoup.parse(getChildXml(), "", Parser.xmlParser());
@@ -169,12 +172,16 @@ public class HttpSearchThread extends Thread {
 			s = new String[2];
 			s[0] = callnos.get(i).text();
 			s[1] = locations.get(i).text();
-			WhutGlobal.CHILDLIST.get(WhutGlobal.BOOK_CODE_POS).add(s);
+			childList.add(s);
 		}
 
 		if (callnos.size() == 0) {
+            childList.remove(0);
+            String[] noBooks = {"未查询到书籍...", ""};
+            childList.add(noBooks);
 			sendMyMessage(SearchBookActivity.NO_BOOKS);
 		} else {
+            childList.remove(0);
 			sendMyMessage(SearchBookActivity.UPDATE_CHILD);
 		}
 	}

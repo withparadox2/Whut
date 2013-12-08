@@ -111,10 +111,7 @@ public class SearchBookActivity extends ExpandableListActivity {
 		setListAdapter(myExpandableAdapter);
 		this.getExpandableListView()
 		.setOnGroupClickListener(new MyOnGroupClickListener());
-		this.getExpandableListView()
-		.setOnGroupCollapseListener(new MyOnGroupCollapseListener());
-		this.getExpandableListView()
-		.setOnGroupExpandListener(new MyOnGroupExpandListener());
+
 		this.getExpandableListView().setGroupIndicator(null);
 		myHandler = new UpdaetUIHandler(Looper.myLooper());
 
@@ -272,7 +269,7 @@ public class SearchBookActivity extends ExpandableListActivity {
 				WhutGlobal.BOOK_CODE = WhutGlobal.BOOKLIST.get(groupPosition)[1];
 				WhutGlobal.BOOK_CODE_POS = groupPosition;
 				WhutGlobal.WhichAction = UPDATE_CHILD_THREAD;
-				myThread = new HttpSearchThread(myHandler);
+				myThread = new HttpSearchThread(myHandler, groupPosition, SearchBookActivity.this);
 				myThread.start();
 				WhutGlobal.CLICK_GROUP_FLAG.set(groupPosition, true);
 			}
@@ -280,39 +277,6 @@ public class SearchBookActivity extends ExpandableListActivity {
 		}
 
 	}
-
-	class MyOnGroupCollapseListener implements OnGroupCollapseListener {
-
-		@Override
-		public void onGroupCollapse(int groupPosition) {
-			// TODO Auto-generated method stub
-			if (lastChildExpandedPosition == groupPosition) {
-				lastChildExpandedPosition = -1;
-				childExpandedFlag = false;
-				// System.out.println("Collapse fired");
-			}
-		}
-
-	}
-
-	class MyOnGroupExpandListener implements OnGroupExpandListener {
-
-		@Override
-		public void onGroupExpand(int groupPosition) {
-			// TODO Auto-generated method stub
-
-			if (lastChildExpandedPosition != -1
-					&& groupPosition != lastChildExpandedPosition) {
-				SearchBookActivity.this.getExpandableListView().collapseGroup(lastChildExpandedPosition);
-				System.out.println("Expand fired");
-			}
-			lastChildExpandedPosition = groupPosition;
-			childExpandedFlag = true;
-			SearchBookActivity.this.getExpandableListView().setSelection(groupPosition);
-		}
-
-	}
-
 
 	private void loadMoreBooks() {
 		WhutGlobal.WhichAction = UPDATE_GROUP_THREAD;
